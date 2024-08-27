@@ -129,3 +129,4 @@ C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.pdb
 C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.csproj.Up2Date
 C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.genruntimeconfig.cache
 C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\ref\CSIA.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.sourcelink.json
