@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="CSIA/App.axaml" value="CSIA/CSIA.csproj" />
+        <entry key="CSIA/Views/FileExplorerWindow.axaml" value="CSIA/CSIA.csproj" />
+        <entry key="CSIA/Views/LogInWindow.axaml" value="CSIA/CSIA.csproj" />
+        <entry key="CSIA/Views/MainWindow.axaml" value="CSIA/CSIA.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
