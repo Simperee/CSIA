@@ -1,37 +1,50 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        xmlns:local="clr-namespace:CSIA.Views"
-        xmlns:viewmodels="clr-namespace:CSIA.ViewModels"
+        xmlns:viewModels="clr-namespace:CSIA.ViewModels"
+        xmlns:global="clr-namespace:"
         x:Class="CSIA.Views.MainWindow"
-        Title="CSIA">
-    <Window.DataContext>
-        <viewmodels:MainWindowViewModel/>
-    </Window.DataContext>
-    
+        Width="800"
+        Height="600"
+        Title="File Explorer"
+        Background="White">
     <Grid>
         <Grid.RowDefinitions>
+            <!-- Toolbar Row -->
             <RowDefinition Height="Auto"/>
+            <!-- Breadcrumb and Back/Forward Row -->
+            <RowDefinition Height="Auto"/>
+            <!-- Main Content Row -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Buttons with margin -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-            <Button x:Name="BackButton" Content="Back" Margin="0,0,10,0"/>
-            <Button x:Name="OpenButton" Content="Open"/>
+        
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#F1F1F1">
+            <Button Content="Back" Name="BackButton" Margin="5"/>
+            <Button Content="Forward" Name="ForwardButton" Margin="5"/>
+            <Button Content="Refresh" Name="RefreshButton" Margin="5"/>
+            <Button Content="Open" Name="OpenButton" Margin="5"/>
         </StackPanel>
 
-        <!-- Directory TreeView with margin -->
-        <TreeView x:Name="DirectoryTreeView" Grid.Row="1" Margin="10" />
+        
+        <!-- Breadcrumbs -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#FFFFFF" x:DataType="global:MainWindowViewModel">
+            <TextBlock Text="Breadcrumb: " VerticalAlignment="Center" Margin="5"/>
+            <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" Margin="5"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="2" Margin="5">
+            <Grid.ColumnDefinitions>
+                <!-- Directory Tree Sidebar -->
+                <ColumnDefinition Width="250"/>
+                <!-- File List Main Panel -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- File ListBox with margin -->
-        <ListBox x:Name="FileListBox" Grid.Row="1" Grid.Column="1" Margin="10"/>
+            <!-- Directory Tree View -->
+            <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="5" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1"/>
+
+            <!-- File List View -->
+            <ListBox Name="FileListBox" Grid.Column="1" Margin="5" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1"/>
+        </Grid>
     </Grid>
 </Window>

@@ -16,6 +16,7 @@ namespace CSIA.Views
         {
             InitializeComponent();
             LoadDrives();
+            DataContext = new MainWindowViewModel();
             
             // Button click handlers
             OpenButton.Click += OpenButton_Click;
@@ -96,7 +97,6 @@ namespace CSIA.Views
                 }
             }
         }
-
 
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {

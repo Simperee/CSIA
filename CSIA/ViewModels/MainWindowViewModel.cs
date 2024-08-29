@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.Text;
-using System.Windows.Input;
-using ReactiveUI;
+﻿using System.ComponentModel;
 
-namespace CSIA.ViewModels
+public class MainWindowViewModel : INotifyPropertyChanged
 {
-    public class MainWindowViewModel : ViewModelBase
+    private string _currentPath;
+
+    public string CurrentPath
     {
-        public MainWindowViewModel()
+        get => _currentPath;
+        set
         {
-            ShowDialog = new Interaction<LogInViewModel, TestViewModel?>();
-
-            OpenFileExplorer = ReactiveCommand.CreateFromTask(async () =>
+            if (_currentPath != value)
             {
-                var store = new LogInViewModel();
-
-                var result = await ShowDialog.Handle(store);
-            });
+                _currentPath = value;
+                OnPropertyChanged(nameof(CurrentPath));
+            }
         }
+    }
 
-        public ICommand OpenFileExplorer { get; }
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        public Interaction<LogInViewModel, TestViewModel?> ShowDialog { get; }
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
