@@ -1,9 +1,10 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using System;
 using System.IO;
 using System.Linq;
 using Avalonia.ReactiveUI;
+using MsBox.Avalonia;
 using CSIA.ViewModels;
 
 namespace CSIA.Views
@@ -16,7 +17,6 @@ namespace CSIA.Views
         {
             InitializeComponent();
             LoadDrives();
-            DataContext = new MainWindowViewModel();
             
             // Button click handlers
             OpenButton.Click += OpenButton_Click;
@@ -58,13 +58,29 @@ namespace CSIA.Views
                 DirectoryTreeView.ItemsSource = directories.Any() ? directories : null;
                 FileListBox.ItemsSource = files.Any() ? files : null;
             }
-            catch (ArgumentOutOfRangeException ex)
+            catch (UnauthorizedAccessException)
             {
-                // Handle or log the exception as needed
+                // Show a popup message if access is denied
+                ShowAccessDeniedMessage(path);
+            }
+            catch (Exception ex)
+            {
+                // Log or handle other exceptions as needed
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
+        private async void ShowAccessDeniedMessage(string path)
+        {
+            var messageBox = MsBox.Avalonia.MessageBoxManager.GetMessageBoxStandard(
+                "Access Denied",
+                $"You do not have permission to access the directory: {path}",
+                MsBox.Avalonia.Enums.ButtonEnum.Ok,
+                MsBox.Avalonia.Enums.Icon.Warning
+            );
+
+            await messageBox.ShowWindowDialogAsync(this); // Show the popup
+        }
 
         private void OpenButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -85,16 +101,24 @@ namespace CSIA.Views
             {
                 var parentDirectory = Directory.GetParent(_currentDirectory)?.FullName;
 
-                if (!string.IsNullOrEmpty(parentDirectory) && Directory.Exists(parentDirectory))
+                // Check if we're at the root of a drive (e.g., "C:\")
+                if (parentDirectory == null)
                 {
-                    LoadDirectory(parentDirectory);
+                    // If there's no parent directory, we're at the root of a drive.
+                    // So, we should go back to the list of drives.
+                    LoadDrives();
+                    _currentDirectory = null; // Reset current directory to indicate we're at the drive level
                 }
                 else
                 {
-                    // If no parent directory, reload the drives (i.e., go back to the root view)
-                    LoadDrives();
-                    _currentDirectory = null;
+                    // Otherwise, load the parent directory
+                    LoadDirectory(parentDirectory);
                 }
+            }
+            else
+            {
+                // If _currentDirectory is null, we're already at the drive list level, no further action needed
+                Console.WriteLine("Already at the drive list.");
             }
         }
 
