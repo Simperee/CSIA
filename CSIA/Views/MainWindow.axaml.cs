@@ -3,8 +3,11 @@ using Avalonia.Interactivity;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using Avalonia.ReactiveUI;
 using MsBox.Avalonia;
+using Zhaobang.FtpServer;
 using CSIA.ViewModels;
 
 namespace CSIA.Views
@@ -21,6 +24,7 @@ namespace CSIA.Views
             // Button click handlers
             OpenButton.Click += OpenButton_Click;
             BackButton.Click += BackButton_Click;
+            HostButton.Click += HostButton_Click;
 
             // TreeView and ListBox selection handlers
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
@@ -72,11 +76,11 @@ namespace CSIA.Views
 
         private async void ShowAccessDeniedMessage(string path)
         {
-            var messageBox = MsBox.Avalonia.MessageBoxManager.GetMessageBoxStandard(
+            var messageBox = MessageBoxManager.GetMessageBoxStandard(
                 "Access Denied",
                 $"You do not have permission to access the directory: {path}",
                 MsBox.Avalonia.Enums.ButtonEnum.Ok,
-                MsBox.Avalonia.Enums.Icon.Warning
+                MsBox.Avalonia.Enums.Icon.Error
             );
 
             await messageBox.ShowWindowDialogAsync(this); // Show the popup
@@ -119,6 +123,35 @@ namespace CSIA.Views
             {
                 // If _currentDirectory is null, we're already at the drive list level, no further action needed
                 Console.WriteLine("Already at the drive list.");
+            }
+        }
+        
+        private void HostButton_Click(object? sender, RoutedEventArgs e)
+        {
+            var endPoint = new IPEndPoint(IPAddress.Any, 21);
+            var endPointv6 = new IPEndPoint(IPAddress.IPv6Any, 21);
+            // To accept IPv6 connection, replace "IPAddress.Any" with "IPAddress.IPv6Any"
+            // You need 2 FtpServer instances to accept both IPv4 and IPv6 connectins
+
+            var baseDirectory = "C:\\Users\\mayie\\Downloads";
+            Console.WriteLine(endPoint.Address.ToString());
+            Console.WriteLine(endPointv6.Address.ToString());
+            
+            // IPv4 implementation of FTP Server
+            if (endPoint.Address != null)
+            {
+                var server = new FtpServer(endPoint, baseDirectory);
+                var cancelSource = new CancellationTokenSource();
+                var runResult = server.RunAsync(cancelSource.Token);
+            }
+            
+            // IPv6 implementation of FTP Server
+            else
+            {
+                var serverv6 = new FtpServer(endPointv6, baseDirectory);
+                var cancelSourcev6 = new CancellationTokenSource();
+                var runResult = serverv6.RunAsync(cancelSourcev6.Token);
+                
             }
         }
 

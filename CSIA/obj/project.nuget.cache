@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8C9vjzRqqOlD1JbG645F8rhmivkbzG6MHNKBKQ4mdbbUp5kxFjR7L1RMAYAU0em34FvV0WF9CVh+4gc4ZKXvjQ==",
+  "dgSpecHash": "kNKXqBM935nU2OxmYAFMPjkPDDePkW3foiJygIMb0OrdeAjsFz0ki9y58b/5bpx1WTGA6Qw/vpucChIso263nQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj",
   "expectedPackageFiles": [
@@ -80,7 +80,8 @@
     "C:\\Users\\mayie\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\mayie\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\mayie\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\mayie\\.nuget\\packages\\tmds.dbus.protocol\\0.15.0\\tmds.dbus.protocol.0.15.0.nupkg.sha512"
+    "C:\\Users\\mayie\\.nuget\\packages\\tmds.dbus.protocol\\0.15.0\\tmds.dbus.protocol.0.15.0.nupkg.sha512",
+    "C:\\Users\\mayie\\.nuget\\packages\\zhaobang.ftpserver\\2.1.3\\zhaobang.ftpserver.2.1.3.nupkg.sha512"
   ],
   "logs": []
 }
