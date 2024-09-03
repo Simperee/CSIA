@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using Avalonia.ReactiveUI;
 using MsBox.Avalonia;
@@ -73,12 +74,51 @@ namespace CSIA.Views
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+        
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+        
+        public static string GetLocalIPv6Address()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv6 address in the system!");
+        }
+
 
         private async void ShowAccessDeniedMessage(string path)
         {
             var messageBox = MessageBoxManager.GetMessageBoxStandard(
                 "Access Denied",
                 $"You do not have permission to access the directory: {path}",
+                MsBox.Avalonia.Enums.ButtonEnum.Ok,
+                MsBox.Avalonia.Enums.Icon.Error
+            );
+
+            await messageBox.ShowWindowDialogAsync(this); // Show the popup
+        }
+        
+        private async void ShowHostingMessage(string ip, string port)
+        {
+            var messageBox = MessageBoxManager.GetMessageBoxStandard(
+                "FTP Server Online",
+                $"This computer is now hosting on IP: {ip} | port number: {port}",
                 MsBox.Avalonia.Enums.ButtonEnum.Ok,
                 MsBox.Avalonia.Enums.Icon.Error
             );
@@ -143,6 +183,7 @@ namespace CSIA.Views
                 var server = new FtpServer(endPoint, baseDirectory);
                 var cancelSource = new CancellationTokenSource();
                 var runResult = server.RunAsync(cancelSource.Token);
+                ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
             }
             
             // IPv6 implementation of FTP Server
@@ -151,6 +192,7 @@ namespace CSIA.Views
                 var serverv6 = new FtpServer(endPointv6, baseDirectory);
                 var cancelSourcev6 = new CancellationTokenSource();
                 var runResult = serverv6.RunAsync(cancelSourcev6.Token);
+                ShowHostingMessage(GetLocalIPv6Address(), endPoint.Port.ToString());
                 
             }
         }
