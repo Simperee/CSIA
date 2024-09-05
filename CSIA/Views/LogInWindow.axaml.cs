@@ -10,7 +10,6 @@ namespace CSIA.Views
         public LogInWindow()
         {
             InitializeComponent();
-            this.AttachDevTools();
 
             PointerPressed += OnPointerPressed;
         }

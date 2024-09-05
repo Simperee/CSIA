@@ -16,6 +16,8 @@ namespace CSIA.Views
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         private string? _currentDirectory;
+        private static DirectoryInfo? cDriveRoot = new DirectoryInfo(@"C:\Users\");
+        private string? rootDirectory = cDriveRoot.FullName;
 
         public MainWindow()
         {
@@ -166,34 +168,29 @@ namespace CSIA.Views
             }
         }
         
+        private CancellationTokenSource? cancelSource;
+        
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
-            var endPoint = new IPEndPoint(IPAddress.Any, 21);
-            var endPointv6 = new IPEndPoint(IPAddress.IPv6Any, 21);
-            // To accept IPv6 connection, replace "IPAddress.Any" with "IPAddress.IPv6Any"
-            // You need 2 FtpServer instances to accept both IPv4 and IPv6 connectins
+            // Stop any existing server before starting a new one
+            cancelSource?.Cancel();
 
-            var baseDirectory = "C:\\Users\\mayie\\Downloads";
-            Console.WriteLine(endPoint.Address.ToString());
-            Console.WriteLine(endPointv6.Address.ToString());
-            
+            var endPoint = new IPEndPoint(IPAddress.Any, 21);
+            var baseDirectory = rootDirectory;
+
             // IPv4 implementation of FTP Server
-            if (endPoint.Address != null)
+            try
             {
                 var server = new FtpServer(endPoint, baseDirectory);
-                var cancelSource = new CancellationTokenSource();
+                cancelSource = new CancellationTokenSource();
                 var runResult = server.RunAsync(cancelSource.Token);
+
                 ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
             }
-            
-            // IPv6 implementation of FTP Server
-            else
+            catch (SocketException ex)
             {
-                var serverv6 = new FtpServer(endPointv6, baseDirectory);
-                var cancelSourcev6 = new CancellationTokenSource();
-                var runResult = serverv6.RunAsync(cancelSourcev6.Token);
-                ShowHostingMessage(GetLocalIPv6Address(), endPoint.Port.ToString());
-                
+                Console.WriteLine($"Socket exception: {ex.Message}");
+                // Display error message or handle it as needed
             }
         }
 
