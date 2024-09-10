@@ -6,6 +6,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <PublishSingleFile>true</PublishSingleFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,9 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10"/>
+        <PackageReference Include="DouglasDwyer.ExtensibleFtp" Version="1.0.1" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />
+        <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
         <PackageReference Include="Zhaobang.FtpServer" Version="2.1.3" />
     </ItemGroup>
 
@@ -29,6 +32,9 @@
       <Compile Update="Old Files\MainWindow.axaml.cs.txt">
         <DependentUpon>MainWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\FTPServerWindow.axaml.cs">
+        <DependentUpon>FTPServerWindow.axaml.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

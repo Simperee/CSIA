@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:CSIA.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="450"
+        x:Class="CSIA.Views.FTPServerWindow"
+        Width="650"
+        Height="450"
+        Title="Log In"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="#410010"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="SystemChrome"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        FontFamily="{StaticResource LexendFont}">
+        <Panel Grid.Column="1" Margin="20,40,40,40">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="">IP Address</TextBlock>
+                <TextBox FontWeight="Light" Width="275" Height="25" Margin="0,30,0,0" VerticalAlignment="Top"></TextBox>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,74,0,0">Port Number</TextBlock>
+                <NumericUpDown x:Name="port_value" FontWeight="Light" Width="275" Height="25" Margin="0,104,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,148,0,0">Username</TextBlock>
+                <TextBox FontWeight="Light" Width="275" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,222,0,0">Password</TextBlock>
+                <TextBox FontWeight="Light" Width="275" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
+                <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,296,0,0" IsChecked="{Binding #port_value.IsEnabled}">Custom Connection</CheckBox>
+                <Button Content="Hosting" Name="HostingButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
+                <!-- Your content goes here -->
+        </Panel>
+</Window>

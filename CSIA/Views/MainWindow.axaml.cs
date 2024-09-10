@@ -5,19 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using Avalonia.ReactiveUI;
 using MsBox.Avalonia;
-using Zhaobang.FtpServer;
-using CSIA.ViewModels;
 
 namespace CSIA.Views
 {
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         private string? _currentDirectory;
-        private static DirectoryInfo? cDriveRoot = new DirectoryInfo(@"C:\Users\");
-        private string? rootDirectory = cDriveRoot.FullName;
 
         public MainWindow()
         {
@@ -77,19 +72,6 @@ namespace CSIA.Views
             }
         }
         
-        public static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
-        
         public static string GetLocalIPv6Address()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -109,18 +91,6 @@ namespace CSIA.Views
             var messageBox = MessageBoxManager.GetMessageBoxStandard(
                 "Access Denied",
                 $"You do not have permission to access the directory: {path}",
-                MsBox.Avalonia.Enums.ButtonEnum.Ok,
-                MsBox.Avalonia.Enums.Icon.Error
-            );
-
-            await messageBox.ShowWindowDialogAsync(this); // Show the popup
-        }
-        
-        private async void ShowHostingMessage(string ip, string port)
-        {
-            var messageBox = MessageBoxManager.GetMessageBoxStandard(
-                "FTP Server Online",
-                $"This computer is now hosting on IP: {ip} | port number: {port}",
                 MsBox.Avalonia.Enums.ButtonEnum.Ok,
                 MsBox.Avalonia.Enums.Icon.Error
             );
@@ -168,30 +138,33 @@ namespace CSIA.Views
             }
         }
         
-        private CancellationTokenSource? cancelSource;
+        // private CancellationTokenSource? cancelSource;
         
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
-            // Stop any existing server before starting a new one
-            cancelSource?.Cancel();
-
-            var endPoint = new IPEndPoint(IPAddress.Any, 21);
-            var baseDirectory = rootDirectory;
-
-            // IPv4 implementation of FTP Server
-            try
-            {
-                var server = new FtpServer(endPoint, baseDirectory);
-                cancelSource = new CancellationTokenSource();
-                var runResult = server.RunAsync(cancelSource.Token);
-
-                ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
-            }
-            catch (SocketException ex)
-            {
-                Console.WriteLine($"Socket exception: {ex.Message}");
-                // Display error message or handle it as needed
-            }
+            var FTPWindow = new FTPServerWindow();
+            FTPWindow.Show();
+            
+            // // Stop any existing server before starting a new one
+            // cancelSource?.Cancel();
+            //
+            // var endPoint = new IPEndPoint(IPAddress.Any, 21);
+            // var baseDirectory = rootDirectory;
+            //
+            // // IPv4 implementation of FTP Server
+            // try
+            // {
+            //     var server = new FtpServer(endPoint, baseDirectory);
+            //     cancelSource = new CancellationTokenSource();
+            //     var runResult = server.RunAsync(cancelSource.Token);
+            //
+            //     ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
+            // }
+            // catch (SocketException ex)
+            // {
+            //     Console.WriteLine($"Socket exception: {ex.Message}");
+            //     // Display error message or handle it as needed
+            // }
         }
 
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
