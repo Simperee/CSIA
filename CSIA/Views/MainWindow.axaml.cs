@@ -16,7 +16,7 @@ namespace CSIA.Views
         private string? currentDirectory;
 
         private PopUpDialog popUpDialog = new PopUpDialog();
-        private FTPServerWindow FTPWindow = new FTPServerWindow();
+        public FTPServerWindow FTPWindow = new FTPServerWindow();
 
         public MainWindow()
         {
@@ -192,12 +192,9 @@ namespace CSIA.Views
         {
             if (FTPWindow.ftpRunning)
             {
-                
-                
+                Task.Run(() => popUpDialog.ShowServerRunningMessage(this));
                 
                 e.Cancel = true;
-        
-                Task.Run(() => MyShowDialog());
             }
         
             base.OnClosing(e);

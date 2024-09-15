@@ -108,7 +108,7 @@ namespace CSIA.Views
             }
             else
             {
-                popUpDialog.ShowServerRunningMessage(this);
+                popUpDialog.ServerRunningFunction(this, this);
             }
         }
 

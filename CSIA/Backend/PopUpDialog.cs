@@ -1,12 +1,15 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using CSIA.Views;
 using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace CSIA.Backend;
 
 public class PopUpDialog
 {
-    private FTPServerWindow FTPWindow = new FTPServerWindow();
+    private ButtonResult ServRunButtonResult;
     
     public async void ShowAccessDeniedMessage(Window owner, string path)
     {
@@ -42,7 +45,7 @@ public class PopUpDialog
         await messageBox.ShowWindowDialogAsync(owner); // Show the popup
     }
 
-    public async void ShowServerRunningMessage(Window owner)
+    public async Task ShowServerRunningMessage(Window owner)
     {
         var messageBox = MessageBoxManager.GetMessageBoxStandard(
             "FTP Server Already Online",
@@ -50,12 +53,20 @@ public class PopUpDialog
             MsBox.Avalonia.Enums.ButtonEnum.OkAbort,
             MsBox.Avalonia.Enums.Icon.Error
         );
-        await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        ServRunButtonResult = await messageBox.ShowWindowDialogAsync(owner);
     }
 
-    public async void ServerRunningFunction(Window owner)
+    public async Task<string> ServerRunningFunction(Window owner, FTPServerWindow FTPWindow)
     {
-        var sex = ShowServerRunningMessage(owner);
-        
+        string ButtonResult = null;
+        await ShowServerRunningMessage(owner);
+
+        if (ServRunButtonResult.ToString() == "Abort")
+        {
+            FTPWindow.StopFtpServer();
+            ButtonResult = "Aborted";
+            
+        }
+        return ButtonResult;
     }
 }
