@@ -23,6 +23,7 @@
             <Button Content="Refresh" Name="RefreshButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Open" Name="OpenButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
+            <Button Content="Stop" Name="StopButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
         </StackPanel>
         
         <!-- Breadcrumbs -->

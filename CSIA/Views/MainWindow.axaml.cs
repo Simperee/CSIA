@@ -5,14 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
-using MsBox.Avalonia;
+using CSIA.Backend;
 
 namespace CSIA.Views
 {
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
-        private string? _currentDirectory;
+        private string? currentDirectory;
+
+        private PopUpDialog popUpDialog = new PopUpDialog();
+        private FTPServerWindow FTPWindow = new FTPServerWindow();
 
         public MainWindow()
         {
@@ -23,6 +27,7 @@ namespace CSIA.Views
             OpenButton.Click += OpenButton_Click;
             BackButton.Click += BackButton_Click;
             HostButton.Click += HostButton_Click;
+            StopButton.Click += StopButton_Click;
 
             // TreeView and ListBox selection handlers
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
@@ -46,7 +51,7 @@ namespace CSIA.Views
         {
             try
             {
-                _currentDirectory = path;
+                currentDirectory = path;
 
                 // Clear current selection
                 DirectoryTreeView.SelectedItem = null;
@@ -63,11 +68,12 @@ namespace CSIA.Views
             catch (UnauthorizedAccessException)
             {
                 // Show a popup message if access is denied
-                ShowAccessDeniedMessage(path);
+                popUpDialog.ShowAccessDeniedMessage(this, path);
             }
             catch (Exception ex)
             {
                 // Log or handle other exceptions as needed
+                popUpDialog.ShowErrorMessage(this, ex.Message);
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
@@ -85,19 +91,6 @@ namespace CSIA.Views
             throw new Exception("No network adapters with an IPv6 address in the system!");
         }
 
-
-        private async void ShowAccessDeniedMessage(string path)
-        {
-            var messageBox = MessageBoxManager.GetMessageBoxStandard(
-                "Access Denied",
-                $"You do not have permission to access the directory: {path}",
-                MsBox.Avalonia.Enums.ButtonEnum.Ok,
-                MsBox.Avalonia.Enums.Icon.Error
-            );
-
-            await messageBox.ShowWindowDialogAsync(this); // Show the popup
-        }
-
         private void OpenButton_Click(object? sender, RoutedEventArgs e)
         {
             if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
@@ -113,9 +106,9 @@ namespace CSIA.Views
 
         private void BackButton_Click(object? sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_currentDirectory))
+            if (!string.IsNullOrEmpty(currentDirectory))
             {
-                var parentDirectory = Directory.GetParent(_currentDirectory)?.FullName;
+                var parentDirectory = Directory.GetParent(currentDirectory)?.FullName;
 
                 // Check if we're at the root of a drive (e.g., "C:\")
                 if (parentDirectory == null)
@@ -123,7 +116,7 @@ namespace CSIA.Views
                     // If there's no parent directory, we're at the root of a drive.
                     // So, we should go back to the list of drives.
                     LoadDrives();
-                    _currentDirectory = null; // Reset current directory to indicate we're at the drive level
+                    currentDirectory = null; // Reset current directory to indicate we're at the drive level
                 }
                 else
                 {
@@ -133,7 +126,7 @@ namespace CSIA.Views
             }
             else
             {
-                // If _currentDirectory is null, we're already at the drive list level, no further action needed
+                // If currentDirectory is null, we're already at the drive list level, no further action needed
                 Console.WriteLine("Already at the drive list.");
             }
         }
@@ -142,7 +135,6 @@ namespace CSIA.Views
         
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
-            var FTPWindow = new FTPServerWindow();
             FTPWindow.Show();
             
             // // Stop any existing server before starting a new one
@@ -158,13 +150,29 @@ namespace CSIA.Views
             //     cancelSource = new CancellationTokenSource();
             //     var runResult = server.RunAsync(cancelSource.Token);
             //
-            //     ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
+            //     popUpDialog.ShowHostingMessage(GetLocalIPAddress(), endPoint.Port.ToString());
             // }
             // catch (SocketException ex)
             // {
+            //     popUpDialog.ShowErrorMessage(this, ex.Message);
             //     Console.WriteLine($"Socket exception: {ex.Message}");
             //     // Display error message or handle it as needed
             // }
+        }
+
+        private async void StopButton_Click(object? sender, RoutedEventArgs e)
+        {
+            try{
+                Console.WriteLine($"Server is running: {FTPWindow.ftpRunning}");
+                await FTPWindow.StopFtpServer();
+                Console.WriteLine($"Server is running: {FTPWindow.ftpRunning}");
+            }
+            catch (Exception ex)
+            {
+                // Log or handle other exceptions as needed
+                popUpDialog.ShowErrorMessage(this, ex.Message);
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
 
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -178,6 +186,21 @@ namespace CSIA.Views
                     UseShellExecute = true
                 });
             }
+        }
+        
+        protected override async void OnClosing(WindowClosingEventArgs e)
+        {
+            if (FTPWindow.ftpRunning)
+            {
+                
+                
+                
+                e.Cancel = true;
+        
+                Task.Run(() => MyShowDialog());
+            }
+        
+            base.OnClosing(e);
         }
     }
 }
