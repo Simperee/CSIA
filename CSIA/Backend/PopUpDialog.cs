@@ -10,6 +10,8 @@ namespace CSIA.Backend;
 public class PopUpDialog
 {
     private ButtonResult ServRunButtonResult;
+    public ButtonResult OkButton;
+    public string ButtonResult;
     
     public async void ShowAccessDeniedMessage(Window owner, string path)
     {
@@ -23,7 +25,7 @@ public class PopUpDialog
         await messageBox.ShowWindowDialogAsync(owner); // Show the popup
     }
 
-    public async void ShowHostingMessage(Window owner, string ip, string port)
+    public async Task<ButtonResult> ShowHostingMessage(Window owner, string ip, string port)
     {
         var messageBox = MessageBoxManager.GetMessageBoxStandard(
             "FTP Server Online",
@@ -31,7 +33,8 @@ public class PopUpDialog
             MsBox.Avalonia.Enums.ButtonEnum.Ok,
             MsBox.Avalonia.Enums.Icon.Info
         );
-        await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        OkButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        return OkButton;
     }
     
     public async void ShowErrorMessage(Window owner, string ErrMessage)
@@ -48,8 +51,8 @@ public class PopUpDialog
     public async Task ShowServerRunningMessage(Window owner)
     {
         var messageBox = MessageBoxManager.GetMessageBoxStandard(
-            "FTP Server Already Online",
-            $"This computer is already hosting an FTP server. Could not start a new one.",
+            "FTP Server Running",
+            $"This computer is already hosting an FTP server.",
             MsBox.Avalonia.Enums.ButtonEnum.OkAbort,
             MsBox.Avalonia.Enums.Icon.Error
         );
@@ -58,14 +61,17 @@ public class PopUpDialog
 
     public async Task<string> ServerRunningFunction(Window owner, FTPServerWindow FTPWindow)
     {
-        string ButtonResult = null;
         await ShowServerRunningMessage(owner);
-
-        if (ServRunButtonResult.ToString() == "Abort")
+        if (ServRunButtonResult != null)
         {
-            FTPWindow.StopFtpServer();
-            ButtonResult = "Aborted";
-            
+            if (ServRunButtonResult.ToString() == "Abort")
+            {
+                FTPWindow.StopFtpServer();
+                ButtonResult = "Aborted";
+
+            }
+
+            return ButtonResult;
         }
         return ButtonResult;
     }

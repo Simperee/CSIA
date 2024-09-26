@@ -15,5 +15,28 @@
              
     <Application.Resources>
         <FontFamily x:Key="LexendFont">avares://CSIA/Assets/Fonts#Lexend</FontFamily>
+        <ControlTheme x:Key="CloseButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="#50410010"/> -->
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="Width" Value="15"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Ellipse Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="Red"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+        </ControlTheme>
     </Application.Resources>
 </Application>

@@ -3,9 +3,6 @@ using Avalonia.Interactivity;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using CSIA.Backend;
 
@@ -14,6 +11,9 @@ namespace CSIA.Views
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         private string? currentDirectory;
+        private string? forwardDirectory;
+        
+        private TextBlock? breadcrumbPath;
 
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
@@ -23,15 +23,23 @@ namespace CSIA.Views
             InitializeComponent();
             LoadDrives();
             
+            breadcrumbPath = this.FindControl<TextBlock>("CurrentPath");
+            
             // Button click handlers
             OpenButton.Click += OpenButton_Click;
             BackButton.Click += BackButton_Click;
+            ForwardButton.Click += ForwardButton_Click;
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
+            
+            ForwardButton.IsEnabled = false;
+            BackButton.IsEnabled = false;
+            OpenButton.IsEnabled = false;
 
             // TreeView and ListBox selection handlers
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
             FileListBox.DoubleTapped += FileListBox_DoubleTapped;
+            FileListBox.Tapped += FileListBox_Tapped;
         }
 
         private void LoadDrives()
@@ -51,7 +59,9 @@ namespace CSIA.Views
         {
             try
             {
+                BackButton.IsEnabled = true;
                 currentDirectory = path;
+                breadcrumbPath.Text = currentDirectory;
 
                 // Clear current selection
                 DirectoryTreeView.SelectedItem = null;
@@ -78,18 +88,18 @@ namespace CSIA.Views
             }
         }
         
-        public static string GetLocalIPv6Address()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetworkV6)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv6 address in the system!");
-        }
+        // public static string GetLocalIPv6Address()
+        // {
+        //     var host = Dns.GetHostEntry(Dns.GetHostName());
+        //     foreach (var ip in host.AddressList)
+        //     {
+        //         if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+        //         {
+        //             return ip.ToString();
+        //         }
+        //     }
+        //     throw new Exception("No network adapters with an IPv6 address in the system!");
+        // }
 
         private void OpenButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -101,6 +111,8 @@ namespace CSIA.Views
                     FileName = filePath,
                     UseShellExecute = true
                 });
+                OpenButton.IsEnabled = false;
+                FileListBox.SelectedItem = null;
             }
         }
 
@@ -117,10 +129,13 @@ namespace CSIA.Views
                     // So, we should go back to the list of drives.
                     LoadDrives();
                     currentDirectory = null; // Reset current directory to indicate we're at the drive level
+                    BackButton.IsEnabled = false;
                 }
                 else
                 {
                     // Otherwise, load the parent directory
+                    forwardDirectory = currentDirectory;
+                    ForwardButton.IsEnabled = true;
                     LoadDirectory(parentDirectory);
                 }
             }
@@ -131,7 +146,29 @@ namespace CSIA.Views
             }
         }
         
-        // private CancellationTokenSource? cancelSource;
+        private void ForwardButton_Click(object? sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(forwardDirectory))
+            { 
+
+                // Check if we're at the root of a drive (e.g., "C:\")
+                if (Directory.Exists(forwardDirectory))
+                {
+                    LoadDirectory(forwardDirectory);
+                    forwardDirectory = null;
+                    ForwardButton.IsEnabled = false;
+                }
+                else
+                {
+                    
+                }
+            }
+            else
+            {
+                // If currentDirectory is null, we're already at the drive list level, no further action needed
+                Console.WriteLine("Folder does not exist");
+            }
+        }
         
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -175,6 +212,14 @@ namespace CSIA.Views
             }
         }
 
+        private void FileListBox_Tapped(object? sender, EventArgs e)
+        {
+            if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
+            {
+                OpenButton.IsEnabled = true;
+            }
+        }
+
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
             if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
@@ -185,19 +230,38 @@ namespace CSIA.Views
                     FileName = filePath,
                     UseShellExecute = true
                 });
+                
+                OpenButton.IsEnabled = false;
+                FileListBox.SelectedItem = null;
             }
         }
         
         protected override async void OnClosing(WindowClosingEventArgs e)
         {
+            // Check if FTP server is running
             if (FTPWindow.ftpRunning)
             {
-                Task.Run(() => popUpDialog.ShowServerRunningMessage(this));
-                
                 e.Cancel = true;
+                try
+                {
+                    // Await the result of the async function
+                    var result = await popUpDialog.ServerRunningFunction(this, FTPWindow);
+                    if (result=="Aborted")
+                    {
+                        FTPWindow.StopFtpServer();
+                        Environment.Exit(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during closing: {ex.Message}");
+                }
             }
-        
-            base.OnClosing(e);
+            else
+            {
+                // If FTP server is not running, just proceed with the window close
+                Environment.Exit(0);
+            }
         }
     }
 }

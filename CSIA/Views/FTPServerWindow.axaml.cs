@@ -24,14 +24,18 @@ namespace CSIA.Views
         private TextBox? hostUnameControl;
         private TextBox? hostUpassControl;
         private NumericUpDown? customConControl;
+        private CheckBox? customConEnable;
+        private Button? focusLossButton;
 
         public FTPServerWindow()
         {
             InitializeComponent();
 
             customConControl = this.FindControl<NumericUpDown>("port_value");
+            customConEnable = this.FindControl<CheckBox>("customconn_enable");
             hostUnameControl = this.FindControl<TextBox>("hosting_uname");
             hostUpassControl = this.FindControl<TextBox>("hosting_upass");
+            focusLossButton = this.FindControl<Button>("focusloss_button");
             HostingButton = this.FindControl<Button>("HostingButton");
             if (HostingButton != null)
             {
@@ -98,7 +102,6 @@ namespace CSIA.Views
                     _ftpServerHost = serviceProvider.GetRequiredService<IFtpServerHost>();
 
                     StartFtpServer(portNumber);
-                    popUpDialog.ShowHostingMessage(this, GetLocalIPAddress(), portNumber.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -119,7 +122,11 @@ namespace CSIA.Views
                 await _ftpServerHost.StartAsync();
                 Console.WriteLine($"FTP server started on port {port}.");
                 ftpRunning = true;
-                Hide();
+                var result = await popUpDialog.ShowHostingMessage(this, GetLocalIPAddress(), port.ToString());
+                if (result.ToString() == "Ok" || result.ToString() == "None")
+                {
+                    Hide();
+                }
             }
             catch (Exception ex)
             {
@@ -142,6 +149,27 @@ namespace CSIA.Views
                 Console.WriteLine("fail");
             }
         }
+        
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            hostUnameControl.Text = null;
+            hostUpassControl.Text = null;
+            customConControl.Value = 23;
+            customConEnable.IsChecked = false;
+            ClearFocus();
+            e.Cancel = true;
+            Hide();
+        }
+
+        private void ClearFocus()
+        {
+            if (!focusLossButton.IsFocused)
+            {
+                
+                focusLossButton.Focus();
+            }
+        }
+
     }
 
     // Custom authentication logic
