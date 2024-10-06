@@ -5,9 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace CSIA.Views
 {
-    public partial class LogInWindow : Window
+    public partial class FTPConnectWindow : Window
     {
-        public LogInWindow()
+        public FTPConnectWindow()
         {
             InitializeComponent();
 

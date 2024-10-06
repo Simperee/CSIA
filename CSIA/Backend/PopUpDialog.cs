@@ -11,7 +11,21 @@ public class PopUpDialog
 {
     private ButtonResult ServRunButtonResult;
     public ButtonResult OkButton;
+    public ButtonResult LossButton;
     public string ButtonResult;
+    
+    public async Task<ButtonResult> ShowDataLossMessage(Window owner)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Warning",
+            $"Are you sure? All data will be lost.",
+            MsBox.Avalonia.Enums.ButtonEnum.YesNo,
+            MsBox.Avalonia.Enums.Icon.Warning
+        );
+
+        LossButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        return LossButton;
+    }
     
     public async void ShowAccessDeniedMessage(Window owner, string path)
     {

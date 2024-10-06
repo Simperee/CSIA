@@ -10,6 +10,7 @@ using FubarDev.FtpServer.AccountManagement;
 using Microsoft.Extensions.DependencyInjection;
 using MsBox.Avalonia;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using CSIA.Backend;
 using FubarDev.FtpServer.ConnectionChecks;
 
@@ -26,7 +27,7 @@ namespace CSIA.Views
         private NumericUpDown? customConControl;
         private CheckBox? customConEnable;
         private Button? focusLossButton;
-
+        private string? defaultBorder;
         public FTPServerWindow()
         {
             InitializeComponent();
@@ -41,6 +42,14 @@ namespace CSIA.Views
             {
                 HostingButton.Click += HostingButton_Click;
             }
+            CancelButton = this.FindControl<Button>("CancelButton");
+            if (CancelButton != null)
+            {
+                CancelButton.Click += CancelButton_Click;
+            }
+
+            hostUnameControl.GotFocus += UnameFocus;
+            hostUpassControl.GotFocus += UpassFocus;
         }
 
         private void InitializeComponent()
@@ -63,6 +72,8 @@ namespace CSIA.Views
 
         private void HostingButton_Click(object? sender, RoutedEventArgs e)
         {
+            defaultBorder = hostUpassControl.BorderBrush.ToString();
+            Console.WriteLine(defaultBorder);
             if (!ftpRunning)
             {
                 try
@@ -70,38 +81,49 @@ namespace CSIA.Views
                     var services = new ServiceCollection();
                     services.Configure<FtpServerOptions>(opt => opt.ServerAddress = "0.0.0.0");
 
-                    string username = hostUnameControl?.Text ?? "defaultUser";
-                    string password = hostUpassControl?.Text ?? "defaultPass";
-
-                    services.AddFtpServer(builder =>
-                    {
-                        builder.UseDotNetFileSystem(); 
-                        builder.Services.AddSingleton<IMembershipProvider>(new CustomMembershipProvider(username, password));
-                    });
-
-                    services.Configure<DotNetFileSystemOptions>(opt =>
-                    {
-                        opt.RootPath = @"C:\";  
-                    });
-
-                    int portNumber;
+                    Console.WriteLine(hostUpassControl?.Text);
                     
-                    if (customConControl.IsEnabled)
+                    if (string.IsNullOrEmpty(hostUnameControl?.Text))
                     {
-                        decimal? portValue = customConControl?.Value;
-                        portNumber = (int)portValue;
+                        hostUnameControl.BorderBrush = Brushes.DarkRed;
+                    }
+                    if (string.IsNullOrEmpty(hostUpassControl?.Text))
+                    {
+                        hostUpassControl.BorderBrush = Brushes.DarkRed;
                     }
                     else
                     {
-                        decimal? portValue = 21;
-                        portNumber = (int)portValue;
+                        string username = hostUnameControl?.Text;
+                        string password = hostUpassControl?.Text;
+
+                        services.AddFtpServer(builder =>
+                        {
+                            builder.UseDotNetFileSystem();
+                            builder.Services.AddSingleton<IMembershipProvider>(
+                                new CustomMembershipProvider(username, password));
+                        });
+
+                        services.Configure<DotNetFileSystemOptions>(opt => { opt.RootPath = @"C:\"; });
+
+                        int portNumber;
+
+                        if (customConControl.IsEnabled)
+                        {
+                            decimal? portValue = customConControl?.Value;
+                            portNumber = (int)portValue;
+                        }
+                        else
+                        {
+                            decimal? portValue = 21;
+                            portNumber = (int)portValue;
+                        }
+
+                        services.Configure<FtpServerOptions>(opt => opt.Port = portNumber);
+                        var serviceProvider = services.BuildServiceProvider();
+                        _ftpServerHost = serviceProvider.GetRequiredService<IFtpServerHost>();
+
+                        StartFtpServer(portNumber);
                     }
-
-                    services.Configure<FtpServerOptions>(opt => opt.Port = portNumber);
-                    var serviceProvider = services.BuildServiceProvider();
-                    _ftpServerHost = serviceProvider.GetRequiredService<IFtpServerHost>();
-
-                    StartFtpServer(portNumber);
                 }
                 catch (Exception ex)
                 {
@@ -115,6 +137,28 @@ namespace CSIA.Views
             }
         }
 
+        private async void CancelButton_Click(object? sender, RoutedEventArgs e)
+        {
+            if (hostUnameControl.Text != null || hostUpassControl.Text != null || customConControl.IsEnabled){
+                try
+                {
+                    var result = await popUpDialog.ShowDataLossMessage(this);
+                    if (result.ToString() == "Yes")
+                    {
+                        Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    popUpDialog.ShowErrorMessage(this, ex.Message);
+                }
+            }
+            else
+            {
+                Close();
+            }
+        }
+
         private async void StartFtpServer(int port)
         {
             try
@@ -125,7 +169,7 @@ namespace CSIA.Views
                 var result = await popUpDialog.ShowHostingMessage(this, GetLocalIPAddress(), port.ToString());
                 if (result.ToString() == "Ok" || result.ToString() == "None")
                 {
-                    Hide();
+                    Close();
                 }
             }
             catch (Exception ex)
@@ -148,6 +192,16 @@ namespace CSIA.Views
             {
                 Console.WriteLine("fail");
             }
+        }
+
+        private void UnameFocus(object? sender, RoutedEventArgs e)
+        {
+            hostUnameControl.BorderBrush = Brush.Parse(defaultBorder);
+        }
+
+        private void UpassFocus(object? sender, RoutedEventArgs e)
+        {
+            hostUpassControl.BorderBrush = Brush.Parse(defaultBorder);
         }
         
         protected override void OnClosing(WindowClosingEventArgs e)

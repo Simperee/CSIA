@@ -7,7 +7,7 @@
         x:Class="CSIA.Views.FTPServerWindow"
         Width="370"
         Height="400"
-        Title="Log In"
+        Title="Create Server"
         TransparencyLevelHint="AcrylicBlur"
         Background="#50410010"
         ExtendClientAreaToDecorationsHint="True"
@@ -25,10 +25,9 @@
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,148,0,0">Port Number</TextBlock>
                 <NumericUpDown x:Name="port_value" FontWeight="Light" Width="274" Height="25" Margin="0,178,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"/>
                 
-                <CheckBox x:Name="customconn_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,216,0,0" IsChecked="{Binding #port_value.IsEnabled}">Custom Connection</CheckBox>
+                <CheckBox x:Name="customconn_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,222,0,0" IsChecked="{Binding #port_value.IsEnabled}">Custom Connection</CheckBox>
                 
                 <Button Content="Cancel" Name="CancelButton" HorizontalContentAlignment="Center" Width="71" Margin="152,271,0,0" Background="#3A3A3A" Foreground="White"/>
-                
                 <Button Content="Hosting" Name="HostingButton" Margin="231,271,0,0" Background="#3A3A3A" Foreground="White"/>
                 
                 <Button x:Name="focusloss_button" Width="0" Height="0"/>

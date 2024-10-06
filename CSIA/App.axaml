@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="CSIA.App"
              xmlns:local="using:CSIA"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -17,6 +17,9 @@
         <FontFamily x:Key="LexendFont">avares://CSIA/Assets/Fonts#Lexend</FontFamily>
         <ControlTheme x:Key="CloseButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="#50410010"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="BorderThickness" Value="16"/>
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Height" Value="15"/>
             <Setter Property="Width" Value="15"/>

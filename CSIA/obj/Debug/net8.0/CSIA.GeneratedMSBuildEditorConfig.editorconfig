@@ -24,10 +24,10 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 [C:/Users/mayie/RiderProjects/CSIA/CSIA/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/mayie/RiderProjects/CSIA/CSIA/Views/FTPServerWindow.axaml]
+[C:/Users/mayie/RiderProjects/CSIA/CSIA/Views/FTPConnectWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/mayie/RiderProjects/CSIA/CSIA/Views/LogInWindow.axaml]
+[C:/Users/mayie/RiderProjects/CSIA/CSIA/Views/FTPServerWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/mayie/RiderProjects/CSIA/CSIA/Views/MainWindow.axaml]

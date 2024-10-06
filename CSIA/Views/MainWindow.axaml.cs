@@ -17,6 +17,7 @@ namespace CSIA.Views
 
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
+        public FTPConnectWindow ConnectWindow = new FTPConnectWindow();
 
         public MainWindow()
         {
@@ -26,15 +27,14 @@ namespace CSIA.Views
             breadcrumbPath = this.FindControl<TextBlock>("CurrentPath");
             
             // Button click handlers
-            OpenButton.Click += OpenButton_Click;
             BackButton.Click += BackButton_Click;
             ForwardButton.Click += ForwardButton_Click;
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
+            ConnectButton.Click += ConnectButton_Click;
             
             ForwardButton.IsEnabled = false;
             BackButton.IsEnabled = false;
-            OpenButton.IsEnabled = false;
 
             // TreeView and ListBox selection handlers
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
@@ -101,20 +101,20 @@ namespace CSIA.Views
         //     throw new Exception("No network adapters with an IPv6 address in the system!");
         // }
 
-        private void OpenButton_Click(object? sender, RoutedEventArgs e)
-        {
-            if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
-            {
-                // Open file logic, e.g., open with default application
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = filePath,
-                    UseShellExecute = true
-                });
-                OpenButton.IsEnabled = false;
-                FileListBox.SelectedItem = null;
-            }
-        }
+        // private void OpenButton_Click(object? sender, RoutedEventArgs e)
+        // {
+        //     if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
+        //     {
+        //         // Open file logic, e.g., open with default application
+        //         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        //         {
+        //             FileName = filePath,
+        //             UseShellExecute = true
+        //         });
+        //         OpenButton.IsEnabled = false;
+        //         FileListBox.SelectedItem = null;
+        //     }
+        // }
 
         private void BackButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -212,12 +212,17 @@ namespace CSIA.Views
             }
         }
 
+        private async void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ConnectWindow.Show();
+        }
+
         private void FileListBox_Tapped(object? sender, EventArgs e)
         {
-            if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
-            {
-                OpenButton.IsEnabled = true;
-            }
+            // if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
+            // {
+            //     OpenButton.IsEnabled = true;
+            // }
         }
 
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -231,7 +236,7 @@ namespace CSIA.Views
                     UseShellExecute = true
                 });
                 
-                OpenButton.IsEnabled = false;
+                // OpenButton.IsEnabled = false;
                 FileListBox.SelectedItem = null;
             }
         }
