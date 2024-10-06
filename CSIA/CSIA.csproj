@@ -23,6 +23,7 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10"/>
         <PackageReference Include="DouglasDwyer.ExtensibleFtp" Version="1.0.1" />
+        <PackageReference Include="FluentFTP" Version="51.1.0" />
         <PackageReference Include="FubarDev.FtpServer" Version="3.1.2" />
         <PackageReference Include="FubarDev.FtpServer.FileSystem.DotNet" Version="3.1.2" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.1.6" />

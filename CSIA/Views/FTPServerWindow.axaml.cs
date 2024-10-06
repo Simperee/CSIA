@@ -27,15 +27,14 @@ namespace CSIA.Views
         private NumericUpDown? customConControl;
         private CheckBox? customConEnable;
         private Button? focusLossButton;
-        private string? defaultBorder;
         public FTPServerWindow()
         {
             InitializeComponent();
 
-            customConControl = this.FindControl<NumericUpDown>("port_value");
-            customConEnable = this.FindControl<CheckBox>("customconn_enable");
-            hostUnameControl = this.FindControl<TextBox>("hosting_uname");
-            hostUpassControl = this.FindControl<TextBox>("hosting_upass");
+            customConControl = this.FindControl<NumericUpDown>("host_portval");
+            customConEnable = this.FindControl<CheckBox>("customhost_enable");
+            hostUnameControl = this.FindControl<TextBox>("host_uname");
+            hostUpassControl = this.FindControl<TextBox>("host_upass");
             focusLossButton = this.FindControl<Button>("focusloss_button");
             HostingButton = this.FindControl<Button>("HostingButton");
             if (HostingButton != null)
@@ -72,8 +71,6 @@ namespace CSIA.Views
 
         private void HostingButton_Click(object? sender, RoutedEventArgs e)
         {
-            defaultBorder = hostUpassControl.BorderBrush.ToString();
-            Console.WriteLine(defaultBorder);
             if (!ftpRunning)
             {
                 try
@@ -196,12 +193,18 @@ namespace CSIA.Views
 
         private void UnameFocus(object? sender, RoutedEventArgs e)
         {
-            hostUnameControl.BorderBrush = Brush.Parse(defaultBorder);
+            if (hostUnameControl.BorderBrush != Brush.Parse("#99ffffff"))
+            {
+                hostUnameControl.BorderBrush = Brush.Parse("#99ffffff");
+            }
         }
 
         private void UpassFocus(object? sender, RoutedEventArgs e)
         {
-            hostUpassControl.BorderBrush = Brush.Parse(defaultBorder);
+            if (hostUpassControl.BorderBrush != Brush.Parse("#99ffffff"))
+            {
+                hostUpassControl.BorderBrush = Brush.Parse("#99ffffff");
+            }
         }
         
         protected override void OnClosing(WindowClosingEventArgs e)
@@ -210,6 +213,8 @@ namespace CSIA.Views
             hostUpassControl.Text = null;
             customConControl.Value = 23;
             customConEnable.IsChecked = false;
+            hostUnameControl.BorderBrush = Brush.Parse("#99ffffff");
+            hostUpassControl.BorderBrush = Brush.Parse("#99ffffff");
             ClearFocus();
             e.Cancel = true;
             Hide();

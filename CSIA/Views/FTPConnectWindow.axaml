@@ -22,22 +22,23 @@
         <Panel Grid.Column="1" Margin="15,40,30,40">
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="">IP Address</TextBlock>
-            <TextBox FontWeight="Light" Width="270" Height="25" Margin="0,30,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_ip" FontWeight="Light" Width="270" Height="25" Margin="0,30,0,0" VerticalAlignment="Top"></TextBox>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,74,0,0">Port Number</TextBlock>
-            <NumericUpDown Name="port_value" FontWeight="Light" Width="270" Height="25" Margin="0,104,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"></NumericUpDown>
+            <NumericUpDown x:Name="connect_portval" FontWeight="Light" Width="270" Height="25" Margin="0,104,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"></NumericUpDown>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,148,0,0">Username</TextBlock>
-            <TextBox FontWeight="Light" Width="270" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_uname" FontWeight="Light" Width="270" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,222,0,0">Password</TextBlock>
-            <TextBox FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_upass" FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
             
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,296,0,0" IsChecked="{Binding #port_value.IsEnabled}">Custom Connection</CheckBox>
+            <CheckBox x:Name="customconn_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,296,0,0" IsChecked="{Binding #connect_portval.IsEnabled}">Custom Connection</CheckBox>
             
             <Button Content="Cancel" Name="CancelButton" HorizontalContentAlignment="Center" Width="75" Margin="121,339,0,0" Background="#753A3A3A" Foreground="White"/>
-            <Button Content="Connect" Name="HostingButton" Margin="200,339,0,0" Background="#753A3A3A" Foreground="White"/>
-            <!-- Your content goes here -->
+            <Button Content="Connect" Name="ConnectButton" Margin="200,339,0,0" Background="#753A3A3A" Foreground="White"/>
+            
+            <Button x:Name="focusloss_button" Width="0" Height="0"/>
         </Panel>
     </Grid>
 </Window>
