@@ -32,6 +32,9 @@ namespace CSIA.Views
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
             ConnectButton.Click += ConnectButton_Click;
+            CloseButton.Click += CloseButton_Click;
+            MinimButton.Click += MinimButton_Click;
+            MaximButton.Click += MaximButton_Click;
             
             ForwardButton.IsEnabled = false;
             BackButton.IsEnabled = false;
@@ -128,6 +131,8 @@ namespace CSIA.Views
                     // If there's no parent directory, we're at the root of a drive.
                     // So, we should go back to the list of drives.
                     LoadDrives();
+                    breadcrumbPath.Text = null;
+                    FileListBox.ItemsSource = null;
                     currentDirectory = null; // Reset current directory to indicate we're at the drive level
                     BackButton.IsEnabled = false;
                 }
@@ -238,6 +243,28 @@ namespace CSIA.Views
                 
                 // OpenButton.IsEnabled = false;
                 FileListBox.SelectedItem = null;
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MinimButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MaximButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState != WindowState.Maximized)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
             }
         }
         

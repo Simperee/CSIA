@@ -24,18 +24,28 @@
         </Grid.RowDefinitions>
         
         <!-- Toolbar -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal"> <!-- Darker Toolbar Background -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button Content="Back" Name="BackButton" Margin="5" Background="#3A3A3A" Foreground="White"/> <!-- Dark Button with White Text -->
             <Button Content="Forward" Name="ForwardButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Refresh" Name="RefreshButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Stop" Name="StopButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Connect" Name="ConnectButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
-            <Button Theme="{StaticResource CloseButton}" />
+            
             <!-- BorderBrush="#5E1D2D" BorderThickness="2" -->
         </StackPanel>
         
-        <!-- Breadcrumbs -->
+        <Grid HorizontalAlignment="Right" Margin="0,0,15,0">
+            <Button Name="CloseButton" Theme="{StaticResource CloseButton}" />
+        </Grid>
+        <Grid HorizontalAlignment="Right" Margin="0,0,35,0">
+            <Button Name="MinimButton" Theme="{StaticResource MinimButton}" />
+        </Grid>
+        <Grid HorizontalAlignment="Right" Margin="0,0,55,0">
+            <Button Name="MaximButton" Theme="{StaticResource MaximButton}" />
+        </Grid>
+        
+        <!-- Breadcrumbz -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" x:DataType="global:MainWindowViewModel">
             <TextBlock Text="Breadcrumb: " VerticalAlignment="Center" Margin="5,5,0,5" Foreground="White"/> <!-- White Text for Breadcrumb -->
             <TextBlock Name="CurrentPath" VerticalAlignment="Center" Margin="0,5,5,5" Foreground="White"/> <!-- Binding with White Text -->

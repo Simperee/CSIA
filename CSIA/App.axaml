@@ -11,18 +11,20 @@
   
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://CSIA/Icons.axaml" />
     </Application.Styles>
              
     <Application.Resources>
         <FontFamily x:Key="LexendFont">avares://CSIA/Assets/Fonts#Lexend</FontFamily>
+        <!-- <PathIcon x:Key="MaximButtonIcon" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" /> -->
         <ControlTheme x:Key="CloseButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="#50410010"/> -->
             <Setter Property="Background" Value="#50410010"/>
             <Setter Property="BorderBrush" Value="#8D0022"/>
             <Setter Property="BorderThickness" Value="16"/>
             <Setter Property="CornerRadius" Value="100"/>
-            <Setter Property="Height" Value="15"/>
-            <Setter Property="Width" Value="15"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Width" Value="16"/>
             <Setter Property="Template">
                 <ControlTemplate>
                     <Panel>
@@ -37,8 +39,93 @@
             </Setter>
       
             <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="Red"/>
-                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#50C54E81"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource pane_close_regular}" 
+                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="MinimButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="#50410010"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="BorderThickness" Value="16"/>
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Ellipse Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50C54E81"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource arrow_minimize_regular}" 
+                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="MaximButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="#50410010"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="BorderThickness" Value="16"/>
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Ellipse Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50C54E81"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource arrow_maximize_regular}" 
+                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ControlTheme>
     </Application.Resources>

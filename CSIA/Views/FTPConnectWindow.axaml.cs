@@ -1,19 +1,17 @@
 using System;
-using Avalonia;
+using System.Net;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Avalonia.Rendering.SceneGraph;
 using CSIA.Backend;
-using FluentFTP;
 
 namespace CSIA.Views
 {
     public partial class FTPConnectWindow : Window
     {
         PopUpDialog popUpDialog = new PopUpDialog();
+        FTPClass FTPClass = new FTPClass();
         
         private TextBox? connectUnameControl;
         private TextBox? connectUpassControl;
@@ -21,7 +19,6 @@ namespace CSIA.Views
         private NumericUpDown? customConControl;
         private CheckBox? customConEnable;
         private Button? focusLossButton;
-        private FtpClient? client;
         public FTPConnectWindow()
         {
             InitializeComponent();
@@ -55,19 +52,17 @@ namespace CSIA.Views
 
         private async void ConnectButton_Click(object? sender, RoutedEventArgs e)
         {
-            Console.WriteLine("sex");
             if (customConEnable.IsChecked == true)
             {
                 int port = Convert.ToInt32(customConControl.Text);
                 Console.WriteLine(port);
-                client = new FtpClient(connectIPControl.Text, connectUnameControl.Text, connectUpassControl.Text, port);
-                client.Connect();
+                FTPClass.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text);
                 Hide();
             }
             else
             {
-                client = new FtpClient(connectIPControl.Text, connectUnameControl.Text, connectUpassControl.Text);
-                client.Connect();
+                FTPClass.Connect(connectIPControl.Text, 21, connectUnameControl.Text, connectUpassControl.Text);
+                FTPClass.SendFile();
                 Hide();
             }
         }

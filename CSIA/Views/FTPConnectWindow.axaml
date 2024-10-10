@@ -10,7 +10,7 @@
         TransparencyLevelHint="AcrylicBlur"
         Background="#50410010"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="SystemChrome"
+        ExtendClientAreaChromeHints="NoChrome"
         WindowStartupLocation="CenterScreen"
         CanResize="False"
         FontFamily="{StaticResource LexendFont}">
