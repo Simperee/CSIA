@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using System;
 using System.IO;
 using System.Linq;
@@ -43,6 +44,29 @@ namespace CSIA.Views
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
             FileListBox.DoubleTapped += FileListBox_DoubleTapped;
             FileListBox.Tapped += FileListBox_Tapped;
+        }
+        
+        // Class to represent each file item with name and icon
+        public class FileItem
+        {
+            public string FileName { get; set; }
+            public IBitmap Icon { get; set; }
+        }
+
+        // Method to determine the appropriate generic icon for each file type
+        private IBitmap GetGenericIcon(string filePath)
+        {
+            string extension = Path.GetExtension(filePath).ToLower();
+
+            // Choose icon based on extension
+            return extension switch
+            {
+                ".txt" => new Bitmap("Assets/Icons/txt_icon.png"),
+                ".pdf" => new Bitmap("Assets/Icons/pdf_icon.png"),
+                ".mp3" => new Bitmap("Assets/Icons/mp3_icon.png"),
+                ".jpg" or ".png" => new Bitmap("Assets/Icons/image_icon.png"),
+                _ => new Bitmap("Assets/Icons/unknown_icon.png"),
+            };
         }
 
         private void LoadDrives()

@@ -25,7 +25,7 @@
         
         <!-- Toolbar -->
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Content="Back" Name="BackButton" Margin="5" Background="#3A3A3A" Foreground="White"/> <!-- Dark Button with White Text -->
+            <Button Content="Back" Name="BackButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Forward" Name="ForwardButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Refresh" Name="RefreshButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
