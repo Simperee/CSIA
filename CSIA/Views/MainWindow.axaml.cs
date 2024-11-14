@@ -19,10 +19,17 @@ namespace CSIA.Views
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
         public FTPConnectWindow ConnectWindow = new FTPConnectWindow();
+        
+        private FileIconManager _iconManager;
 
         public MainWindow()
         {
             InitializeComponent();
+            _iconManager = new FileIconManager("Assets/Icons");
+            DataContext = new MainWindowViewModel();
+
+            var viewModel = (MainWindowViewModel)DataContext;
+            viewModel.CurrentPath = "C:\\";
             LoadDrives();
             
             breadcrumbPath = this.FindControl<TextBlock>("CurrentPath");
@@ -45,29 +52,6 @@ namespace CSIA.Views
             FileListBox.DoubleTapped += FileListBox_DoubleTapped;
             FileListBox.Tapped += FileListBox_Tapped;
         }
-        
-        // Class to represent each file item with name and icon
-        public class FileItem
-        {
-            public string FileName { get; set; }
-            public IBitmap Icon { get; set; }
-        }
-
-        // Method to determine the appropriate generic icon for each file type
-        private IBitmap GetGenericIcon(string filePath)
-        {
-            string extension = Path.GetExtension(filePath).ToLower();
-
-            // Choose icon based on extension
-            return extension switch
-            {
-                ".txt" => new Bitmap("Assets/Icons/txt_icon.png"),
-                ".pdf" => new Bitmap("Assets/Icons/pdf_icon.png"),
-                ".mp3" => new Bitmap("Assets/Icons/mp3_icon.png"),
-                ".jpg" or ".png" => new Bitmap("Assets/Icons/image_icon.png"),
-                _ => new Bitmap("Assets/Icons/unknown_icon.png"),
-            };
-        }
 
         private void LoadDrives()
         {
@@ -82,6 +66,7 @@ namespace CSIA.Views
             }
         }
 
+        
         private void LoadDirectory(string path)
         {
             try
@@ -98,18 +83,19 @@ namespace CSIA.Views
                 var directories = Directory.GetDirectories(path);
                 var files = Directory.GetFiles(path);
 
-                // Assign to ItemsSource only if there are items
-                DirectoryTreeView.ItemsSource = directories.Any() ? directories : null;
-                FileListBox.ItemsSource = files.Any() ? files : null;
+                // Create FileListItems with icons
+                var fileListItems = files.Select(file => 
+                    new FileListItem(file, _iconManager.GetIconForFile(file))).ToList();
+
+                // Bind the items to the ListBox
+                FileListBox.ItemsSource = fileListItems;
             }
             catch (UnauthorizedAccessException)
             {
-                // Show a popup message if access is denied
                 popUpDialog.ShowAccessDeniedMessage(this, path);
             }
             catch (Exception ex)
             {
-                // Log or handle other exceptions as needed
                 popUpDialog.ShowErrorMessage(this, ex.Message);
                 Console.WriteLine($"Error: {ex.Message}");
             }
@@ -256,16 +242,14 @@ namespace CSIA.Views
 
         private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
-            if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
+            if (FileListBox.SelectedItem is FileListItem selectedItem && File.Exists(selectedItem.FilePath))
             {
-                // Open file on double click
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = filePath,
+                    FileName = selectedItem.FilePath,
                     UseShellExecute = true
                 });
-                
-                // OpenButton.IsEnabled = false;
+        
                 FileListBox.SelectedItem = null;
             }
         }

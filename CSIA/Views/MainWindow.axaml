@@ -13,6 +13,11 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource LexendFont}"
         BorderThickness="0">
+    
+    <Window.DataContext>
+        <global:MainWindowViewModel/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <!-- Toolbar Row -->
@@ -31,8 +36,6 @@
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Stop" Name="StopButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Connect" Name="ConnectButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
-            
-            <!-- BorderBrush="#5E1D2D" BorderThickness="2" -->
         </StackPanel>
         
         <Grid HorizontalAlignment="Right" Margin="0,0,15,0">
@@ -47,8 +50,8 @@
         
         <!-- Breadcrumbz -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" x:DataType="global:MainWindowViewModel">
-            <TextBlock Text="Breadcrumb: " VerticalAlignment="Center" Margin="5,5,0,5" Foreground="White"/> <!-- White Text for Breadcrumb -->
-            <TextBlock Name="CurrentPath" VerticalAlignment="Center" Margin="0,5,5,5" Foreground="White"/> <!-- Binding with White Text -->
+            <TextBlock Text="Breadcrumb: " VerticalAlignment="Center" Margin="5,5,0,5" Foreground="White"/>
+            <TextBlock Name="CurrentPath" VerticalAlignment="Center" Margin="0,5,5,5" Foreground="White"/>
         </StackPanel>
         
         <Grid Grid.Row="2">
@@ -60,10 +63,25 @@
             </Grid.ColumnDefinitions>
 
             <!-- Directory Tree View -->
-            <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White"/> <!-- Dark Background for TreeView -->
+            <TreeView Name="DirectoryTreeView" 
+                     Grid.Column="0" 
+                     Margin="25,0,10,25" 
+                     Background="#35670019" 
+                     BorderBrush="#258D0022" 
+                     BorderThickness="2" 
+                     Foreground="White"/>
 
             <!-- File List View -->
-            <ListBox Name="FileListBox" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White"/> <!-- Dark Background for ListBox -->
+            <ListBox Grid.Column="0" Name="FileListBox" Items="{Binding FileListItems}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding Icon}" Width="16" Height="16" Margin="5,0"/>
+                            <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </Window>
