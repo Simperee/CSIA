@@ -1,15 +1,17 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media.Imaging;
 using System;
 using System.IO;
 using System.Linq;
 using Avalonia.ReactiveUI;
 using CSIA.Backend;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using CSIA.ViewModels;
 
 namespace CSIA.Views
 {
-    public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
+    public partial class MainWindow : Window
     {
         private string? currentDirectory;
         private string? forwardDirectory;
@@ -43,30 +45,8 @@ namespace CSIA.Views
             // TreeView and ListBox selection handlers
             DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
             FileListBox.DoubleTapped += FileListBox_DoubleTapped;
+            File2ListBox.DoubleTapped += File2ListBox_DoubleTapped;
             FileListBox.Tapped += FileListBox_Tapped;
-        }
-        
-        // Class to represent each file item with name and icon
-        public class FileItem
-        {
-            public string FileName { get; set; }
-            public IBitmap Icon { get; set; }
-        }
-
-        // Method to determine the appropriate generic icon for each file type
-        private IBitmap GetGenericIcon(string filePath)
-        {
-            string extension = Path.GetExtension(filePath).ToLower();
-
-            // Choose icon based on extension
-            return extension switch
-            {
-                ".txt" => new Bitmap("Assets/Icons/txt_icon.png"),
-                ".pdf" => new Bitmap("Assets/Icons/pdf_icon.png"),
-                ".mp3" => new Bitmap("Assets/Icons/mp3_icon.png"),
-                ".jpg" or ".png" => new Bitmap("Assets/Icons/image_icon.png"),
-                _ => new Bitmap("Assets/Icons/unknown_icon.png"),
-            };
         }
 
         private void LoadDrives()
@@ -86,7 +66,6 @@ namespace CSIA.Views
         {
             try
             {
-                BackButton.IsEnabled = true;
                 currentDirectory = path;
                 breadcrumbPath.Text = currentDirectory;
 
@@ -98,22 +77,23 @@ namespace CSIA.Views
                 var directories = Directory.GetDirectories(path);
                 var files = Directory.GetFiles(path);
 
-                // Assign to ItemsSource only if there are items
                 DirectoryTreeView.ItemsSource = directories.Any() ? directories : null;
+                
+                // Create FileItem list
                 FileListBox.ItemsSource = files.Any() ? files : null;
             }
             catch (UnauthorizedAccessException)
             {
                 // Show a popup message if access is denied
-                popUpDialog.ShowAccessDeniedMessage(this, path);
+                popUpDialog.ShowAccessDeniedMessage(this,path);
             }
             catch (Exception ex)
             {
                 // Log or handle other exceptions as needed
-                popUpDialog.ShowErrorMessage(this, ex.Message);
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
         
         // public static string GetLocalIPv6Address()
         // {
@@ -267,6 +247,14 @@ namespace CSIA.Views
                 
                 // OpenButton.IsEnabled = false;
                 FileListBox.SelectedItem = null;
+            }
+        }
+        
+        private void File2ListBox_DoubleTapped(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel && File2ListBox.SelectedItem is MainWindowViewModel.FileSystemItem selectedItem)
+            {
+                viewModel.OpenItem(selectedItem);
             }
         }
 

@@ -1,36 +1,39 @@
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Base.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Base.dll
 C:\Users\mayie\.nuget\packages\avalonia.controls.colorpicker\11.0.10\lib\net6.0\Avalonia.Controls.ColorPicker.dll
-C:\Users\mayie\.nuget\packages\avalonia.controls.datagrid\11.0.10\lib\net6.0\Avalonia.Controls.DataGrid.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Controls.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.DesignerSupport.dll
-C:\Users\mayie\.nuget\packages\avalonia.desktop\11.0.10\lib\net6.0\Avalonia.Desktop.dll
+C:\Users\mayie\.nuget\packages\avalonia.controls.datagrid\11.2.0\lib\net8.0\Avalonia.Controls.DataGrid.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Controls.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.DesignerSupport.dll
+C:\Users\mayie\.nuget\packages\avalonia.desktop\11.2.0\lib\net8.0\Avalonia.Desktop.dll
 C:\Users\mayie\.nuget\packages\avalonia.diagnostics\11.0.10\lib\net6.0\Avalonia.Diagnostics.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Dialogs.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Dialogs.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.dll
 C:\Users\mayie\.nuget\packages\avalonia.fonts.inter\11.0.10\lib\net6.0\Avalonia.Fonts.Inter.dll
-C:\Users\mayie\.nuget\packages\avalonia.freedesktop\11.0.10\lib\net6.0\Avalonia.FreeDesktop.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Markup.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Markup.Xaml.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.Metal.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.MicroCom.dll
-C:\Users\mayie\.nuget\packages\avalonia.native\11.0.10\lib\net6.0\Avalonia.Native.dll
-C:\Users\mayie\.nuget\packages\avalonia\11.0.10\ref\net6.0\Avalonia.OpenGL.dll
+C:\Users\mayie\.nuget\packages\avalonia.freedesktop\11.2.0\lib\net8.0\Avalonia.FreeDesktop.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Markup.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Markup.Xaml.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Metal.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.MicroCom.dll
+C:\Users\mayie\.nuget\packages\avalonia.native\11.2.0\lib\net8.0\Avalonia.Native.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.OpenGL.dll
 C:\Users\mayie\.nuget\packages\avalonia.reactiveui\11.0.10\lib\net6.0\Avalonia.ReactiveUI.dll
-C:\Users\mayie\.nuget\packages\avalonia.remote.protocol\11.0.10\lib\net6.0\Avalonia.Remote.Protocol.dll
-C:\Users\mayie\.nuget\packages\avalonia.skia\11.0.10\lib\net6.0\Avalonia.Skia.dll
+C:\Users\mayie\.nuget\packages\avalonia.remote.protocol\11.2.0\lib\net8.0\Avalonia.Remote.Protocol.dll
+C:\Users\mayie\.nuget\packages\avalonia.skia\11.2.0\lib\net8.0\Avalonia.Skia.dll
 C:\Users\mayie\.nuget\packages\avalonia.themes.fluent\11.0.10\lib\net6.0\Avalonia.Themes.Fluent.dll
 C:\Users\mayie\.nuget\packages\avalonia.themes.simple\11.0.10\lib\net6.0\Avalonia.Themes.Simple.dll
-C:\Users\mayie\.nuget\packages\avalonia.win32\11.0.10\lib\net6.0\Avalonia.Win32.dll
-C:\Users\mayie\.nuget\packages\avalonia.x11\11.0.10\lib\net6.0\Avalonia.X11.dll
+C:\Users\mayie\.nuget\packages\avalonia\11.2.0\ref\net8.0\Avalonia.Vulkan.dll
+C:\Users\mayie\.nuget\packages\avalonia.win32\11.2.0\lib\net8.0\Avalonia.Win32.dll
+C:\Users\mayie\.nuget\packages\avalonia.x11\11.2.0\lib\net8.0\Avalonia.X11.dll
 C:\Users\mayie\.nuget\packages\colortextblock.avalonia\11.0.2\lib\net6.0\ColorTextBlock.Avalonia.dll
 C:\Users\mayie\.nuget\packages\dialoghost.avalonia\0.7.7\lib\netstandard2.0\DialogHost.Avalonia.dll
 C:\Users\mayie\.nuget\packages\dynamicdata\7.9.5\lib\net6.0\DynamicData.dll
 C:\Users\mayie\.nuget\packages\douglasdwyer.extensibleftp\1.0.1\lib\netcoreapp3.1\ExtensibleFtp.dll
+C:\Users\mayie\.nuget\packages\fluentftp\51.1.0\lib\net6.0\FluentFTP.dll
+C:\Users\mayie\.nuget\packages\ftp.dll\2.0.23268.1746\lib\net6.0\Ftp.dll
 C:\Users\mayie\.nuget\packages\fubardev.ftpserver.abstractions\3.1.2\lib\netstandard2.1\FubarDev.FtpServer.Abstractions.dll
 C:\Users\mayie\.nuget\packages\fubardev.ftpserver.commands\3.1.2\lib\netstandard2.1\FubarDev.FtpServer.Commands.dll
 C:\Users\mayie\.nuget\packages\fubardev.ftpserver\3.1.2\lib\netcoreapp3.0\FubarDev.FtpServer.dll
 C:\Users\mayie\.nuget\packages\fubardev.ftpserver.filesystem.dotnet\3.1.2\lib\netstandard2.1\FubarDev.FtpServer.FileSystem.DotNet.dll
-C:\Users\mayie\.nuget\packages\harfbuzzsharp\7.3.0\lib\net6.0\HarfBuzzSharp.dll
+C:\Users\mayie\.nuget\packages\harfbuzzsharp\7.3.0.2\lib\net6.0\HarfBuzzSharp.dll
 C:\Users\mayie\.nuget\packages\markdown.avalonia.tight\11.0.2\lib\net6.0\Markdown.Avalonia.dll
 C:\Users\mayie\.nuget\packages\microcom.runtime\0.11.0\lib\net5.0\MicroCom.Runtime.dll
 C:\Users\mayie\.nuget\packages\microsoft.aspnetcore.http.features\2.0.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll
@@ -56,8 +59,11 @@ C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\netstan
 C:\Users\mayie\.nuget\packages\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll
 C:\Users\mayie\.nuget\packages\ngettext\0.6.3\lib\netstandard2.0\NGettext.dll
 C:\Users\mayie\.nuget\packages\reactiveui\18.3.1\lib\net6.0\ReactiveUI.dll
+C:\Users\mayie\.nuget\packages\rebex.common\7.0.8943\lib\net8.0\Rebex.Common.dll
+C:\Users\mayie\.nuget\packages\rebex.ftp\7.0.8943\lib\net8.0\Rebex.Ftp.dll
+C:\Users\mayie\.nuget\packages\rebex.networking\7.0.8943\lib\net8.0\Rebex.Networking.dll
 C:\Users\mayie\.nuget\packages\scrutor\2.0.0\lib\netstandard1.6\Scrutor.dll
-C:\Users\mayie\.nuget\packages\skiasharp\2.88.7\lib\net6.0\SkiaSharp.dll
+C:\Users\mayie\.nuget\packages\skiasharp\2.88.8\lib\net6.0\SkiaSharp.dll
 C:\Users\mayie\.nuget\packages\splat\14.4.1\lib\net6.0\Splat.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.AppContext.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Buffers.dll
@@ -109,7 +115,7 @@ C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.FileSystem.Watcher.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.IsolatedStorage.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.MemoryMappedFiles.dll
-C:\Users\mayie\.nuget\packages\system.io.pipelines\6.0.0\lib\net6.0\System.IO.Pipelines.dll
+C:\Users\mayie\.nuget\packages\system.io.pipelines\8.0.0\lib\net8.0\System.IO.Pipelines.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.Pipes.AccessControl.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.Pipes.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.IO.UnmanagedMemoryStream.dll
@@ -177,9 +183,10 @@ C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Cryptography.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Cryptography.Encoding.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Cryptography.OpenSsl.dll
+C:\Users\mayie\.nuget\packages\system.security.cryptography.pkcs\6.0.0\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Cryptography.Primitives.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Cryptography.X509Certificates.dll
-C:\Users\mayie\.nuget\packages\system.security.cryptography.xml\4.5.0\ref\netstandard2.0\System.Security.Cryptography.Xml.dll
+C:\Users\mayie\.nuget\packages\system.security.cryptography.xml\6.0.0\lib\net6.0\System.Security.Cryptography.Xml.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.dll
 C:\Users\mayie\.nuget\packages\system.security.permissions\8.0.0\lib\net8.0\System.Security.Permissions.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Security.Principal.dll
@@ -221,6 +228,6 @@ C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Xml.XmlSerializer.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Xml.XPath.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\System.Xml.XPath.XDocument.dll
-C:\Users\mayie\.nuget\packages\tmds.dbus.protocol\0.15.0\lib\net6.0\Tmds.DBus.Protocol.dll
+C:\Users\mayie\.nuget\packages\tmds.dbus.protocol\0.20.0\lib\net8.0\Tmds.DBus.Protocol.dll
 C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.4\ref\net8.0\WindowsBase.dll
 C:\Users\mayie\.nuget\packages\zhaobang.ftpserver\2.1.3\lib\netstandard2.1\Zhaobang.FtpServer.dll

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj": {}
+    "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj": {
+    "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj",
+        "projectUniqueName": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj",
         "projectName": "CSIA",
-        "projectPath": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj",
+        "projectPath": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj",
         "packagesPath": "C:\\Users\\mayie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\obj\\",
+        "outputPath": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mayie\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -34,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -47,9 +42,17 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.0.10, )"
+              "version": "[11.2.0, )"
+            },
+            "Avalonia.Controls.DataGrid": {
+              "target": "Package",
+              "version": "[11.2.0, )"
             },
             "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.2.0, )"
+            },
+            "Avalonia.Diagnostics": {
               "target": "Package",
               "version": "[11.0.10, )"
             },
@@ -129,11 +132,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }

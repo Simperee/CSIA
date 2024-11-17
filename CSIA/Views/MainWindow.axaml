@@ -1,7 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CSIA.ViewModels"
         xmlns:global="clr-namespace:"
         x:Class="CSIA.Views.MainWindow"
+        x:DataType="global:MainWindowViewModel"
         Width="1000"
         Height="600"
         Title="File Explorer"
@@ -13,6 +15,10 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource LexendFont}"
         BorderThickness="0">
+    <Window.DataContext>
+        <global:MainWindowViewModel/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <!-- Toolbar Row -->
@@ -57,6 +63,7 @@
                 <ColumnDefinition Width="499"/>
                 <!-- File List Main Panel -->
                 <ColumnDefinition Width="499"/>
+                <ColumnDefinition Width="499"/>
             </Grid.ColumnDefinitions>
 
             <!-- Directory Tree View -->
@@ -64,6 +71,16 @@
 
             <!-- File List View -->
             <ListBox Name="FileListBox" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White"/> <!-- Dark Background for ListBox -->
+            <ListBox Grid.Column="2" x:Name="File2ListBox" ItemsSource="{Binding Items}" Margin="10,0,25,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding Icon}" Width="50" Height="50" Margin="5"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </Window>
