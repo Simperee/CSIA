@@ -11,6 +11,7 @@ using ReactiveUI;
 public class MainWindowViewModel : ReactiveObject
 {
     private PopUpDialog popUpDialog = new PopUpDialog();
+    private readonly Window _owner;
     
     // FileSystemItem class defined inside the MainWindowViewModel
     public class FileSystemItem
@@ -44,7 +45,6 @@ public class MainWindowViewModel : ReactiveObject
             // Determine the appropriate icon for the file or folder
             if (isDirectory)
             {
-                Console.WriteLine(FullPath);
                 if (fullPath.Contains(":/"))
                 {
                     Icon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/drive_icon.png")));
@@ -110,9 +110,10 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _items, value);
     }
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(Window owner)
     {
         // Start with the list of drives
+        _owner = owner;
         LoadDrives();
     }
 
@@ -136,7 +137,7 @@ public class MainWindowViewModel : ReactiveObject
         {
             // Handle exceptions (e.g., access permissions)
             // Console.WriteLine($"Error loading drives: {ex.Message}");
-            // popUpDialog.ShowErrorMessage(,ex.Message);
+            popUpDialog.ShowErrorMessage(_owner,ex.Message);
         }
 
         Items = driveItems;
@@ -181,7 +182,8 @@ public class MainWindowViewModel : ReactiveObject
         catch (Exception ex)
         {
             // Handle exceptions (e.g., access permissions)
-            Console.WriteLine($"Error loading items: {ex.Message}");
+            // Console.WriteLine($"Error loading items: {ex.Message}");
+            popUpDialog.ShowErrorMessage(_owner,ex.Message);
         }
 
         Items = newItems;

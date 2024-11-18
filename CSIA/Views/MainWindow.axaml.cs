@@ -21,6 +21,7 @@ namespace CSIA.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel(this);
             // LoadDrives();
             
             // Button click handlers

@@ -15,9 +15,9 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource LexendFont}"
         BorderThickness="0">
-    <Window.DataContext>
-        <global:MainWindowViewModel/>
-    </Window.DataContext>
+    <!-- <Window.DataContext> -->
+    <!--     <global:MainWindowViewModel/> -->
+    <!-- </Window.DataContext> -->
     
     <Grid>
         <Grid.RowDefinitions>

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using CSIA.Views;
 using MsBox.Avalonia;
@@ -13,7 +14,6 @@ public class PopUpDialog
     public ButtonResult OkButton;
     public ButtonResult LossButton;
     public string ButtonResult;
-    
     public async Task<ButtonResult> ShowDataLossMessage(Window owner)
     {
         var messageBox = MessageBoxManager.GetMessageBoxStandard(
