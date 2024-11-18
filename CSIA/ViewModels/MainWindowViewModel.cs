@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using Avalonia.Interactivity;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using CSIA.Backend;
+using CSIA.Views;
 using ReactiveUI;
 
 public class MainWindowViewModel : ReactiveObject
 {
+    private PopUpDialog popUpDialog = new PopUpDialog();
+    
     // FileSystemItem class defined inside the MainWindowViewModel
     public class FileSystemItem
     {
@@ -20,20 +24,35 @@ public class MainWindowViewModel : ReactiveObject
         {
             FullPath = fullPath;
             IsDirectory = isDirectory;
-            if(parentFolder)
+
+            if (parentFolder)
             {
-                Name = "..";
+                if (FullPath.Contains("Drives"))
+                {
+                    Name = "Go to Drives";
+                }
+                else
+                {
+                    Name = "..";   
+                }
             }
             else
             {
                 Name = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath);
             }
-            
 
             // Determine the appropriate icon for the file or folder
             if (isDirectory)
             {
-                Icon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
+                Console.WriteLine(FullPath);
+                if (fullPath.Contains(":/"))
+                {
+                    Icon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/drive_icon.png")));
+                }
+                else
+                {
+                    Icon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
+                }
             }
             else
             {
@@ -76,6 +95,13 @@ public class MainWindowViewModel : ReactiveObject
     }
 
     private string _currentPath;
+    
+    public string CurrentPath
+    {
+        get => _currentPath;
+        set => this.RaiseAndSetIfChanged(ref _currentPath, value);
+    }
+    
     private ObservableCollection<FileSystemItem> _items;
 
     public ObservableCollection<FileSystemItem> Items
@@ -86,9 +112,35 @@ public class MainWindowViewModel : ReactiveObject
 
     public MainWindowViewModel()
     {
-        // Start in the user's home directory
-        _currentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        LoadItems(_currentPath);
+        // Start with the list of drives
+        LoadDrives();
+    }
+
+    // Method to load the list of drives
+    public void LoadDrives()
+    {
+        var driveItems = new ObservableCollection<FileSystemItem>();
+
+        try
+        {
+            // Get all drives
+            foreach (var drive in DriveInfo.GetDrives())
+            {
+                if (drive.IsReady) // Check if the drive is ready to avoid exceptions
+                {
+                    driveItems.Add(new FileSystemItem(drive.RootDirectory.FullName, true, false));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., access permissions)
+            // Console.WriteLine($"Error loading drives: {ex.Message}");
+            // popUpDialog.ShowErrorMessage(,ex.Message);
+        }
+
+        Items = driveItems;
+        CurrentPath = null; // No specific path since we're at the root of drives
     }
 
     // Method to load items in a given directory
@@ -97,11 +149,19 @@ public class MainWindowViewModel : ReactiveObject
         var newItems = new ObservableCollection<FileSystemItem>();
 
         // Check if the current path has a parent directory
-        var parentDirectory = Directory.GetParent(path);
-        if (parentDirectory != null)
+        if (!string.IsNullOrEmpty(path))
         {
-            // Add a special "Go to Parent Folder" item at the top of the list
-            newItems.Add(new FileSystemItem(parentDirectory.FullName, true , true));
+            var parentDirectory = Directory.GetParent(path);
+            if (parentDirectory != null)
+            {
+                // Add a special "Go to Parent Folder" item at the top of the list
+                newItems.Add(new FileSystemItem(parentDirectory.FullName, true, true));
+            }
+            else
+            {
+                // Add a "Go to Drives" option to return to the root drives list
+                newItems.Add(new FileSystemItem("Drives", true, true));
+            }
         }
 
         try
@@ -115,7 +175,7 @@ public class MainWindowViewModel : ReactiveObject
             // Add files
             foreach (var file in Directory.GetFiles(path))
             {
-                newItems.Add(new FileSystemItem(file, false , false));
+                newItems.Add(new FileSystemItem(file, false, false));
             }
         }
         catch (Exception ex)
@@ -125,13 +185,17 @@ public class MainWindowViewModel : ReactiveObject
         }
 
         Items = newItems;
-        _currentPath = path;
+        CurrentPath = path;
     }
 
-    // Method to open a directory
+    // Override OpenItem to handle "Drives" navigation
     public void OpenItem(FileSystemItem item)
     {
-        if (item.IsDirectory)
+        if (item.Name.Contains("Go to Drives"))
+        {
+            LoadDrives();
+        }
+        else if (item.IsDirectory)
         {
             LoadItems(item.FullPath);
         }
@@ -143,10 +207,5 @@ public class MainWindowViewModel : ReactiveObject
                 UseShellExecute = true
             });
         }
-    }
-
-    public static void test()
-    {
-        Console.WriteLine("test");
     }
 }

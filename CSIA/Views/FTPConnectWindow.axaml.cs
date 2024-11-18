@@ -131,7 +131,6 @@ namespace CSIA.Views
         {
             if (!focusLossButton.IsFocused)
             {
-                
                 focusLossButton.Focus();
             }
         }

@@ -13,10 +13,6 @@ namespace CSIA.Views
 {
     public partial class MainWindow : Window
     {
-        private string? currentDirectory;
-        private string? forwardDirectory;
-        
-        private TextBlock? breadcrumbPath;
 
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
@@ -25,13 +21,11 @@ namespace CSIA.Views
         public MainWindow()
         {
             InitializeComponent();
-            LoadDrives();
-            
-            breadcrumbPath = this.FindControl<TextBlock>("CurrentPath");
+            // LoadDrives();
             
             // Button click handlers
-            BackButton.Click += BackButton_Click;
-            ForwardButton.Click += ForwardButton_Click;
+            // BackButton.Click += BackButton_Click;
+            // ForwardButton.Click += ForwardButton_Click;
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
             ConnectButton.Click += ConnectButton_Click;
@@ -39,60 +33,60 @@ namespace CSIA.Views
             MinimButton.Click += MinimButton_Click;
             MaximButton.Click += MaximButton_Click;
             
-            ForwardButton.IsEnabled = false;
-            BackButton.IsEnabled = false;
+            // ForwardButton.IsEnabled = false;
+            // BackButton.IsEnabled = false;
 
             // TreeView and ListBox selection handlers
-            DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
-            FileListBox.DoubleTapped += FileListBox_DoubleTapped;
-            File2ListBox.DoubleTapped += File2ListBox_DoubleTapped;
-            FileListBox.Tapped += FileListBox_Tapped;
+            // DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
+            LocalListBox.DoubleTapped += LocalListBox_DoubleTapped;
+            RemoteListBox.DoubleTapped += RemoteListBox_DoubleTapped;
+            RemoteListBox.Tapped += RemoteListBox_Tapped;
         }
 
-        private void LoadDrives()
-        {
-            DirectoryTreeView.ItemsSource = Directory.GetLogicalDrives();
-        }
-
-        private void DirectoryTreeView_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            if (DirectoryTreeView.SelectedItem is string path && Directory.Exists(path))
-            {
-                LoadDirectory(path);
-            }
-        }
-
-        private void LoadDirectory(string path)
-        {
-            try
-            {
-                currentDirectory = path;
-                breadcrumbPath.Text = currentDirectory;
-
-                // Clear current selection
-                DirectoryTreeView.SelectedItem = null;
-                FileListBox.SelectedItem = null;
-
-                // Get directories and files
-                var directories = Directory.GetDirectories(path);
-                var files = Directory.GetFiles(path);
-
-                DirectoryTreeView.ItemsSource = directories.Any() ? directories : null;
-                
-                // Create FileItem list
-                FileListBox.ItemsSource = files.Any() ? files : null;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                // Show a popup message if access is denied
-                popUpDialog.ShowAccessDeniedMessage(this,path);
-            }
-            catch (Exception ex)
-            {
-                // Log or handle other exceptions as needed
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
+        // private void LoadDrives()
+        // {
+        //     DirectoryTreeView.ItemsSource = Directory.GetLogicalDrives();
+        // }
+        //
+        // private void DirectoryTreeView_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        // {
+        //     if (DirectoryTreeView.SelectedItem is string path && Directory.Exists(path))
+        //     {
+        //         LoadDirectory(path);
+        //     }
+        // }
+        //
+        // private void LoadDirectory(string path)
+        // {
+        //     try
+        //     {
+        //         currentDirectory = path;
+        //         breadcrumbPath.Text = currentDirectory;
+        //
+        //         // Clear current selection
+        //         DirectoryTreeView.SelectedItem = null;
+        //         RemoteListBox.SelectedItem = null;
+        //
+        //         // Get directories and files
+        //         var directories = Directory.GetDirectories(path);
+        //         var files = Directory.GetFiles(path);
+        //
+        //         DirectoryTreeView.ItemsSource = directories.Any() ? directories : null;
+        //         
+        //         // Create FileItem list
+        //         RemoteListBox.ItemsSource = files.Any() ? files : null;
+        //     }
+        //     catch (UnauthorizedAccessException)
+        //     {
+        //         // Show a popup message if access is denied
+        //         popUpDialog.ShowAccessDeniedMessage(this,path);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         // Log or handle other exceptions as needed
+        //         Console.WriteLine($"Error: {ex.Message}");
+        //     }
+        // }
 
         
         // public static string GetLocalIPv6Address()
@@ -123,61 +117,61 @@ namespace CSIA.Views
         //     }
         // }
 
-        private void BackButton_Click(object? sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(currentDirectory))
-            {
-                var parentDirectory = Directory.GetParent(currentDirectory)?.FullName;
-
-                // Check if we're at the root of a drive (e.g., "C:\")
-                if (parentDirectory == null)
-                {
-                    // If there's no parent directory, we're at the root of a drive.
-                    // So, we should go back to the list of drives.
-                    LoadDrives();
-                    breadcrumbPath.Text = null;
-                    FileListBox.ItemsSource = null;
-                    currentDirectory = null; // Reset current directory to indicate we're at the drive level
-                    BackButton.IsEnabled = false;
-                }
-                else
-                {
-                    // Otherwise, load the parent directory
-                    forwardDirectory = currentDirectory;
-                    ForwardButton.IsEnabled = true;
-                    LoadDirectory(parentDirectory);
-                }
-            }
-            else
-            {
-                // If currentDirectory is null, we're already at the drive list level, no further action needed
-                Console.WriteLine("Already at the drive list.");
-            }
-        }
-        
-        private void ForwardButton_Click(object? sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(forwardDirectory))
-            { 
-
-                // Check if we're at the root of a drive (e.g., "C:\")
-                if (Directory.Exists(forwardDirectory))
-                {
-                    LoadDirectory(forwardDirectory);
-                    forwardDirectory = null;
-                    ForwardButton.IsEnabled = false;
-                }
-                else
-                {
-                    
-                }
-            }
-            else
-            {
-                // If currentDirectory is null, we're already at the drive list level, no further action needed
-                Console.WriteLine("Folder does not exist");
-            }
-        }
+        // private void BackButton_Click(object? sender, RoutedEventArgs e)
+        // {
+        //     if (!string.IsNullOrEmpty(currentDirectory))
+        //     {
+        //         var parentDirectory = Directory.GetParent(currentDirectory)?.FullName;
+        //
+        //         // Check if we're at the root of a drive (e.g., "C:\")
+        //         if (parentDirectory == null)
+        //         {
+        //             // If there's no parent directory, we're at the root of a drive.
+        //             // So, we should go back to the list of drives.
+        //             LoadDrives();
+        //             breadcrumbPath.Text = null;
+        //             RemoteListBox.ItemsSource = null;
+        //             currentDirectory = null; // Reset current directory to indicate we're at the drive level
+        //             BackButton.IsEnabled = false;
+        //         }
+        //         else
+        //         {
+        //             // Otherwise, load the parent directory
+        //             forwardDirectory = currentDirectory;
+        //             ForwardButton.IsEnabled = true;
+        //             LoadDirectory(parentDirectory);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         // If currentDirectory is null, we're already at the drive list level, no further action needed
+        //         Console.WriteLine("Already at the drive list.");
+        //     }
+        // }
+        //
+        // private void ForwardButton_Click(object? sender, RoutedEventArgs e)
+        // {
+        //     if (!string.IsNullOrEmpty(forwardDirectory))
+        //     { 
+        //
+        //         // Check if we're at the root of a drive (e.g., "C:\")
+        //         if (Directory.Exists(forwardDirectory))
+        //         {
+        //             LoadDirectory(forwardDirectory);
+        //             forwardDirectory = null;
+        //             ForwardButton.IsEnabled = false;
+        //         }
+        //         else
+        //         {
+        //             
+        //         }
+        //     }
+        //     else
+        //     {
+        //         // If currentDirectory is null, we're already at the drive list level, no further action needed
+        //         Console.WriteLine("Folder does not exist");
+        //     }
+        // }
         
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -226,7 +220,7 @@ namespace CSIA.Views
             ConnectWindow.Show();
         }
 
-        private void FileListBox_Tapped(object? sender, EventArgs e)
+        private void RemoteListBox_Tapped(object? sender, EventArgs e)
         {
             // if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
             // {
@@ -234,9 +228,9 @@ namespace CSIA.Views
             // }
         }
 
-        private void FileListBox_DoubleTapped(object? sender, RoutedEventArgs e)
+        private void RemoteListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
-            if (FileListBox.SelectedItem is string filePath && File.Exists(filePath))
+            if (RemoteListBox.SelectedItem is string filePath && File.Exists(filePath))
             {
                 // Open file on double click
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -246,13 +240,13 @@ namespace CSIA.Views
                 });
                 
                 // OpenButton.IsEnabled = false;
-                FileListBox.SelectedItem = null;
+                RemoteListBox.SelectedItem = null;
             }
         }
         
-        private void File2ListBox_DoubleTapped(object? sender, RoutedEventArgs e)
+        private void LocalListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
-            if (DataContext is MainWindowViewModel viewModel && File2ListBox.SelectedItem is MainWindowViewModel.FileSystemItem selectedItem)
+            if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItem is MainWindowViewModel.FileSystemItem selectedItem)
             {
                 viewModel.OpenItem(selectedItem);
             }

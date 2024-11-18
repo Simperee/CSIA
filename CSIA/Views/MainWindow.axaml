@@ -31,8 +31,8 @@
         
         <!-- Toolbar -->
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Content="Back" Name="BackButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
-            <Button Content="Forward" Name="ForwardButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
+            <!-- <Button Content="Back" Name="BackButton" Margin="5" Background="#3A3A3A" Foreground="White"/> -->
+            <!-- <Button Content="Forward" Name="ForwardButton" Margin="5" Background="#3A3A3A" Foreground="White"/> -->
             <Button Content="Refresh" Name="RefreshButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Stop" Name="StopButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
@@ -54,7 +54,7 @@
         <!-- Breadcrumbz -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" x:DataType="global:MainWindowViewModel">
             <TextBlock Text="Breadcrumb: " VerticalAlignment="Center" Margin="5,5,0,5" Foreground="White"/> <!-- White Text for Breadcrumb -->
-            <TextBlock Name="CurrentPath" VerticalAlignment="Center" Margin="0,5,5,5" Foreground="White"/> <!-- Binding with White Text -->
+            <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" Margin="0,5,5,5" Foreground="White"/> <!-- Binding with White Text -->
         </StackPanel>
         
         <Grid Grid.Row="2">
@@ -63,15 +63,13 @@
                 <ColumnDefinition Width="499"/>
                 <!-- File List Main Panel -->
                 <ColumnDefinition Width="499"/>
-                <ColumnDefinition Width="499"/>
             </Grid.ColumnDefinitions>
 
             <!-- Directory Tree View -->
-            <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White"/> <!-- Dark Background for TreeView -->
+            <!-- <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White"/> Dark Background for TreeView -->
 
             <!-- File List View -->
-            <ListBox Name="FileListBox" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White"/> <!-- Dark Background for ListBox -->
-            <ListBox Grid.Column="2" x:Name="File2ListBox" ItemsSource="{Binding Items}" Margin="10,0,25,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White">
+            <ListBox Grid.Column="0" x:Name="LocalListBox" ItemsSource="{Binding Items}" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
@@ -81,6 +79,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <ListBox Name="RemoteListBox" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White"/> <!-- Dark Background for ListBox -->
         </Grid>
     </Grid>
 </Window>
