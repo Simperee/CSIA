@@ -16,6 +16,13 @@ public class FTPClass
         Console.WriteLine(test);
     }
 
+    public void sex()
+    {
+        Console.WriteLine(client.SendCommand("HELP"));
+        // var test = client.GetList().Count;
+        // Console.WriteLine(test.ToString());
+    }
+
     public void SendFile()
     {
         client.Upload(@"/test.txt",@"c:\Users\mayie\RiderProjects\CSIA\CSIA\test.txt");
