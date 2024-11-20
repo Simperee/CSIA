@@ -177,6 +177,9 @@ public class MainWindowViewModel : ReactiveObject
             foreach (var file in Directory.GetFiles(path))
             {
                 newItems.Add(new FileSystemItem(file, false, false));
+                FileInfo test = new FileInfo(file);
+                Console.WriteLine(test.Name);
+                Console.WriteLine(test.Length/1024);
             }
         }
         catch (Exception ex)
