@@ -148,60 +148,46 @@ public class MainWindowViewModel : ReactiveObject
     public void LoadItems(string path)
     {
         var newItems = new ObservableCollection<FileSystemItem>();
-        
-        // Check if the user has the rights to open the folder
-        bool checkRights = false;
+
+        // Check if the current path has a parent directory
+        if (!string.IsNullOrEmpty(path))
+        {
+            var parentDirectory = Directory.GetParent(path);
+            if (parentDirectory != null)
+            {
+                // Add a special "Go to Parent Folder" item at the top of the list
+                newItems.Add(new FileSystemItem(parentDirectory.FullName, true, true));
+            }
+            else
+            {
+                // Add a "Go to Drives" option to return to the root drives list
+                newItems.Add(new FileSystemItem("Drives", true, true));
+            }
+        }
+
         try
         {
-            Directory.GetDirectories(path);
-            checkRights = true;
+            // Add directories
+            foreach (var directory in Directory.GetDirectories(path))
+            {
+                newItems.Add(new FileSystemItem(directory, true, false));
+            }
+
+            // Add files
+            foreach (var file in Directory.GetFiles(path))
+            {
+                newItems.Add(new FileSystemItem(file, false, false));
+            }
         }
         catch (Exception ex)
         {
-            popUpDialog.ShowErrorMessage(_owner, ex.Message);
-            checkRights = false;
+            // Handle exceptions (e.g., access permissions)
+            // Console.WriteLine($"Error loading items: {ex.Message}");
+            popUpDialog.ShowErrorMessage(_owner,ex.Message);
         }
-        if (checkRights)
-        {
-            // Check if the current path has a parent directory
-            if (!string.IsNullOrEmpty(path))
-            {
-                var parentDirectory = Directory.GetParent(path);
-                if (parentDirectory != null)
-                {
-                    // Add a special "Go to Parent Folder" item at the top of the list
-                    newItems.Add(new FileSystemItem(parentDirectory.FullName, true, true));
-                }
-                else
-                {
-                    // Add a "Go to Drives" option to return to the root drives list
-                    newItems.Add(new FileSystemItem("Drives", true, true));
-                }
-            }
 
-            try
-            {
-                // Add directories
-                foreach (var directory in Directory.GetDirectories(path))
-                {
-                    newItems.Add(new FileSystemItem(directory, true, false));
-                }
-
-                // Add files
-                foreach (var file in Directory.GetFiles(path))
-                {
-                    newItems.Add(new FileSystemItem(file, false, false));
-                }
-            }
-            catch (Exception ex)
-            {
-                // Console.WriteLine($"Error loading items: {ex.Message}");
-                popUpDialog.ShowErrorMessage(_owner,ex.Message);
-            }
-
-            Items = newItems;
-            CurrentPath = path;
-        }
+        Items = newItems;
+        CurrentPath = path;
     }
 
     // Override OpenItem to handle "Drives" navigation
