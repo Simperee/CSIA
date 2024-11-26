@@ -13,10 +13,22 @@
         ExtendClientAreaChromeHints="NoChrome"
         WindowStartupLocation="CenterScreen"
         CanResize="False"
+        Styles="avares://CSIA/Icons.axaml"
+        Resources="avares://CSIA/Icons.axaml"
         FontFamily="{StaticResource LexendFont}">
     <Grid ColumnDefinitions="*,*">
         <Panel Margin="40,40,20,40">
             <ListBox Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7"></ListBox>
+            <ListBox x:Name="SavedConListBox" ItemsSource="{Binding Items}" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding Icon}" Width="50" Height="50" Margin="5"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <!-- Your content goes here -->
         </Panel>
         <Panel Grid.Column="1" Margin="15,40,30,40">
