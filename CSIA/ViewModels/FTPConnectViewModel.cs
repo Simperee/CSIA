@@ -1,21 +1,19 @@
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using Avalonia.Markup.Xaml.Styling;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using CSIA.Backend;
-using CSIA.Views;
 using ReactiveUI;
-using SkiaSharp;
+using Realms;
 
 public class FTPConnectViewModel : ReactiveObject
 {
     private PopUpDialog popUpDialog = new PopUpDialog();
     private readonly Window _owner;
+    
+    //Secure saved device database. I am not risking security for this :)
+    private readonly Realm _realm;
     
     // SavedConItem class defined inside the FTPConnectViewModel
     public class SavedConItem
@@ -25,12 +23,12 @@ public class FTPConnectViewModel : ReactiveObject
         public string DeviceType { get; set; }
         public Bitmap Icon { get; set; }
 
-        public SavedConItem(string deviceName, string deviceType)
+        public SavedConItem(string deviceName, string deviceIP, string deviceType)
         {
             DeviceName = deviceName;
             DeviceType = deviceType;
             // Name = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath);
-            Name = deviceName;
+            Name = DeviceName;
 
             // Determine if server or desktop icon
             Uri iconUri;
@@ -60,14 +58,6 @@ public class FTPConnectViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _deviceType, value);
     }
     
-    private string _currentPath;
-    
-    public string CurrentPath
-    {
-        get => _currentPath;
-        set => this.RaiseAndSetIfChanged(ref _currentPath, value);
-    }
-    
     private ObservableCollection<SavedConItem> _items;
 
     public ObservableCollection<SavedConItem> Items
@@ -80,8 +70,12 @@ public class FTPConnectViewModel : ReactiveObject
     {
         // Start with the list of drives
         _owner = owner;
+        var config = new RealmConfiguration("devices.realm")
+        {
+            IsReadOnly = false
+        };
+        _realm = Realm.GetInstance(config);
         LoadSaved();
-        LoadDrives();
     }
 
     public void LoadSaved()
@@ -89,117 +83,37 @@ public class FTPConnectViewModel : ReactiveObject
         var savedItems = new ObservableCollection<SavedConItem>();
         try
         {
-            
-        }
-    }
-    
-    // Method to load the list of drives
-    public void LoadDrives()
-    {
-        var driveItems = new ObservableCollection<SavedConItem>();
-
-        try
-        {
-            // Get all drives
-            foreach (var drive in DriveInfo.GetDrives())
+            var devices = _realm.All<Device>();
+            foreach (var device in devices)
             {
-                if (drive.IsReady) // Check if the drive is ready to avoid exceptions
-                {
-                    driveItems.Add(new SavedConItem(drive.RootDirectory.FullName, true, false));
-                }
+                savedItems.Add(new SavedConItem(device.Name, device.IP, device.Type));
+                Console.WriteLine($"Name: {device.Name}. IP: {device.IP}. Type: {device.Type}");
             }
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (e.g., access permissions)
-            // Console.WriteLine($"Error loading drives: {ex.Message}");
-            popUpDialog.ShowErrorMessage(_owner,ex.Message);
-        }
-
-        Items = driveItems;
-        CurrentPath = null; // No specific path since we're at the root of drives
-    }
-
-    // Method to load items in a given directory
-    public void LoadItems(string path)
-    {
-        var newItems = new ObservableCollection<SavedConItem>();
-        bool checkRights = false;
-        try
-        {
-            Directory.GetDirectories(path);
-            checkRights = true;
         }
         catch (Exception ex)
         {
             popUpDialog.ShowErrorMessage(_owner, ex.Message);
-            checkRights = false;
-        }
-
-        if (checkRights)
-        {
-            // Check if the current path has a parent directory
-            if (!string.IsNullOrEmpty(path))
-            {
-                var parentDirectory = Directory.GetParent(path);
-                if (parentDirectory != null)
-                {
-                    // Add a special "Go to Parent Folder" item at the top of the list
-                    newItems.Add(new SavedConItem(parentDirectory.FullName, true, true));
-                }
-                else
-                {
-                    // Add a "Go to Drives" option to return to the root drives list
-                    newItems.Add(new SavedConItem("Drives", true, true));
-                }
-            }
-
-            try
-            {
-                // Add directories
-                foreach (var directory in Directory.GetDirectories(path))
-                {
-                    newItems.Add(new SavedConItem(directory, true, false));
-                }
-
-                // Add files
-                foreach (var file in Directory.GetFiles(path))
-                {
-                    newItems.Add(new SavedConItem(file, false, false));
-                    FileInfo test = new FileInfo(file);
-                    Console.WriteLine(test.Name);
-                    Console.WriteLine(test.Length/1024);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Console.WriteLine($"Error loading items: {ex.Message}");
-                popUpDialog.ShowErrorMessage(_owner, ex.Message);
-            }
-
-            Items = newItems;
-            CurrentPath = path;
         }
     }
 
-    // Override OpenItem to handle "Drives" navigation
-    public void OpenItem(SavedConItem item)
+    public void SaveDevice(string name)
     {
-        if (item.Name.Contains("Go to Drives"))
+        // Add a new device to the database
+        _realm.Write(() =>
         {
-            LoadDrives();
-        }
-        else if (item.IsDirectory)
-        {
-            LoadItems(item.FullPath);
-        }
-        else
-        {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = item.FullPath,
-                UseShellExecute = true
-            });
-        }
+            _realm.Add(new Device { Name = name });
+        });
+
+        // Update the Devices collection
     }
+    
+}
+public class Device : RealmObject
+{
+    public string Name { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public string IP { get; set; }
+    public int port { get; set; }
+    public string Type { get; set; }
 }
