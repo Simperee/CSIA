@@ -28,7 +28,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <!-- Your content goes here -->
+            <Button Content="+" Width="31" Height="31" Margin="0, 321,20,40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 18, 0, 0"/>
         </Panel>
         <Panel Grid.Column="1" Margin="15,40,30,40">
             
