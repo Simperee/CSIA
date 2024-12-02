@@ -17,8 +17,8 @@
         CanResize="False"
         FontFamily="{StaticResource LexendFont}">
     <Grid ColumnDefinitions="*,*">
-        <Panel Margin="40,40,20,40">
-            <ListBox x:Name="SavedConListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7">
+        <Panel>
+            <ListBox x:Name="SavedConListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7" Margin="40,40,20,88">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
@@ -28,7 +28,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="+" Width="31" Height="31" Margin="0, 321,20,40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 18, 0, 0"/>
+            <Button x:Name="SaveDeviceButton" Content="+" Width="31" Height="31" Margin="40,0,20,40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="#753A3A3A" Foreground="White"/>
         </Panel>
         <Panel Grid.Column="1" Margin="15,40,30,40">
             

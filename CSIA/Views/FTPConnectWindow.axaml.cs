@@ -39,6 +39,11 @@ namespace CSIA.Views
             {
                 CancelButton.Click += CancelButton_Click;
             }
+            SaveDeviceButton = this.FindControl<Button>("SaveDeviceButton");
+            if (SaveDeviceButton != null)
+            {
+                SaveDeviceButton.Click += SaveDeviceButton_Click;
+            }
             
             connectUnameControl.GotFocus += UnameFocus;
             connectUpassControl.GotFocus += UpassFocus;
@@ -112,6 +117,12 @@ namespace CSIA.Views
                 Close();
             }
         }
+
+        private async void SaveDeviceButton_Click(object? sender, RoutedEventArgs e)
+        {
+            
+        }
+        
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             connectUnameControl.Text = null;
@@ -126,7 +137,7 @@ namespace CSIA.Views
             e.Cancel = true;
             Hide();
         }
-
+    
         private void ClearFocus()
         {
             if (!focusLossButton.IsFocused)
