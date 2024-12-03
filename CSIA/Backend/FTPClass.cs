@@ -31,10 +31,10 @@ public class FTPClass
         foreach (RemoteFileInfo fileInfo in directory.Files)
         {
             Console.WriteLine(
-                "{0} with size {1}, permissions {2} and last modification at {3}, Directory: {4}, File Group: {5}",
+                "{0} with size {1}, permissions {2} and last modification at {3}, Directory: {4}",
                 fileInfo.Name, fileInfo.Length, fileInfo.FilePermissions,
                 fileInfo.LastWriteTime, fileInfo.FileType);
-            // Console.WriteLine(fileInfo);
+            Console.WriteLine(fileInfo);
         }
         
     }
