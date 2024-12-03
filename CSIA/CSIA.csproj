@@ -34,6 +34,7 @@
         <PackageReference Include="Realm" Version="20.0.0" />
         <PackageReference Include="Rebex.Ftp" Version="7.0.8943" />
         <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+        <PackageReference Include="WinSCP" Version="6.3.6" />
         <PackageReference Include="Zhaobang.FtpServer" Version="2.1.3" />
     </ItemGroup>
 

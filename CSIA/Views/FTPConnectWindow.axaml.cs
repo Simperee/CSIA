@@ -67,7 +67,7 @@ namespace CSIA.Views
             else
             {
                 FTPClass.Connect(connectIPControl.Text, 21, connectUnameControl.Text, connectUpassControl.Text);
-                FTPClass.sex();
+                FTPClass.FileGet();
                 Hide();
             }
         }
