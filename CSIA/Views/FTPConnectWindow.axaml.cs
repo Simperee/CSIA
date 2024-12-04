@@ -11,7 +11,6 @@ namespace CSIA.Views
     public partial class FTPConnectWindow : Window
     {
         PopUpDialog popUpDialog = new PopUpDialog();
-        FTPClass FTPClass = new FTPClass();
         
         private TextBox? connectUnameControl;
         private TextBox? connectUpassControl;
@@ -60,14 +59,12 @@ namespace CSIA.Views
             if (customConEnable.IsChecked == true)
             {
                 int port = Convert.ToInt32(customConControl.Text);
-                Console.WriteLine(port);
-                FTPClass.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text);
+                FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text);
                 Hide();
             }
             else
             {
-                FTPClass.Connect(connectIPControl.Text, 21, connectUnameControl.Text, connectUpassControl.Text);
-                FTPClass.FileGet();
+                FTPClass.Instance.Connect(connectIPControl.Text, 21, connectUnameControl.Text, connectUpassControl.Text);
                 Hide();
             }
         }

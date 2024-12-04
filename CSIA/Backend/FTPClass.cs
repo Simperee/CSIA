@@ -1,64 +1,67 @@
 using System;
-using Limilabs.FTP.Client;
 using WinSCP;
 
 namespace CSIA.Backend;
 
 public class FTPClass
 {
-    private SessionOptions FTPSessionOptions = new SessionOptions();
-    public Session FTPSession = new Session();
-    
+    private static FTPClass _instance;
+    public static FTPClass Instance => _instance ??= new FTPClass();
+
+    private SessionOptions _ftpSessionOptions;
+    public Session FTPSession { get; private set; }
+
+    private FTPClass()
+    {
+        FTPSession = new Session();
+    }
+
     public void Connect(string host, int? port, string uname, string upass)
     {
-        FTPSessionOptions.HostName = host;
-        FTPSessionOptions.PortNumber = port ?? 21;
-        FTPSessionOptions.UserName = uname;
-        FTPSessionOptions.Password = upass;
-        FTPSessionOptions.Protocol = Protocol.Ftp;
-        
-        FTPSession.Open(FTPSessionOptions);
-        var test = FTPSession.Opened;
-        Console.WriteLine($"Opened: {test}");
-    }
-
-    public void FileGet()
-    {
-        Console.WriteLine($"Home Path: {FTPSession.HomePath}");
-        RemoteDirectoryInfo directory =
-            FTPSession.ListDirectory(FTPSession.HomePath);
- 
-        foreach (RemoteFileInfo fileInfo in directory.Files)
+        _ftpSessionOptions = new SessionOptions
         {
-            Console.WriteLine(
-                "{0} with size {1}, permissions {2} and last modification at {3}, Directory: {4}",
-                fileInfo.Name, fileInfo.Length, fileInfo.FilePermissions,
-                fileInfo.LastWriteTime, fileInfo.FileType);
-            Console.WriteLine(fileInfo);
-        }
-        
+            HostName = host,
+            PortNumber = port ?? 21,
+            UserName = uname,
+            Password = upass,
+            Protocol = Protocol.Ftp
+        };
+
+        FTPSession.Open(_ftpSessionOptions);
+        Console.WriteLine($"Opened: {FTPSession.Opened}");
     }
 
-    // Ftp client = new Ftp();
-    //
-    // public void Connect(string host, int? port, string uname, string upass)
-    // {
-    //     client.Connect(host, port ?? 21);
-    //     client.Login(uname, upass);
-    //
-    //     var test = client.Connected;
-    //     Console.WriteLine(test);
-    // }
-    //
-    // public void sex()
-    // {
-    //     Console.WriteLine(client.SendCommand("HELP"));
-    //     // var test = client.GetList().Count;
-    //     // Console.WriteLine(test.ToString());
-    // }
-    //
-    // public void SendFile()
-    // {
-    //     client.Upload(@"/test.txt",@"c:\Users\mayie\RiderProjects\CSIA\CSIA\test.txt");
-    // }
+    public bool IsOpen()
+    {
+        if (FTPSession.Opened)
+        {
+            try
+            {
+                RemoteDirectoryInfo directory = FTPSession.ListDirectory(FTPSession.HomePath);
+                foreach (RemoteFileInfo fileInfo in directory.Files)
+                {
+                    Console.WriteLine($"{fileInfo.Name}, {fileInfo.FullName}");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Session is not open.");
+        }
+
+        return FTPSession.Opened;
+    }
+
+    public void Disconnect()
+    {
+        if (FTPSession.Opened)
+        {
+            FTPSession.Close();
+            Console.WriteLine("Session closed.");
+        }
+    }
 }

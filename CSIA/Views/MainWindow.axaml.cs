@@ -33,6 +33,7 @@ namespace CSIA.Views
             CloseButton.Click += CloseButton_Click;
             MinimButton.Click += MinimButton_Click;
             MaximButton.Click += MaximButton_Click;
+            TestButton.Click += TestButton_Click;
             
             // ForwardButton.IsEnabled = false;
             // BackButton.IsEnabled = false;
@@ -247,7 +248,7 @@ namespace CSIA.Views
         
         private void LocalListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
-            if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItem is MainWindowViewModel.FileSystemItem selectedItem)
+            if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItem is MainWindowViewModel.LocalFileSystemItem selectedItem)
             {
                 viewModel.OpenItem(selectedItem);
             }
@@ -273,6 +274,12 @@ namespace CSIA.Views
             {
                 WindowState = WindowState.Normal;
             }
+        }
+
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new MainWindowViewModel(this);
         }
         
         protected override async void OnClosing(WindowClosingEventArgs e)

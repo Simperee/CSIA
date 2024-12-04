@@ -37,6 +37,7 @@
             <Button Content="Host" Name="HostButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Stop" Name="StopButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             <Button Content="Connect" Name="ConnectButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
+            <Button Content="test" Name="TestButton" Margin="5" Background="#3A3A3A" Foreground="White"/>
             
             <!-- BorderBrush="#5E1D2D" BorderThickness="2" -->
         </StackPanel>
@@ -69,17 +70,26 @@
             <!-- <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White"/> Dark Background for TreeView -->
 
             <!-- File List View -->
-            <ListBox Grid.Column="0" x:Name="LocalListBox" ItemsSource="{Binding Items}" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White" CornerRadius="7">
+            <ListBox Grid.Column="0" x:Name="LocalListBox" ItemsSource="{Binding LocalItems}" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White" CornerRadius="7">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <Image Source="{Binding Icon}" Width="50" Height="50" Margin="5"/>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                            <Image Source="{Binding LocalIcon}" Width="50" Height="50" Margin="5"/>
+                            <TextBlock Text="{Binding LocalName}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <ListBox Name="RemoteListBox" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White" CornerRadius="7"/> <!-- Dark Background for ListBox -->
+            <ListBox Name="RemoteListBox" ItemsSource="{Binding RemoteItems}" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White" CornerRadius="7"> <!-- Dark Background for ListBox -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding RemoteIcon}" Width="50" Height="50" Margin="5"/>
+                            <TextBlock Text="{Binding RemoteName}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </Window>
