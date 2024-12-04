@@ -16,11 +16,12 @@ namespace CSIA.Views
 
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
-        public FTPConnectWindow ConnectWindow = new FTPConnectWindow();
+        public FTPConnectWindow ConnectWindow;
 
         public MainWindow()
         {
             InitializeComponent();
+            ConnectWindow = new FTPConnectWindow(this);
             DataContext = new MainWindowViewModel(this);
             // LoadDrives();
             
@@ -42,7 +43,6 @@ namespace CSIA.Views
             // DirectoryTreeView.SelectionChanged += DirectoryTreeView_SelectionChanged;
             LocalListBox.DoubleTapped += LocalListBox_DoubleTapped;
             RemoteListBox.DoubleTapped += RemoteListBox_DoubleTapped;
-            RemoteListBox.Tapped += RemoteListBox_Tapped;
         }
 
         // private void LoadDrives()
@@ -232,17 +232,9 @@ namespace CSIA.Views
 
         private void RemoteListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
-            if (RemoteListBox.SelectedItem is string filePath && File.Exists(filePath))
+            if (DataContext is MainWindowViewModel viewModel && RemoteListBox.SelectedItem is MainWindowViewModel.RemoteFileSystemItem selectedItem)
             {
-                // Open file on double click
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = filePath,
-                    UseShellExecute = true
-                });
-                
-                // OpenButton.IsEnabled = false;
-                RemoteListBox.SelectedItem = null;
+                viewModel.RemoteOpenItem(selectedItem);
             }
         }
         
@@ -250,7 +242,7 @@ namespace CSIA.Views
         {
             if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItem is MainWindowViewModel.LocalFileSystemItem selectedItem)
             {
-                viewModel.OpenItem(selectedItem);
+                viewModel.LocalOpenItem(selectedItem);
             }
         }
 

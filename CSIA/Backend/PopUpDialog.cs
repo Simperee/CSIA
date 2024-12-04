@@ -61,6 +61,27 @@ public class PopUpDialog
         );
         await messageBox.ShowWindowDialogAsync(owner); // Show the popup
     }
+    public async void ShowAuthFailMessage(Window owner)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Authentication Failed",
+            $"Incorrect username or password. Could not authenticate your session",
+            MsBox.Avalonia.Enums.ButtonEnum.Ok,
+            MsBox.Avalonia.Enums.Icon.Forbidden
+        );
+        await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+    }
+
+    public async void ShowPingFailMessage(Window owner, string host, int port)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Connection Failed",
+            $"Could not connect to host {host}:{port}. Host is not active",
+            MsBox.Avalonia.Enums.ButtonEnum.Ok,
+            MsBox.Avalonia.Enums.Icon.Info
+            );
+        await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+    }
 
     public async Task ShowServerRunningMessage(Window owner)
     {

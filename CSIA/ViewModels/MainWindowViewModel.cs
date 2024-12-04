@@ -47,14 +47,7 @@ public class MainWindowViewModel : ReactiveObject
             // Determine the appropriate icon for the file or folder
             if (isDirectory)
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(fullPath, @"^[A-Z]:\\$"))
-                {
-                    RemoteIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/drive_icon.png")));
-                }
-                else
-                {
-                    RemoteIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
-                }
+                RemoteIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
             }
             else
             {
@@ -206,9 +199,21 @@ public class MainWindowViewModel : ReactiveObject
         // Start with the list of drives
         _owner = owner;
         LoadDrives();
-        if (FTPClass.Instance.IsOpen())
+        Console.WriteLine($"Connected: {FTPClass.Instance.IsOpen()}");
+        if (FTPClass.Instance.IsOpen() && FTPClass.PingHost(FTPClass.Instance._ftpSessionOptions.HostName, FTPClass.Instance._ftpSessionOptions.PortNumber))
         {
             LoadRemoteItems(FTPClass.Instance.FTPSession.HomePath);
+        }
+        else
+        {
+            try
+            {
+                RemoteItems.Clear();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -304,56 +309,42 @@ public class MainWindowViewModel : ReactiveObject
     public void LoadRemoteItems(string path)
     {
         var newItems = new ObservableCollection<RemoteFileSystemItem>();
-        bool checkRights = false;
-        // try
-        // {
-        //     Directory.GetDirectories(path);
-        //     checkRights = true;
-        // }
-        // catch (Exception ex)
-        // {
-        //     popUpDialog.ShowErrorMessage(_owner, ex.Message);
-        //     checkRights = false;
-        // }
-
-        if (!checkRights)
+        // Check if the current path has a parent directory
+        if (!string.IsNullOrEmpty(path))
         {
-            // Check if the current path has a parent directory
-            if (!string.IsNullOrEmpty(path))
+            var parentDirectory = Directory.GetParent(path);
+            if (parentDirectory != null)
             {
-                var parentDirectory = Directory.GetParent(path);
-                if (parentDirectory != null)
+                if (parentDirectory.FullName.StartsWith("/"))
                 {
-                    // Add a special "Go to Parent Folder" item at the top of the list
                     newItems.Add(new RemoteFileSystemItem(parentDirectory.FullName, true, true));
                 }
             }
+        }
 
-            try
+        try
+        {
+            RemoteDirectoryInfo directory = FTPClass.Instance.FTPSession.ListDirectory(path);
+            foreach (RemoteFileInfo fileInfo in directory.Files)
             {
-                RemoteDirectoryInfo directory = FTPClass.Instance.FTPSession.ListDirectory(path);
-                foreach (RemoteFileInfo fileInfo in directory.Files)
+                if (fileInfo.FullName.StartsWith("/"))
                 {
                     newItems.Add(new RemoteFileSystemItem(fileInfo.FullName,fileInfo.IsDirectory,fileInfo.IsParentDirectory));
-                    if (!fileInfo.IsDirectory)
-                    {
-                        Console.WriteLine(Path.GetExtension(fileInfo.Name));
-                    }
                 }
             }
-            catch (Exception ex)
-            {
-                // Console.WriteLine($"Error loading items: {ex.Message}");
-                popUpDialog.ShowErrorMessage(_owner, ex.Message);
-            }
-
-            RemoteItems = newItems;
-            CurrentPath = path;
         }
+        catch (Exception ex)
+        {
+            // Console.WriteLine($"Error loading items: {ex.Message}");
+            popUpDialog.ShowErrorMessage(_owner, ex.Message);
+        }
+
+        RemoteItems = newItems;
+        CurrentPath = path;
     }
 
     // Override OpenItem to handle "Drives" navigation
-    public void OpenItem(LocalFileSystemItem item)
+    public void LocalOpenItem(LocalFileSystemItem item)
     {
         if (item.LocalName.Contains("Go to Drives"))
         {
@@ -371,5 +362,21 @@ public class MainWindowViewModel : ReactiveObject
                 UseShellExecute = true
             });
         }
+    }
+    public void RemoteOpenItem(RemoteFileSystemItem item)
+    {
+        Console.WriteLine(item.FullPath);
+        if (item.IsDirectory)
+        {
+            LoadRemoteItems(item.FullPath);
+        }
+        // else
+        // {
+        //     System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        //     {
+        //         FileName = item.FullPath,
+        //         UseShellExecute = true
+        //     });
+        // }
     }
 }

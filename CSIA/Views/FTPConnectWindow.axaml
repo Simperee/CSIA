@@ -42,7 +42,7 @@
             <TextBox x:Name="connect_uname" FontWeight="Light" Width="270" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,222,0,0">Password</TextBlock>
-            <TextBox x:Name="connect_upass" FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_upass" Classes="revealPasswordButton" PasswordChar="●" FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
             
             <CheckBox x:Name="customconn_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,296,0,0" IsChecked="{Binding #connect_portval.IsEnabled}">Custom Connection</CheckBox>
             

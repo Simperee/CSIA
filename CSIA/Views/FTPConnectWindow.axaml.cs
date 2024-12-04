@@ -12,13 +12,15 @@ namespace CSIA.Views
     {
         PopUpDialog popUpDialog = new PopUpDialog();
         
+        private MainWindow _mainWindow;
+        
         private TextBox? connectUnameControl;
         private TextBox? connectUpassControl;
         private TextBox? connectIPControl;
         private NumericUpDown? customConControl;
         private CheckBox? customConEnable;
         private Button? focusLossButton;
-        public FTPConnectWindow()
+        public FTPConnectWindow(MainWindow mainWindow)
         {
             InitializeComponent();
 
@@ -47,6 +49,8 @@ namespace CSIA.Views
             connectUnameControl.GotFocus += UnameFocus;
             connectUpassControl.GotFocus += UpassFocus;
             connectIPControl.GotFocus += IPFocus;
+            
+            _mainWindow = mainWindow;
         }
 
         private void InitializeComponent()
@@ -59,13 +63,43 @@ namespace CSIA.Views
             if (customConEnable.IsChecked == true)
             {
                 int port = Convert.ToInt32(customConControl.Text);
-                FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text);
-                Hide();
+                if (FTPClass.PingHost(connectIPControl.Text, port))
+                {
+                    if(FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text))
+                    {
+                        popUpDialog.ShowAuthFailMessage(this);
+                    }
+                    else
+                    {
+                        _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
+                        Hide();
+                    } 
+                }
+                else
+                {
+                    popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, port);
+                }
+                
             }
             else
             {
-                FTPClass.Instance.Connect(connectIPControl.Text, 21, connectUnameControl.Text, connectUpassControl.Text);
-                Hide();
+                if (FTPClass.PingHost(connectIPControl.Text, 21))
+                {
+                    if (!FTPClass.Instance.Connect(connectIPControl.Text, 21, connectUnameControl.Text,
+                            connectUpassControl.Text))
+                    {
+                        popUpDialog.ShowAuthFailMessage(this);
+                    }
+                    else
+                    {
+                        _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
+                        Hide();
+                    }
+                }
+                else
+                {
+                    popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, 21);
+                }
             }
         }
         
