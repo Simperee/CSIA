@@ -27,7 +27,7 @@ public class FTPClass
             Password = upass,
             Protocol = Protocol.Ftp
         };
-
+        FTPSession.ExecutablePath = "./WinSCP.exe";
         try
         {
             FTPSession.Open(_ftpSessionOptions);
@@ -38,8 +38,6 @@ public class FTPClass
             Console.WriteLine(ex.Message);
             return false;
         }
-        
-        Console.WriteLine($"Opened: {FTPSession.Opened}");
     }
 
     public bool IsOpen()

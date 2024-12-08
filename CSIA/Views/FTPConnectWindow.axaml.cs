@@ -65,7 +65,7 @@ namespace CSIA.Views
                 int port = Convert.ToInt32(customConControl.Text);
                 if (FTPClass.PingHost(connectIPControl.Text, port))
                 {
-                    if(FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text))
+                    if(!FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text))
                     {
                         popUpDialog.ShowAuthFailMessage(this);
                     }
