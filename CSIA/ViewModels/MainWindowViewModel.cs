@@ -4,6 +4,7 @@ using System.IO;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Input;
 using CSIA.Backend;
 using CSIA.Views;
 using DynamicData;
@@ -14,7 +15,6 @@ public class MainWindowViewModel : ReactiveObject
 {
     private PopUpDialog popUpDialog = new PopUpDialog();
     private readonly Window _owner;
-
 
     public class RemoteFileSystemItem
     {
@@ -52,44 +52,23 @@ public class MainWindowViewModel : ReactiveObject
             else
             {
                 var extension = Path.GetExtension(fullPath).ToLower();
-                Uri iconUri;
-
-                switch (extension)
+                Uri iconUri = extension switch
                 {
-                    case ".txt":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/txt_icon.png");
-                        break;
-                    case ".pdf":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/pdf_icon.png");
-                        break;
-                    case ".doc":
-                    case ".docx":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/doc_icon.png");
-                        break;
-                    case ".jpg":
-                    case ".jpeg":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/jpg_icon.png");
-                        break;
-                    case ".png":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/png_icon.png");
-                        break;
-                    case ".mp3":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/mp3_icon.png");
-                        break;
-                    case ".mp4":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/mp4_icon.png");
-                        break;
-                    default:
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/file_icon.png");
-                        break;
-                }
+                    ".txt" => new Uri("avares://CSIA/Assets/Icons/txt_icon.png"),
+                    ".pdf" => new Uri("avares://CSIA/Assets/Icons/pdf_icon.png"),
+                    ".doc" or ".docx" => new Uri("avares://CSIA/Assets/Icons/doc_icon.png"),
+                    ".jpg" or ".jpeg" => new Uri("avares://CSIA/Assets/Icons/jpg_icon.png"),
+                    ".png" => new Uri("avares://CSIA/Assets/Icons/png_icon.png"),
+                    ".mp3" => new Uri("avares://CSIA/Assets/Icons/mp3_icon.png"),
+                    ".mp4" => new Uri("avares://CSIA/Assets/Icons/mp4_icon.png"),
+                    _ => new Uri("avares://CSIA/Assets/Icons/file_icon.png")
+                };
 
                 RemoteIcon = new Bitmap(AssetLoader.Open(iconUri));
             }
         }
     }
 
-    // FileSystemItem class defined inside the MainWindowViewModel
     public class LocalFileSystemItem
     {
         public string LocalName { get; set; }
@@ -133,37 +112,17 @@ public class MainWindowViewModel : ReactiveObject
             else
             {
                 var extension = Path.GetExtension(fullPath).ToLower();
-                Uri iconUri;
-
-                switch (extension)
+                Uri iconUri = extension switch
                 {
-                    case ".txt":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/txt_icon.png");
-                        break;
-                    case ".pdf":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/pdf_icon.png");
-                        break;
-                    case ".doc":
-                    case ".docx":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/doc_icon.png");
-                        break;
-                    case ".jpg":
-                    case ".jpeg":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/jpg_icon.png");
-                        break;
-                    case ".png":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/png_icon.png");
-                        break;
-                    case ".mp3":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/mp3_icon.png");
-                        break;
-                    case ".mp4":
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/mp4_icon.png");
-                        break;
-                    default:
-                        iconUri = new Uri("avares://CSIA/Assets/Icons/file_icon.png");
-                        break;
-                }
+                    ".txt" => new Uri("avares://CSIA/Assets/Icons/txt_icon.png"),
+                    ".pdf" => new Uri("avares://CSIA/Assets/Icons/pdf_icon.png"),
+                    ".doc" or ".docx" => new Uri("avares://CSIA/Assets/Icons/doc_icon.png"),
+                    ".jpg" or ".jpeg" => new Uri("avares://CSIA/Assets/Icons/jpg_icon.png"),
+                    ".png" => new Uri("avares://CSIA/Assets/Icons/png_icon.png"),
+                    ".mp3" => new Uri("avares://CSIA/Assets/Icons/mp3_icon.png"),
+                    ".mp4" => new Uri("avares://CSIA/Assets/Icons/mp4_icon.png"),
+                    _ => new Uri("avares://CSIA/Assets/Icons/file_icon.png")
+                };
 
                 LocalIcon = new Bitmap(AssetLoader.Open(iconUri));
             }
@@ -235,8 +194,6 @@ public class MainWindowViewModel : ReactiveObject
         }
         catch (Exception ex)
         {
-            // Handle exceptions (e.g., access permissions)
-            // Console.WriteLine($"Error loading drives: {ex.Message}");
             popUpDialog.ShowErrorMessage(_owner,ex.Message);
         }
 
@@ -297,7 +254,6 @@ public class MainWindowViewModel : ReactiveObject
             }
             catch (Exception ex)
             {
-                // Console.WriteLine($"Error loading items: {ex.Message}");
                 popUpDialog.ShowErrorMessage(_owner, ex.Message);
             }
 
@@ -335,7 +291,6 @@ public class MainWindowViewModel : ReactiveObject
         }
         catch (Exception ex)
         {
-            // Console.WriteLine($"Error loading items: {ex.Message}");
             popUpDialog.ShowErrorMessage(_owner, ex.Message);
         }
 
@@ -363,6 +318,7 @@ public class MainWindowViewModel : ReactiveObject
             });
         }
     }
+
     public void RemoteOpenItem(RemoteFileSystemItem item)
     {
         Console.WriteLine(item.FullPath);
@@ -370,13 +326,5 @@ public class MainWindowViewModel : ReactiveObject
         {
             LoadRemoteItems(item.FullPath);
         }
-        // else
-        // {
-        //     System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-        //     {
-        //         FileName = item.FullPath,
-        //         UseShellExecute = true
-        //     });
-        // }
     }
 }

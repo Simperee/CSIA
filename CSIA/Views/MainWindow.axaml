@@ -70,7 +70,16 @@
             <!-- <TreeView Name="DirectoryTreeView" Grid.Column="0" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White"/> Dark Background for TreeView -->
 
             <!-- File List View -->
-            <ListBox Grid.Column="0" x:Name="LocalListBox" ItemsSource="{Binding LocalItems}" Margin="25,0,10,25" Background="#35670019" BorderBrush="#258D0022" BorderThickness="2" Foreground="White" CornerRadius="7">
+            <ListBox Grid.Column="0"
+                     x:Name="LocalListBox"
+                     ItemsSource="{Binding LocalItems}"
+                     Margin="25,0,10,25" 
+                     Background="#35670019" 
+                     BorderBrush="#258D0022" 
+                     BorderThickness="2"
+                     Foreground="White" 
+                     CornerRadius="7"
+                     SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
@@ -80,7 +89,16 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <ListBox Name="RemoteListBox" ItemsSource="{Binding RemoteItems}" Grid.Column="1" Margin="10,0,25,25" Background="#35670019" Foreground="White" CornerRadius="7"> <!-- Dark Background for ListBox -->
+            <ListBox Name="RemoteListBox" 
+                     ItemsSource="{Binding RemoteItems}" 
+                     Grid.Column="1"
+                     Margin="10,0,25,25" 
+                     Background="#35670019" 
+                     BorderBrush="#258D0022" 
+                     BorderThickness="2" 
+                     Foreground="White" 
+                     CornerRadius="7"
+                     SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
