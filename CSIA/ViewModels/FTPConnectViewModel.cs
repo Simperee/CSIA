@@ -1,11 +1,16 @@
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using CSIA.Backend;
 using ReactiveUI;
 using Realms;
+using Realms.Exceptions;
+using Realms.Logging;
 
 public class FTPConnectViewModel : ReactiveObject
 {
@@ -20,42 +25,18 @@ public class FTPConnectViewModel : ReactiveObject
     {
         public string Name { get; set; }
         public string DeviceName { get; set; }
-        public string DeviceType { get; set; }
         public Bitmap Icon { get; set; }
 
-        public SavedConItem(string deviceName, string deviceIP, string deviceType)
+        public SavedConItem(string deviceName, string deviceIP, int devicePort, string deviceUser, string devicePass)
         {
             DeviceName = deviceName;
-            DeviceType = deviceType;
             // Name = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath);
             Name = DeviceName;
-
-            // Determine if server or desktop icon
-            Uri iconUri;
             
-            switch (DeviceType)
-            {
-                case "server":
-                    iconUri = new Uri("avares://CSIA/Assets/Icons/server_icon.svg");
-                    break;
-                case "desktop":
-                    iconUri= new Uri("avares://CSIA/Assets/Icons/computer_icon.svg");
-                    break;
-                default:
-                    iconUri = new Uri("avares://CSIA/Assets/Icons/server_icon.svg");
-                    break;
-            }
+            Uri iconUri = new Uri("avares://CSIA/Assets/Icons/server_icon.png");
 
             Icon = new Bitmap(AssetLoader.Open(iconUri));
         }
-    }
-    
-    private string _deviceType;
-
-    public string DeviceType
-    {
-        get => _deviceType;
-        set => this.RaiseAndSetIfChanged(ref _deviceType, value);
     }
     
     private ObservableCollection<SavedConItem> _items;
@@ -68,52 +49,131 @@ public class FTPConnectViewModel : ReactiveObject
 
     public FTPConnectViewModel(Window owner)
     {
-        // Start with the list of drives
+        Console.WriteLine("FTPConnectViewModel constructor called.");
         _owner = owner;
-        var config = new RealmConfiguration("devices.realm")
+
+        var config = new RealmConfiguration(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices.realm"))
         {
-            IsReadOnly = false
+            IsReadOnly = false,
+            SchemaVersion = 2, // Update this version whenever the schema changes
+            MigrationCallback = (migration, oldSchemaVersion) =>
+            {
+                Console.WriteLine($"Migrating Realm from version {oldSchemaVersion}...");
+                if (oldSchemaVersion < 2)
+                {
+                    // Migration logic for version 2
+                }
+                Console.WriteLine("Migration completed.");
+            }
         };
-        _realm = Realm.GetInstance(config);
+
+        try
+        {
+            _realm = Realm.GetInstance(config);
+            Console.WriteLine("Realm initialized successfully.");
+        }
+        catch (RealmFileAccessErrorException ex)
+        {
+            Console.WriteLine($@"Error creating or opening the realm file: {ex.Message}");
+        }
+
         LoadSaved();
     }
 
     public void LoadSaved()
     {
+        Console.WriteLine("Running LoadSaved");
         var savedItems = new ObservableCollection<SavedConItem>();
         try
         {
+            Console.WriteLine("Reading database");
             var devices = _realm.All<Device>();
+            Console.WriteLine($"Device count: {devices.Count()}");
             foreach (var device in devices)
             {
-                savedItems.Add(new SavedConItem(device.Name, device.IP, device.Type));
-                Console.WriteLine($"Name: {device.Name}. IP: {device.IP}. Type: {device.Type}");
+                Console.WriteLine($"Device Name: {device.Name}, IP: {device.IP}, Port: {device.Port}");
             }
+            foreach (var device in devices)
+            {
+                savedItems.Add(new SavedConItem(device.Name, device.IP, device.Port, device.Username, device.Password));
+                Console.WriteLine($"Name: {device.Name}. IP: {device.IP}.");
+            }
+
+            Items = savedItems;
         }
         catch (Exception ex)
         {
-            popUpDialog.ShowErrorMessage(_owner, ex.Message);
+            Console.WriteLine(ex.Message);
         }
     }
 
-    public void SaveDevice(string name)
+    public async Task SaveDevice(Window _owner, string name, string ip, int port, string username, string password)
     {
-        // Add a new device to the database
-        _realm.Write(() =>
+        var result = await popUpDialog.ShowSaveDevMessage(_owner, name);
+        if (result.ToString() == "Yes")
         {
-            _realm.Add(new Device { Name = name });
-        });
+            //Check if already exists in database
+            try
+            {
+                // Add a new device to the database
+                _realm.Write(() =>
+                {
+                    _realm.Add(new Device
+                    {
+                        Name = name,
+                        IP = ip,
+                        Port = port,
+                        Username = username,
+                        Password = password,
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                var existresult = await popUpDialog.ShowExistsMessage(_owner, name);
+                if (existresult.ToString() == "Yes")
+                {
+                    _realm.Write(() =>
+                    {
+                        // Find the device by primary key (Name)
+                        var deviceToRemove = _realm.Find<Device>(name);
 
+                        if (deviceToRemove != null)
+                        {
+                            // Remove the device from the Realm database
+                            _realm.Remove(deviceToRemove);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Device {name} not found.");
+                        }
+                    });
+                    _realm.Write(() =>
+                    {
+                        _realm.Add(new Device
+                        {
+                            Name = name,
+                            IP = ip,
+                            Port = port,
+                            Username = username,
+                            Password = password,
+                        });
+                    });
+                }
+            }
+            LoadSaved();
+        }
         // Update the Devices collection
     }
     
 }
-public class Device : RealmObject
+public partial class Device : RealmObject
 {
+    [PrimaryKey]
     public string Name { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
     public string IP { get; set; }
-    public int port { get; set; }
-    public string Type { get; set; }
+    public int Port { get; set; }
 }

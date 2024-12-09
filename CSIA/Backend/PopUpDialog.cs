@@ -13,6 +13,8 @@ public class PopUpDialog
     private ButtonResult ServRunButtonResult;
     public ButtonResult OkButton;
     public ButtonResult LossButton;
+    public ButtonResult SaveButton;
+    public ButtonResult ExistButton;
     public string ButtonResult;
     public async Task<ButtonResult> ShowDataLossMessage(Window owner)
     {
@@ -79,8 +81,32 @@ public class PopUpDialog
             $"Could not connect to host {host}:{port}. Host is not active",
             MsBox.Avalonia.Enums.ButtonEnum.Ok,
             MsBox.Avalonia.Enums.Icon.Info
-            );
+        );
         await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+    }
+    
+    public async Task<ButtonResult> ShowSaveDevMessage(Window owner, string host)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Save Information",
+            $"Would you like to save FTP Server: {host}?",
+            MsBox.Avalonia.Enums.ButtonEnum.YesNo,
+            MsBox.Avalonia.Enums.Icon.Database
+        );
+        SaveButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        return SaveButton;
+    }
+    
+    public async Task<ButtonResult> ShowExistsMessage(Window owner, string item)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Already exists",
+            $"{item} already exists. Would you like to replace?",
+            MsBox.Avalonia.Enums.ButtonEnum.YesNo,
+            MsBox.Avalonia.Enums.Icon.Warning
+        );
+        ExistButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        return ExistButton;
     }
 
     public async Task ShowServerRunningMessage(Window owner)

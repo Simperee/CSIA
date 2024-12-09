@@ -8,7 +8,6 @@ using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using FubarDev.FtpServer.AccountManagement;
 using Microsoft.Extensions.DependencyInjection;
-using MsBox.Avalonia;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using CSIA.Backend;
@@ -160,7 +159,7 @@ namespace CSIA.Views
         {
             try
             {
-                await _ftpServerHost.StartAsync();
+                _ftpServerHost.StartAsync();
                 Console.WriteLine($"FTP server started on port {port}.");
                 ftpRunning = true;
                 var result = await popUpDialog.ShowHostingMessage(this, GetLocalIPAddress(), port.ToString());
@@ -181,7 +180,9 @@ namespace CSIA.Views
         {
             if (_ftpServerHost != null)
             {
+                
                 await _ftpServerHost.StopAsync();
+                _ftpServerHost = null;
                 Console.WriteLine("FTP server stopped.");
                 ftpRunning = false;
             }

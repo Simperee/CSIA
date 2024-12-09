@@ -23,6 +23,7 @@ namespace CSIA.Views
         public FTPConnectWindow(MainWindow mainWindow)
         {
             InitializeComponent();
+            DataContext = new FTPConnectViewModel(this);
 
             customConControl = this.FindControl<NumericUpDown>("connect_portval");
             customConEnable = this.FindControl<CheckBox>("customconn_enable");
@@ -72,6 +73,17 @@ namespace CSIA.Views
                     else
                     {
                         _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
+                        if (DataContext is FTPConnectViewModel viewModel)
+                        {
+                            await viewModel.SaveDevice(
+                                this,
+                                $"{connectUnameControl.Text}@{connectIPControl.Text}:{port}",
+                                connectIPControl.Text,
+                                port,
+                                connectUnameControl.Text,
+                                connectUpassControl.Text
+                            );
+                        }
                         Hide();
                     } 
                 }
@@ -93,6 +105,17 @@ namespace CSIA.Views
                     else
                     {
                         _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
+                        if (DataContext is FTPConnectViewModel viewModel)
+                        {
+                            await viewModel.SaveDevice(
+                                this,
+                                $"{connectUnameControl.Text}@{connectIPControl.Text}:21",
+                                connectIPControl.Text,
+                                21,
+                                connectUnameControl.Text,
+                                connectUpassControl.Text
+                                );
+                        }
                         Hide();
                     }
                 }
