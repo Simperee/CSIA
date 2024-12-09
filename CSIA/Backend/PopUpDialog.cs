@@ -113,7 +113,7 @@ public class PopUpDialog
     {
         var messageBox = MessageBoxManager.GetMessageBoxStandard(
             "FTP Server Running",
-            $"This computer is already hosting an FTP server.",
+            $"This computer is currently hosting an FTP server.",
             MsBox.Avalonia.Enums.ButtonEnum.OkAbort,
             MsBox.Avalonia.Enums.Icon.Error
         );

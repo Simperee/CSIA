@@ -20,6 +20,39 @@ public class FTPConnectViewModel : ReactiveObject
     //Secure saved device database. I am not risking security for this :)
     private readonly Realm _realm;
     
+    //Initialize bindings to set values once device selected.
+    private string _savedip;
+    
+    public string SavedIp
+    {
+        get => _savedip;
+        set => this.RaiseAndSetIfChanged(ref _savedip, value);
+    }
+    
+    private int _savedport;
+    
+    public int SavedPort
+    {
+        get => _savedport;
+        set => this.RaiseAndSetIfChanged(ref _savedport, value);
+    }
+    
+    private string _saveduser;
+    
+    public string SavedUser
+    {
+        get => _saveduser;
+        set => this.RaiseAndSetIfChanged(ref _saveduser, value);
+    }
+
+    private string _savedpass;
+    
+    public string SavedPass
+    {
+        get => _savedpass;
+        set => this.RaiseAndSetIfChanged(ref _savedpass, value);
+    }
+    
     // SavedConItem class defined inside the FTPConnectViewModel
     public class SavedConItem
     {
@@ -165,6 +198,28 @@ public class FTPConnectViewModel : ReactiveObject
             LoadSaved();
         }
         // Update the Devices collection
+    }
+
+    public void LoadSelectedDevice(string name)
+    {
+        _realm.Write(() =>
+        {
+            // Find the device by primary key (Name)
+            var selectedDevice = _realm.Find<Device>(name);
+
+            if (selectedDevice != null)
+            {
+                // Get info from selected item in DB.
+                SavedIp = selectedDevice.IP;
+                SavedPort = selectedDevice.Port;
+                SavedUser = selectedDevice.Username;
+                SavedPass = selectedDevice.Password;
+            }
+            else
+            {
+                Console.WriteLine($"Device {name} not found.");
+            }
+        });
     }
     
 }

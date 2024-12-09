@@ -18,7 +18,7 @@
         FontFamily="{StaticResource LexendFont}">
     <Grid ColumnDefinitions="*,*">
         <Panel>
-            <ListBox x:Name="SavedConListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7" Margin="40,40,20,88">
+            <ListBox x:Name="SavedDevListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7" Margin="40,40,20,88">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
@@ -33,16 +33,16 @@
         <Panel Grid.Column="1" Margin="15,40,30,40">
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="">IP Address</TextBlock>
-            <TextBox x:Name="connect_ip" FontWeight="Light" Width="270" Height="25" Margin="0,30,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_ip" Text="{Binding SavedIp}" FontWeight="Light" Width="270" Height="25" Margin="0,30,0,0" VerticalAlignment="Top"></TextBox>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,74,0,0">Port Number</TextBlock>
-            <NumericUpDown x:Name="connect_portval" FontWeight="Light" Width="270" Height="25" Margin="0,104,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"></NumericUpDown>
+            <NumericUpDown x:Name="connect_portval" Text="{Binding SavedPort}" FontWeight="Light" Width="270" Height="25" Margin="0,104,0,0" VerticalAlignment="Top" Value="23" FormatString="0" Minimum="0" Maximum="65535" IsEnabled="False"></NumericUpDown>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,148,0,0">Username</TextBlock>
-            <TextBox x:Name="connect_uname" FontWeight="Light" Width="270" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_uname" Text="{Binding SavedUser}" FontWeight="Light" Width="270" Height="25" Margin="0,178,0,0" VerticalAlignment="Top"></TextBox>
             
             <TextBlock Padding="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,222,0,0">Password</TextBlock>
-            <TextBox x:Name="connect_upass" Classes="revealPasswordButton" PasswordChar="●" FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
+            <TextBox x:Name="connect_upass" Text="{Binding SavedPass}" Classes="revealPasswordButton" PasswordChar="●" FontWeight="Light" Width="270" Height="25" Margin="0,252,0,0" VerticalAlignment="Top"></TextBox>
             
             <CheckBox x:Name="customconn_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,296,0,0" IsChecked="{Binding #connect_portval.IsEnabled}">Custom Connection</CheckBox>
             

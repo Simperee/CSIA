@@ -51,6 +51,12 @@ namespace CSIA.Views
             connectUpassControl.GotFocus += UpassFocus;
             connectIPControl.GotFocus += IPFocus;
             
+            SavedDevListBox = this.FindControl<ListBox>("SavedDevListBox");
+            if (SaveDeviceButton != null)
+            {
+                SavedDevListBox.DoubleTapped += SavedDevListBox_DoubleTapped;
+            }
+            
             _mainWindow = mainWindow;
         }
 
@@ -84,7 +90,7 @@ namespace CSIA.Views
                                 connectUpassControl.Text
                             );
                         }
-                        Hide();
+                        Close();
                     } 
                 }
                 else
@@ -116,7 +122,7 @@ namespace CSIA.Views
                                 connectUpassControl.Text
                                 );
                         }
-                        Hide();
+                        Close();
                     }
                 }
                 else
@@ -169,6 +175,14 @@ namespace CSIA.Views
             else
             {
                 Close();
+            }
+        }
+        
+        private void SavedDevListBox_DoubleTapped(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is FTPConnectViewModel viewModel && SavedDevListBox.SelectedItem is FTPConnectViewModel.SavedConItem selectedItem)
+            {
+                viewModel.LoadSelectedDevice(selectedItem.Name);
             }
         }
 
