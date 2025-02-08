@@ -326,3 +326,39 @@ C:\Users\mayie\RiderProjects\CSIA - Copy\CSIA\obj\Debug\net8.0\refint\Avalonia\C
 C:\Users\mayie\RiderProjects\CSIA - Copy\CSIA\obj\Debug\net8.0\CSIA.csproj.Up2Date
 C:\Users\mayie\RiderProjects\CSIA - Copy\CSIA\obj\Debug\net8.0\CSIA.genruntimeconfig.cache
 C:\Users\mayie\RiderProjects\CSIA - Copy\CSIA\obj\Debug\net8.0\ref\CSIA.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\WinSCP.exe
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.Custom.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.DragAndDrop.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.Draggable.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.Events.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactions.Responsive.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Avalonia.Xaml.Interactivity.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Realm.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\Remotion.Linq.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\WinSCPnet.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\android-arm\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\android-arm64\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\android-x64\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\android-x86\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\ios\native\realm-wrappers.framework\Info.plist
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\ios\native\realm-wrappers.framework\realm-wrappers
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\iossimulator\native\realm-wrappers.framework\Info.plist
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\iossimulator\native\realm-wrappers.framework\_CodeSignature\CodeResources
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\iossimulator\native\realm-wrappers.framework\realm-wrappers
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\linux-arm\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\linux-arm64\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\linux-x64\native\librealm-wrappers.so
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\maccatalyst\native\realm-wrappers.framework.zip
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\osx\native\librealm-wrappers.dylib
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\tvos\native\realm-wrappers.framework\Info.plist
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\tvos\native\realm-wrappers.framework\realm-wrappers
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\tvossimulator\native\realm-wrappers.framework\Info.plist
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\tvossimulator\native\realm-wrappers.framework\_CodeSignature\CodeResources
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\tvossimulator\native\realm-wrappers.framework\realm-wrappers
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\win-arm64\native\realm-wrappers.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\win-x64\native\realm-wrappers.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\bin\Debug\net8.0\runtimes\win-x86\native\realm-wrappers.dll
+C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.csproj.Fody.CopyLocal.cache
+C:\Users\mayie\RiderProjects\CSIA\CSIA\obj\Debug\net8.0\CSIA.csproj.Fody.RuntimeCopyLocal.cache

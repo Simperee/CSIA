@@ -1,20 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using CSIA.ViewModels;
 using CSIA.Views;
 using MsBox.Avalonia;
+using MsBox.Avalonia.Dto;
 using MsBox.Avalonia.Enums;
+using MsBox.Avalonia.Models;
 
 namespace CSIA.Backend;
 
 public class PopUpDialog
 {
-    private ButtonResult ServRunButtonResult;
+    private string ServRunButtonResult;
     public ButtonResult OkButton;
     public ButtonResult LossButton;
     public ButtonResult SaveButton;
     public ButtonResult ExistButton;
+    public ButtonResult DeleteButton;
     public string ButtonResult;
     public async Task<ButtonResult> ShowDataLossMessage(Window owner)
     {
@@ -27,6 +32,18 @@ public class PopUpDialog
 
         LossButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
         return LossButton;
+    }
+    
+    public async Task<ButtonResult> ShowDeleteQuestionMessage(Window owner, string message)
+    {
+        var messageBox = MessageBoxManager.GetMessageBoxStandard(
+            "Are you sure?",
+            message,
+            MsBox.Avalonia.Enums.ButtonEnum.YesNo,
+            MsBox.Avalonia.Enums.Icon.Info
+        );
+        DeleteButton = await messageBox.ShowWindowDialogAsync(owner); // Show the popup
+        return DeleteButton;
     }
     
     public async void ShowAccessDeniedMessage(Window owner, string path)
@@ -111,12 +128,23 @@ public class PopUpDialog
 
     public async Task ShowServerRunningMessage(Window owner)
     {
-        var messageBox = MessageBoxManager.GetMessageBoxStandard(
-            "FTP Server Running",
-            $"This computer is currently hosting an FTP server.",
-            MsBox.Avalonia.Enums.ButtonEnum.OkAbort,
-            MsBox.Avalonia.Enums.Icon.Error
-        );
+        var messageBox = MessageBoxManager.GetMessageBoxCustom(
+            new MessageBoxCustomParams
+            {
+                ButtonDefinitions = new List<ButtonDefinition>
+                {
+                    new ButtonDefinition {Name = "Cancel"},
+                    new ButtonDefinition {Name = "Close"},
+                },
+                ContentTitle = "FTP Server Running",
+                ContentMessage = "This computer is currently hosting an FTP server.",
+                Icon = MsBox.Avalonia.Enums.Icon.Error,
+                CanResize = false,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Topmost = true,
+            }
+            ); 
         ServRunButtonResult = await messageBox.ShowWindowDialogAsync(owner);
     }
 
@@ -125,10 +153,10 @@ public class PopUpDialog
         await ShowServerRunningMessage(owner);
         if (ServRunButtonResult != null)
         {
-            if (ServRunButtonResult.ToString() == "Abort")
+            if (ServRunButtonResult == "Close")
             {
                 FTPWindow.StopFtpServer();
-                ButtonResult = "Aborted";
+                ButtonResult = "Closed";
 
             }
 

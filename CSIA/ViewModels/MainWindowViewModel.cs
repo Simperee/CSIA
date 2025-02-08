@@ -129,12 +129,12 @@ public class MainWindowViewModel : ReactiveObject
         }
     }
 
-    private string _currentPath;
+    private string _currentLocalPath;
     
-    public string CurrentPath
+    public string CurrentLocalPath
     {
-        get => _currentPath;
-        set => this.RaiseAndSetIfChanged(ref _currentPath, value);
+        get => _currentLocalPath;
+        set => this.RaiseAndSetIfChanged(ref _currentLocalPath, value);
     }
     
     private ObservableCollection<LocalFileSystemItem> _localitems;
@@ -145,6 +145,14 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _localitems, value);
     }
     
+    private string _currentRemotePath;
+    
+    public string CurrentRemotePath
+    {
+        get => _currentRemotePath;
+        set => this.RaiseAndSetIfChanged(ref _currentRemotePath, value);
+    }
+    
     private ObservableCollection<RemoteFileSystemItem> _remoteitems;
 
     public ObservableCollection<RemoteFileSystemItem> RemoteItems
@@ -153,15 +161,21 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _remoteitems, value);
     }
 
-    public MainWindowViewModel(Window owner)
+    public MainWindowViewModel(Window owner, string localReload ,string remoteReload)
     {
         // Start with the list of drives
         _owner = owner;
-        LoadDrives();
+        if (localReload != null)
+            LoadLocalItems(localReload);
+        else
+            LoadDrives();
         Console.WriteLine($"Connected: {FTPClass.Instance.IsOpen()}");
         if (FTPClass.Instance.IsOpen() && FTPClass.PingHost(FTPClass.Instance._ftpSessionOptions.HostName, FTPClass.Instance._ftpSessionOptions.PortNumber))
         {
-            LoadRemoteItems(FTPClass.Instance.FTPSession.HomePath);
+            if (remoteReload != null)
+                LoadRemoteItems(remoteReload);
+            else
+                LoadRemoteItems(FTPClass.Instance.FTPSession.HomePath);
         }
         else
         {
@@ -198,7 +212,7 @@ public class MainWindowViewModel : ReactiveObject
         }
 
         LocalItems = driveItems;
-        CurrentPath = null; // No specific path since we're at the root of drives
+        CurrentLocalPath = null; // No specific path since we're at the root of drives
     }
 
     // Method to load items in a given directory
@@ -248,8 +262,8 @@ public class MainWindowViewModel : ReactiveObject
                 {
                     newItems.Add(new LocalFileSystemItem(file, false, false));
                     FileInfo test = new FileInfo(file);
-                    Console.WriteLine(test.Name);
-                    Console.WriteLine(test.Length/1024);
+                    // Console.WriteLine(test.Name);
+                    // Console.WriteLine(test.Length/1024);
                 }
             }
             catch (Exception ex)
@@ -258,7 +272,7 @@ public class MainWindowViewModel : ReactiveObject
             }
 
             LocalItems = newItems;
-            CurrentPath = path;
+            CurrentLocalPath = path;
         }
     }
     
@@ -280,7 +294,7 @@ public class MainWindowViewModel : ReactiveObject
 
         try
         {
-            RemoteDirectoryInfo directory = FTPClass.Instance.FTPSession.ListDirectory(path);
+            RemoteDirectoryInfo directory = FTPClass.Instance.DirectoryItems(path);
             foreach (RemoteFileInfo fileInfo in directory.Files)
             {
                 if (fileInfo.FullName.StartsWith("/"))
@@ -295,7 +309,7 @@ public class MainWindowViewModel : ReactiveObject
         }
 
         RemoteItems = newItems;
-        CurrentPath = path;
+        CurrentRemotePath = FTPClass.Instance.RemotePath;
     }
 
     // Override OpenItem to handle "Drives" navigation

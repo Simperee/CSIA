@@ -122,7 +122,183 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource arrow_maximize_regular}" 
-                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="UploadButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="Black"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="37"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource disk_upload}" 
+                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                    </Template>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Rectangle Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 RadiusX="7"
+                                 RadiusY="7"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50670019"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource disk_upload}" 
+                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="DownloadButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="Black"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="37"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource disk_download}" 
+                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                    </Template>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Rectangle Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 RadiusX="7"
+                                 RadiusY="7"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50670019"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource disk_download}" 
+                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="FolderAddButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="Black"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="37"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource add_folder}" 
+                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                    </Template>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Rectangle Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 RadiusX="7"
+                                 RadiusY="7"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50670019"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource add_folder}" 
+                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                        </Template>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="DeleteButton" TargetType="Button">
+            <!-- <Setter Property="Background" Value="Black"/> -->
+            <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="37"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource delete_item}" 
+                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                    </Template>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Panel>
+                        <Rectangle Fill="{TemplateBinding Background}"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 RadiusX="7"
+                                 RadiusY="7"/>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Panel>
+                </ControlTemplate>
+            </Setter>
+      
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#50670019"/>
+                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Template>
+                            <PathIcon Data="{StaticResource delete_item}" 
+                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
                         </Template>
                     </Setter.Value>
                 </Setter>

@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj": {}
+    "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj": {
+    "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj",
+        "projectUniqueName": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj",
         "projectName": "CSIA",
-        "projectPath": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\CSIA.csproj",
+        "projectPath": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\CSIA.csproj",
         "packagesPath": "C:\\Users\\mayie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mayie\\RiderProjects\\CSIA - Copy\\CSIA\\obj\\",
+        "outputPath": "C:\\Users\\mayie\\RiderProjects\\CSIA\\CSIA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mayie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\mayie\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -68,6 +71,10 @@
               "target": "Package",
               "version": "[11.0.10, )"
             },
+            "Avalonia.Xaml.Behaviors": {
+              "target": "Package",
+              "version": "[11.2.0.1, )"
+            },
             "DouglasDwyer.ExtensibleFtp": {
               "target": "Package",
               "version": "[1.0.1, )"
@@ -99,8 +106,12 @@
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.4, )",
+              "version": "[8.0.11, )",
               "autoReferenced": true
+            },
+            "Realm": {
+              "target": "Package",
+              "version": "[20.0.0, )"
             },
             "Rebex.Ftp": {
               "target": "Package",
@@ -109,6 +120,10 @@
             "System.Security.Permissions": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "WinSCP": {
+              "target": "Package",
+              "version": "[6.3.6, )"
             },
             "Zhaobang.FtpServer": {
               "target": "Package",
@@ -131,7 +146,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\mayie\\.dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

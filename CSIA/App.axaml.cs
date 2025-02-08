@@ -27,7 +27,7 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var mainWindow = new MainWindow();
-            mainWindow.DataContext = new MainWindowViewModel(mainWindow); // Pass MainWindow to the ViewModel
+            mainWindow.DataContext = new MainWindowViewModel(mainWindow, null, null); // Pass MainWindow to the ViewModel
             desktop.MainWindow = mainWindow; // Set the MainWindow
         }
 

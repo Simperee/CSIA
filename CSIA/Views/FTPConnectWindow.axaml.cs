@@ -67,68 +67,80 @@ namespace CSIA.Views
 
         private async void ConnectButton_Click(object? sender, RoutedEventArgs e)
         {
-            if (customConEnable.IsChecked == true)
+            try
             {
-                int port = Convert.ToInt32(customConControl.Text);
-                if (FTPClass.PingHost(connectIPControl.Text, port))
+                if (customConEnable.IsChecked == true)
                 {
-                    if(!FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text, connectUpassControl.Text))
+                    int port = Convert.ToInt32(customConControl.Text);
+                    if (FTPClass.PingHost(connectIPControl.Text, port))
                     {
-                        popUpDialog.ShowAuthFailMessage(this);
-                    }
-                    else
-                    {
-                        _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
-                        if (DataContext is FTPConnectViewModel viewModel)
+                        if (!FTPClass.Instance.Connect(connectIPControl.Text, port, connectUnameControl.Text,
+                                connectUpassControl.Text))
                         {
-                            await viewModel.SaveDevice(
-                                this,
-                                $"{connectUnameControl.Text}@{connectIPControl.Text}:{port}",
-                                connectIPControl.Text,
-                                port,
-                                connectUnameControl.Text,
-                                connectUpassControl.Text
-                            );
+                            popUpDialog.ShowAuthFailMessage(this);
                         }
-                        Close();
-                    } 
-                }
-                else
-                {
-                    popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, port);
-                }
-                
-            }
-            else
-            {
-                if (FTPClass.PingHost(connectIPControl.Text, 21))
-                {
-                    if (!FTPClass.Instance.Connect(connectIPControl.Text, 21, connectUnameControl.Text,
-                            connectUpassControl.Text))
-                    {
-                        popUpDialog.ShowAuthFailMessage(this);
-                    }
-                    else
-                    {
-                        _mainWindow.DataContext = new MainWindowViewModel(_mainWindow);
-                        if (DataContext is FTPConnectViewModel viewModel)
+                        else
                         {
-                            await viewModel.SaveDevice(
-                                this,
-                                $"{connectUnameControl.Text}@{connectIPControl.Text}:21",
-                                connectIPControl.Text,
-                                21,
-                                connectUnameControl.Text,
-                                connectUpassControl.Text
+                            _mainWindow.DataContext =
+                                new MainWindowViewModel(_mainWindow, _mainWindow.CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                            if (DataContext is FTPConnectViewModel viewModel)
+                            {
+                                await viewModel.SaveDevice(
+                                    this,
+                                    $"{connectUnameControl.Text}@{connectIPControl.Text}:{port}",
+                                    connectIPControl.Text,
+                                    port,
+                                    connectUnameControl.Text,
+                                    connectUpassControl.Text
                                 );
+                            }
+
+                            Close();
                         }
-                        Close();
                     }
+                    else
+                    {
+                        popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, port);
+                    }
+
                 }
                 else
                 {
-                    popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, 21);
+                    if (FTPClass.PingHost(connectIPControl.Text, 21))
+                    {
+                        if (!FTPClass.Instance.Connect(connectIPControl.Text, 21, connectUnameControl.Text,
+                                connectUpassControl.Text))
+                        {
+                            popUpDialog.ShowAuthFailMessage(this);
+                        }
+                        else
+                        {
+                            _mainWindow.DataContext =
+                                new MainWindowViewModel(_mainWindow, _mainWindow.CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                            if (DataContext is FTPConnectViewModel viewModel)
+                            {
+                                await viewModel.SaveDevice(
+                                    this,
+                                    $"{connectUnameControl.Text}@{connectIPControl.Text}:21",
+                                    connectIPControl.Text,
+                                    21,
+                                    connectUnameControl.Text,
+                                    connectUpassControl.Text
+                                );
+                            }
+
+                            Close();
+                        }
+                    }
+                    else
+                    {
+                        popUpDialog.ShowPingFailMessage(this, connectIPControl.Text, 21);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                popUpDialog.ShowErrorMessage(this, ex.Message);
             }
         }
         

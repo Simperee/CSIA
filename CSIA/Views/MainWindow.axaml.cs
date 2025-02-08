@@ -1,13 +1,21 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.ReactiveUI;
 using CSIA.Backend;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CSIA.ViewModels;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Dto;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia.Models;
 
 namespace CSIA.Views
 {
@@ -20,14 +28,19 @@ namespace CSIA.Views
 
         public MainWindow()
         {
+            string LocalAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CSIA");
+            Directory.CreateDirectory(LocalAppData);
+            Directory.CreateDirectory(Path.Combine(LocalAppData, "tmp"));
+            Directory.CreateDirectory(Path.Combine(LocalAppData, "config"));
             InitializeComponent();
             ConnectWindow = new FTPConnectWindow(this);
-            DataContext = new MainWindowViewModel(this);
+            DataContext = new MainWindowViewModel(this, null,null);
             // LoadDrives();
             
             // Button click handlers
             // BackButton.Click += BackButton_Click;
             // ForwardButton.Click += ForwardButton_Click;
+            RefreshButton.Click += RefreshButton_Click;
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
             ConnectButton.Click += ConnectButton_Click;
@@ -35,6 +48,12 @@ namespace CSIA.Views
             MinimButton.Click += MinimButton_Click;
             MaximButton.Click += MaximButton_Click;
             TestButton.Click += TestButton_Click;
+            UploadButton.Click += UploadButton_Click;
+            LocalFolderAddButton.Click += LocalFolderAddButton_Click;
+            LocalDeleteButton.Click += LocalDeleteButton_Click;
+            DownloadButton.Click += DownloadButton_Click;
+            RemoteFolderAddButton.Click += RemoteFolderAddButton_Click;
+            RemoteDeleteButton.Click += RemoteDeleteButton_Click;
             
             // ForwardButton.IsEnabled = false;
             // BackButton.IsEnabled = false;
@@ -202,6 +221,11 @@ namespace CSIA.Views
             // }
         }
 
+        private async void RefreshButton_Click(object? sender, RoutedEventArgs e)
+        {
+            DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text,FTPClass.Instance.RemotePath);
+        }
+        
         private async void StopButton_Click(object? sender, RoutedEventArgs e)
         {
             try{
@@ -238,11 +262,231 @@ namespace CSIA.Views
             }
         }
         
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel && RemoteListBox.SelectedItems is AvaloniaList<object> selectedItems)
+            {
+                var itemsToDownload = selectedItems.ToList();
+                
+                foreach (var selectedItem in itemsToDownload)
+                {
+                    if (selectedItem is MainWindowViewModel.RemoteFileSystemItem remoteItem)
+                    {
+                        try
+                        { 
+                            FTPClass.Instance.DownloadFile(remoteItem.FullPath, CurrentLocalPath.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            popUpDialog.ShowErrorMessage(this, ex.Message);
+                        }
+                    }
+                }
+
+                // Update the DataContext only once after all deletions
+                DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+            }
+            else
+            {
+                Console.WriteLine("Local Fail");
+            }
+        }
+        
+        private async void RemoteFolderAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            string? userInput = await FolderNameDialog.Show(this);
+            string pattern = @"[\/:*?""<>|]";
+            // Use Regex.IsMatch to check if the pattern is found in the input string
+            
+            if (userInput != @"null/\cancel")
+            {
+                bool containsInvalidChar = Regex.IsMatch(userInput, pattern);
+                if (containsInvalidChar)
+                {
+                    MessageBoxManager
+                        .GetMessageBoxStandard("Invalid Folder Name", $"Folder name cannot contain {pattern.Replace("[","").Replace("]","")}")
+                        .ShowWindowDialogAsync(this);
+                }
+                else
+                {
+                    // Do something with the user input
+                    // Console.WriteLine(userInput);
+                    // Console.WriteLine(CurrentLocalPath.Text);
+                    await FTPClass.Instance.CreateDirectory(userInput);
+                    DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                }
+            }
+        }
+        
+        private async void RemoteDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel && RemoteListBox.SelectedItems is AvaloniaList<object> selectedItems)
+            {
+                var itemsToDelete = selectedItems.ToList();
+                string message;
+                
+                if (itemsToDelete.Count > 1)
+                {
+                    message = $"Are you sure you want to delete these {itemsToDelete.Count} items?";
+                }
+                else
+                {
+                    var firstItem = itemsToDelete.FirstOrDefault() as MainWindowViewModel.RemoteFileSystemItem;
+                    if (firstItem == null)
+                    {
+                        Console.WriteLine("Selected item is not a valid FileSystemItem.");
+                        return;
+                    }
+                    message = $"Are you sure you want to delete {firstItem.RemoteName}?";
+                }
+
+                ButtonResult deleteItem = await popUpDialog.ShowDeleteQuestionMessage(this, message); //Get user answer if yes or no delete items
+
+                if (deleteItem == ButtonResult.Yes)
+                {
+                    foreach (var selectedItem in itemsToDelete)
+                    {
+                        if (selectedItem is MainWindowViewModel.RemoteFileSystemItem remoteItem)
+                        {
+                            try
+                            {
+                                FTPClass.Instance.DeleteItem(remoteItem.FullPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                popUpDialog.ShowErrorMessage(this, ex.Message);
+                            }
+                        }
+                    }
+
+                    // Update the DataContext only once after all deletions
+                    DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Remote Fail");
+            }
+        }
+        
         private void LocalListBox_DoubleTapped(object? sender, RoutedEventArgs e)
         {
             if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItem is MainWindowViewModel.LocalFileSystemItem selectedItem)
             {
                 viewModel.LocalOpenItem(selectedItem);
+            }
+        }
+
+        private async void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItems is AvaloniaList<object> selectedItems)
+            {
+                var itemsToUpload = selectedItems.ToList();
+                
+                foreach (var selectedItem in itemsToUpload)
+                {
+                    if (selectedItem is MainWindowViewModel.LocalFileSystemItem localItem)
+                    {
+                        try
+                        { 
+                            FTPClass.Instance.UploadFile(Path.GetFullPath(localItem.FullPath), FTPClass.Instance.RemotePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            popUpDialog.ShowErrorMessage(this, ex.Message);
+                        }
+                    }
+                }
+
+                // Update the DataContext only once after all deletions
+                DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+            }
+            else
+            {
+                Console.WriteLine("Local Fail");
+            }
+        }
+        
+        private async void LocalFolderAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            string? userInput = await FolderNameDialog.Show(this);
+            string pattern = @"[\/:*?""<>|]";
+            // Use Regex.IsMatch to check if the pattern is found in the input string
+            
+            if (userInput != @"null/\cancel")
+            {
+                bool containsInvalidChar = Regex.IsMatch(userInput, pattern);
+                if (containsInvalidChar)
+                {
+                    MessageBoxManager
+                        .GetMessageBoxStandard("Invalid Folder Name", $"Folder name cannot contain {pattern.Replace("[","").Replace("]","")}")
+                        .ShowWindowDialogAsync(this);
+                }
+                else
+                {
+                    // Do something with the user input
+                    // Console.WriteLine(userInput);
+                    // Console.WriteLine(CurrentLocalPath.Text);
+                    if (!CurrentLocalPath.Text.EndsWith(@"\"))
+                        Directory.CreateDirectory(CurrentLocalPath.Text+@"\"+userInput);
+                    else
+                        Directory.CreateDirectory(CurrentLocalPath.Text+userInput);
+                    DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                }
+            }
+        }
+
+        private async void LocalDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItems is AvaloniaList<object> selectedItems)
+            {
+                var itemsToDelete = selectedItems.ToList();
+                string message;
+                
+                if (itemsToDelete.Count > 1)
+                {
+                    message = $"Are you sure you want to delete these {itemsToDelete.Count} items?";
+                }
+                else
+                {
+                    var firstItem = itemsToDelete.FirstOrDefault() as MainWindowViewModel.LocalFileSystemItem;
+                    if (firstItem == null)
+                    {
+                        Console.WriteLine("Selected item is not a valid FileSystemItem.");
+                        return;
+                    }
+                    message = $"Are you sure you want to delete {firstItem.LocalName}?";
+                }
+
+                ButtonResult deleteItem = await popUpDialog.ShowDeleteQuestionMessage(this, message); //Get user answer if yes or no delete items
+
+                if (deleteItem == ButtonResult.Yes)
+                {
+                    foreach (var selectedItem in itemsToDelete)
+                    {
+                        if (selectedItem is MainWindowViewModel.LocalFileSystemItem localItem)
+                        {
+                            try
+                            {
+                                if (localItem.IsDirectory)
+                                    Directory.Delete(localItem.FullPath, true);
+                                else
+                                    File.Delete(localItem.FullPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                popUpDialog.ShowErrorMessage(this, ex.Message);
+                            }
+                        }
+                    }
+
+                    // Update the DataContext only once after all deletions
+                    DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Local Fail");
             }
         }
 
@@ -268,10 +512,9 @@ namespace CSIA.Views
             }
         }
 
-
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new MainWindowViewModel(this);
+            DataContext = new MainWindowViewModel(this, null, null);
         }
         
         protected override async void OnClosing(WindowClosingEventArgs e)
@@ -284,7 +527,7 @@ namespace CSIA.Views
                 {
                     // Await the result of the async function
                     var result = await popUpDialog.ServerRunningFunction(this, FTPWindow);
-                    if (result=="Aborted")
+                    if (result=="Closed")
                     {
                         FTPWindow.StopFtpServer();
                         Environment.Exit(0);

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using CSIA;
 using CSIA.Backend;
+using CSIA.Views;
 using ReactiveUI;
 using Realms;
 using Realms.Exceptions;
@@ -85,8 +87,7 @@ public class FTPConnectViewModel : ReactiveObject
         Console.WriteLine("FTPConnectViewModel constructor called.");
         _owner = owner;
 
-        var config = new RealmConfiguration(Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices.realm"))
+        var config = new RealmConfiguration(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CSIA", "config", "devices.realm"))
         {
             IsReadOnly = false,
             SchemaVersion = 2, // Update this version whenever the schema changes
@@ -113,6 +114,7 @@ public class FTPConnectViewModel : ReactiveObject
 
         LoadSaved();
     }
+    
 
     public void LoadSaved()
     {
