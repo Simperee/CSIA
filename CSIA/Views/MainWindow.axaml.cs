@@ -25,6 +25,7 @@ namespace CSIA.Views
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
         public FTPConnectWindow ConnectWindow;
+        private UIColors UiColorsScheme = new UIColors();
 
         public MainWindow()
         {

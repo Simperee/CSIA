@@ -46,7 +46,6 @@ public class FTPClass
         {
             FTPSession.Open(_ftpSessionOptions);
             RemotePath = FTPSession.HomePath;
-            Console.WriteLine(RemotePath);
             return true;
         }
         catch (SessionException ex)
@@ -152,8 +151,6 @@ public class FTPClass
     {
         try
         {
-            Console.WriteLine($"Remote: {remoteFilePath}");
-            Console.WriteLine($"Local: {localPath}");
             TransferOptions transferOptions = new TransferOptions();
             transferOptions.PreserveTimestamp = true;
             transferOptions.TransferMode = TransferMode.Binary;
