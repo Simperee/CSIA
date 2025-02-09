@@ -159,7 +159,7 @@ public class FTPClass
             transferOptions.TransferMode = TransferMode.Binary;
 
             TransferOperationResult transferResult;
-            transferResult = FTPSession.GetFiles(remoteFilePath, localPath+"/", false, transferOptions);
+            transferResult = FTPSession.GetFiles(remoteFilePath, localPath+@"\", false, transferOptions);
 
             transferResult.Check();
             foreach (TransferEventArgs transfer in transferResult.Transfers)
