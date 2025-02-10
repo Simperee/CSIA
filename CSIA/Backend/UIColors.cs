@@ -10,6 +10,7 @@ public class UIColors
 {
     public UIColors()
     {
+        String ConfigFolder = null;
         String ConfigFilePath = null;
         try
         {
