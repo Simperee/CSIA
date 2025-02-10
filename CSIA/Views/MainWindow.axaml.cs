@@ -29,7 +29,9 @@ namespace CSIA.Views
 
         public MainWindow()
         {
+            string Config = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CSIA");
             string LocalAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CSIA");
+            Directory.CreateDirectory(Config);
             Directory.CreateDirectory(LocalAppData);
             Directory.CreateDirectory(Path.Combine(LocalAppData, "tmp"));
             Directory.CreateDirectory(Path.Combine(LocalAppData, "config"));
