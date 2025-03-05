@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using CSIA.Views;
-using HarfBuzzSharp;
 using WinSCP;
 
 namespace CSIA.Backend;
@@ -33,15 +33,30 @@ public class FTPClass
 
     public bool Connect(string host, int? port, string uname, string upass)
     {
-        _ftpSessionOptions = new SessionOptions
+        if (uname == null && upass == null)
         {
-            HostName = host,
-            PortNumber = port ?? 21,
-            UserName = uname,
-            Password = upass,
-            Protocol = Protocol.Ftp
-        };
+            _ftpSessionOptions = new SessionOptions
+            {
+                HostName = host,
+                PortNumber = port ?? 21,
+                Protocol = Protocol.Ftp
+            };
+        }
+        else
+        {
+            _ftpSessionOptions = new SessionOptions
+            {
+                HostName = host,
+                PortNumber = port ?? 21,
+                UserName = uname,
+                Password = upass,
+                Protocol = Protocol.Ftp
+            };
+        }
         FTPSession.ExecutablePath = "./WinSCP.exe";
+        FTPSession.FileTransferProgress += Session_FileTransferProgress;
+        FTPSession.AddRawConfiguration("SendBuf", "4096"); // Reduce buffer size for more frequent updates
+        FTPSession.AddRawConfiguration("RecvBuf", "4096"); 
         try
         {
             FTPSession.Open(_ftpSessionOptions);
@@ -123,6 +138,15 @@ public class FTPClass
         // Directory.Delete(tmpFolder, true);
         FTPSession.CreateDirectory(Path.Combine(RemotePath, dirName));
     }
+    
+    static DateTime startTime;
+    static long totalSize = 0;
+    static bool firstProgressUpdate = true;
+
+    private static void Session_FileTransferProgress(object sender, FileTransferProgressEventArgs e)
+    {
+        Console.WriteLine($"Progress event fired: {e.FileProgress:P2}");
+    }
 
     public async void UploadFile(string filePath, string remotePath)
     {
@@ -133,7 +157,8 @@ public class FTPClass
             transferOptions.TransferMode = TransferMode.Binary;
 
             TransferOperationResult transferResult;
-            transferResult = FTPSession.PutFiles(filePath, remotePath+"/", false, transferOptions);
+            transferResult = FTPSession.PutFiles(filePath, remotePath + "/", false, transferOptions);
+
 
             transferResult.Check();
             foreach (TransferEventArgs transfer in transferResult.Transfers)
@@ -154,6 +179,7 @@ public class FTPClass
             TransferOptions transferOptions = new TransferOptions();
             transferOptions.PreserveTimestamp = true;
             transferOptions.TransferMode = TransferMode.Binary;
+            transferOptions.ResumeSupport.State = TransferResumeSupportState.Off;
 
             TransferOperationResult transferResult;
             transferResult = FTPSession.GetFiles(remoteFilePath, localPath+@"\", false, transferOptions);

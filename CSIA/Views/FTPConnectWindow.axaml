@@ -18,7 +18,7 @@
         FontFamily="{StaticResource LexendFont}">
     <Grid ColumnDefinitions="*,*">
         <Panel>
-            <ListBox x:Name="SavedDevListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7" Margin="40,40,20,88">
+            <ListBox x:Name="SavedDevListBox" Classes="ListBox" ItemsSource="{Binding Items}" Background="#35410010" BorderBrush="#508C203B" BorderThickness="1" CornerRadius="7" Margin="40,40,20,88">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">

@@ -27,8 +27,8 @@
                 
                 <CheckBox x:Name="customhost_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="28,222,0,0" IsChecked="{Binding #host_portval.IsEnabled}">Custom Connection</CheckBox>
                 
-                <Button Content="Cancel" Name="CancelButton" HorizontalContentAlignment="Center" Width="71" Margin="152,271,0,0" Background="#3A3A3A" Foreground="White"/>
-                <Button Content="Hosting" Name="HostingButton" Margin="231,271,0,0" Background="#3A3A3A" Foreground="White"/>
+                <Button Content="Cancel" Name="CancelButton" HorizontalContentAlignment="Center" Width="71" Margin="152,271,0,0" Background="#753A3A3A" Foreground="White"/>
+                <Button Content="Hosting" Name="HostingButton" Margin="231,271,0,0" Background="#753A3A3A" Foreground="White"/>
                 
                 <Button x:Name="focusloss_button" Width="0" Height="0"/>
         </Panel>

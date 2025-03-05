@@ -12,15 +12,59 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://CSIA/Icons.axaml" />
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="{DynamicResource ListBoxBackgroundColor}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorderColor}"/>
+        </Style>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+        </Style>
     </Application.Styles>
              
     <Application.Resources>
+        <SolidColorBrush x:Key="ListBoxBackgroundColor" Color="#35670019"/>
+        <SolidColorBrush x:Key="ListBoxBorderColor" Color="#258D0022"/>
         <FontFamily x:Key="LexendFont">avares://CSIA/Assets/Fonts#Lexend</FontFamily>
         <!-- <PathIcon x:Key="MaximButtonIcon" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" /> -->
+        <ControlTheme x:Key="ApplicationStyle" TargetType="Window">
+            <Setter Property="Background" Value="#50410010"/>
+        </ControlTheme>
+        <ControlTheme x:Key="MenuBtton" TargetType="Button">
+            <Setter Property="Background" Value="#753A3A3A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="7,4"/> <!-- Add Padding to Button -->
+    
+            <Setter Property="Template">
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Outer Border (Expanded by 2px on both sides) -->
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}"> <!-- Apply Padding to Border -->
+                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              HorizontalContentAlignment="Center"
+                                              VerticalContentAlignment="Center"
+                                              TextBlock.TextAlignment="Center"
+                                              Margin="2"/> <!-- Add Margin to ContentPresenter -->
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+
+            <!-- PointerOver Style -->
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#1AFFFFFF"/>
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            </Style>
+        </ControlTheme>
+
         <ControlTheme x:Key="CloseButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="#50410010"/> -->
             <Setter Property="Background" Value="#50410010"/>
-            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="Foreground" Value="#00410010"/>
             <Setter Property="BorderThickness" Value="16"/>
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Height" Value="16"/>
@@ -36,6 +80,16 @@
                                           Margin="{TemplateBinding Padding}"/>
                     </Panel>
                 </ControlTemplate>
+            </Setter>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource pane_close_regular}" 
+                                  Width="10"
+                                  Height="10"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
+                    </Template>
+                </Setter.Value>
             </Setter>
       
             <Style Selector="^:pointerover">
@@ -48,7 +102,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource pane_close_regular}" 
-                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                                      Width="10"
+                                      Height="10"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -57,7 +113,7 @@
         <ControlTheme x:Key="MinimButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="#50410010"/> -->
             <Setter Property="Background" Value="#50410010"/>
-            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="Foreground" Value="#00410010"/>
             <Setter Property="BorderThickness" Value="16"/>
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Height" Value="16"/>
@@ -73,6 +129,16 @@
                                           Margin="{TemplateBinding Padding}"/>
                     </Panel>
                 </ControlTemplate>
+            </Setter>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource arrow_minimize_regular}" 
+                                  Width="10"
+                                  Height="10"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
+                    </Template>
+                </Setter.Value>
             </Setter>
       
             <Style Selector="^:pointerover">
@@ -85,7 +151,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource arrow_minimize_regular}" 
-                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change size or color -->
+                                      Width="10"
+                                      Height="10"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -94,7 +162,7 @@
         <ControlTheme x:Key="MaximButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="#50410010"/> -->
             <Setter Property="Background" Value="#50410010"/>
-            <Setter Property="BorderBrush" Value="#8D0022"/>
+            <Setter Property="Foreground" Value="#00410010"/>
             <Setter Property="BorderThickness" Value="16"/>
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Height" Value="16"/>
@@ -111,6 +179,16 @@
                     </Panel>
                 </ControlTemplate>
             </Setter>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Template>
+                        <PathIcon Data="{StaticResource arrow_maximize_regular}" 
+                                  Width="10"
+                                  Height="10"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
+                    </Template>
+                </Setter.Value>
+            </Setter>
       
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#50C54E81"/>
@@ -122,7 +200,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource arrow_maximize_regular}" 
-                                      Width="10" Height="10" Foreground="#50410010"/> <!-- Change color -->
+                                      Width="10"
+                                      Height="10"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change size or color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -131,13 +211,16 @@
         <ControlTheme x:Key="UploadButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="Black"/> -->
             <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Foreground" Value="#50C54E81"/>
             <Setter Property="Height" Value="28"/>
             <Setter Property="Width" Value="37"/>
             <Setter Property="Content">
                 <Setter.Value>
                     <Template>
                         <PathIcon Data="{StaticResource disk_upload}" 
-                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                  Width="14"
+                                  Height="14"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                     </Template>
                 </Setter.Value>
             </Setter>
@@ -158,7 +241,7 @@
       
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#50670019"/>
-                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="Foreground" Value="#50C54E81"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 
@@ -166,7 +249,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource disk_upload}" 
-                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                      Width="14" 
+                                      Height="14"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -175,13 +260,16 @@
         <ControlTheme x:Key="DownloadButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="Black"/> -->
             <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Foreground" Value="#50C54E81"/>
             <Setter Property="Height" Value="28"/>
             <Setter Property="Width" Value="37"/>
             <Setter Property="Content">
                 <Setter.Value>
                     <Template>
                         <PathIcon Data="{StaticResource disk_download}" 
-                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                  Width="14" 
+                                  Height="14"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                     </Template>
                 </Setter.Value>
             </Setter>
@@ -202,7 +290,7 @@
       
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#50670019"/>
-                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="Foreground" Value="#50C54E81"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 
@@ -210,7 +298,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource disk_download}" 
-                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                      Width="14" 
+                                      Height="14"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -219,13 +309,16 @@
         <ControlTheme x:Key="FolderAddButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="Black"/> -->
             <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Foreground" Value="#50C54E81"/>
             <Setter Property="Height" Value="28"/>
             <Setter Property="Width" Value="37"/>
             <Setter Property="Content">
                 <Setter.Value>
                     <Template>
                         <PathIcon Data="{StaticResource add_folder}" 
-                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                  Width="14" 
+                                  Height="14"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                     </Template>
                 </Setter.Value>
             </Setter>
@@ -246,7 +339,7 @@
       
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#50670019"/>
-                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="Foreground" Value="#50C54E81"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 
@@ -254,7 +347,9 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource add_folder}" 
-                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                      Width="14" 
+                                      Height="14"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
@@ -263,13 +358,16 @@
         <ControlTheme x:Key="DeleteButton" TargetType="Button">
             <!-- <Setter Property="Background" Value="Black"/> -->
             <Setter Property="Background" Value="#50410010"/>
+            <Setter Property="Foreground" Value="#50C54E81"/>
             <Setter Property="Height" Value="28"/>
             <Setter Property="Width" Value="37"/>
             <Setter Property="Content">
                 <Setter.Value>
                     <Template>
                         <PathIcon Data="{StaticResource delete_item}" 
-                                  Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                  Width="14" 
+                                  Height="14"
+                                  Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                     </Template>
                 </Setter.Value>
             </Setter>
@@ -290,7 +388,7 @@
       
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#50670019"/>
-                <Setter Property="Foreground" Value="#50410010"/>
+                <Setter Property="Foreground" Value="#50C54E81"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 
@@ -298,11 +396,16 @@
                     <Setter.Value>
                         <Template>
                             <PathIcon Data="{StaticResource delete_item}" 
-                                      Width="14" Height="14" Foreground="#50C54E81"/> <!-- Change color -->
+                                      Width="14" 
+                                      Height="14"
+                                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/> <!-- Change color -->
                         </Template>
                     </Setter.Value>
                 </Setter>
             </Style>
+        </ControlTheme>
+        <ControlTheme x:Key="ListBx2" TargetType="ListBox">
+            <Setter Property="Background" Value="Aqua"/>
         </ControlTheme>
     </Application.Resources>
 </Application>

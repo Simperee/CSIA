@@ -6,11 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.ReactiveUI;
 using CSIA.Backend;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using CSIA.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Dto;
@@ -25,7 +28,6 @@ namespace CSIA.Views
         private PopUpDialog popUpDialog = new PopUpDialog();
         public FTPServerWindow FTPWindow = new FTPServerWindow();
         public FTPConnectWindow ConnectWindow;
-        private UIColors UiColorsScheme = new UIColors();
 
         public MainWindow()
         {
@@ -38,19 +40,23 @@ namespace CSIA.Views
             InitializeComponent();
             ConnectWindow = new FTPConnectWindow(this);
             DataContext = new MainWindowViewModel(this, null,null);
+            
+            
             // LoadDrives();
             
             // Button click handlers
             // BackButton.Click += BackButton_Click;
             // ForwardButton.Click += ForwardButton_Click;
+            
             RefreshButton.Click += RefreshButton_Click;
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
             ConnectButton.Click += ConnectButton_Click;
+            TestButton.Click += TestButton_Click;
+            
             CloseButton.Click += CloseButton_Click;
             MinimButton.Click += MinimButton_Click;
             MaximButton.Click += MaximButton_Click;
-            TestButton.Click += TestButton_Click;
             UploadButton.Click += UploadButton_Click;
             LocalFolderAddButton.Click += LocalFolderAddButton_Click;
             LocalDeleteButton.Click += LocalDeleteButton_Click;
@@ -196,7 +202,6 @@ namespace CSIA.Views
         //         Console.WriteLine("Folder does not exist");
         //     }
         // }
-        
         private void HostButton_Click(object? sender, RoutedEventArgs e)
         {
             FTPWindow.Show();
@@ -224,7 +229,7 @@ namespace CSIA.Views
             // }
         }
 
-        private async void RefreshButton_Click(object? sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object? sender, RoutedEventArgs e)
         {
             DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text,FTPClass.Instance.RemotePath);
         }
@@ -265,7 +270,7 @@ namespace CSIA.Views
             }
         }
         
-        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is MainWindowViewModel viewModel && RemoteListBox.SelectedItems is AvaloniaList<object> selectedItems)
             {
@@ -391,8 +396,14 @@ namespace CSIA.Views
                     if (selectedItem is MainWindowViewModel.LocalFileSystemItem localItem)
                     {
                         try
-                        { 
-                            FTPClass.Instance.UploadFile(Path.GetFullPath(localItem.FullPath), FTPClass.Instance.RemotePath);
+                        {
+                            await Task.Run(() =>
+                            {
+                                FTPClass.Instance.UploadFile(
+                                    Path.GetFullPath(localItem.FullPath),
+                                    FTPClass.Instance.RemotePath
+                                );
+                            });
                         }
                         catch (Exception ex)
                         {
