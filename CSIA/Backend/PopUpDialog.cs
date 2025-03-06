@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using CSIA.ViewModels;
 using CSIA.Views;
 using MsBox.Avalonia;
@@ -143,6 +144,7 @@ public class PopUpDialog
                 SizeToContent = SizeToContent.WidthAndHeight,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 Topmost = true,
+                
             }
             ); 
         ServRunButtonResult = await messageBox.ShowWindowDialogAsync(owner);

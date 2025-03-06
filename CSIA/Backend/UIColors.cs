@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -184,6 +185,9 @@ public class UIColors
                 {
                     new Setter(Window.BackgroundProperty, Brush.Parse(theme.AppBackgroundHex)),
                     new Setter(Window.ForegroundProperty, Brush.Parse(theme.AppForegroundHex)),
+                    new Setter(Window.ExtendClientAreaToDecorationsHintProperty, true),
+                    new Setter(Window.ExtendClientAreaChromeHintsProperty, ExtendClientAreaChromeHints.NoChrome),
+                    new Setter(Window.TransparencyLevelHintProperty, new List<WindowTransparencyLevel> { WindowTransparencyLevel.AcrylicBlur }),
                 }
             };
             

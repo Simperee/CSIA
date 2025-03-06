@@ -52,7 +52,6 @@ namespace CSIA.Views
             HostButton.Click += HostButton_Click;
             StopButton.Click += StopButton_Click;
             ConnectButton.Click += ConnectButton_Click;
-            TestButton.Click += TestButton_Click;
             
             CloseButton.Click += CloseButton_Click;
             MinimButton.Click += MinimButton_Click;
@@ -524,11 +523,6 @@ namespace CSIA.Views
             {
                 WindowState = WindowState.Normal;
             }
-        }
-
-        private void TestButton_Click(object sender, RoutedEventArgs e)
-        {
-            DataContext = new MainWindowViewModel(this, null, null);
         }
         
         protected override async void OnClosing(WindowClosingEventArgs e)

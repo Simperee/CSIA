@@ -37,7 +37,6 @@
             <Button Content="Host" Name="HostButton" Classes="MenuButton" Margin="5" Theme="{StaticResource MenuBtton}"/>
             <Button Content="Stop" Name="StopButton" Classes="MenuButton" Margin="5" Theme="{StaticResource MenuBtton}"/>
             <Button Content="Connect" Name="ConnectButton" Classes="MenuButton" Margin="5" Theme="{StaticResource MenuBtton}"/>
-            <Button Content="test" Name="TestButton" Classes="MenuButton" Margin="5" Theme="{StaticResource MenuBtton}"/>
             
             <!-- BorderBrush="#5E1D2D" BorderThickness="2" -->
         </StackPanel>
