@@ -19,10 +19,10 @@ public class FTPConnectViewModel : ReactiveObject
     private PopUpDialog popUpDialog = new PopUpDialog();
     private readonly Window _owner;
     
-    //Secure saved device database. I am not risking security for this :)
+    //secure saved device database. I am not risking security for this :)
     private readonly Realm _realm;
     
-    //Initialize bindings to set values once device selected.
+    //initialize bindings to set values once device selected.
     private string _savedip;
     
     public string SavedIp
@@ -55,7 +55,6 @@ public class FTPConnectViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _savedpass, value);
     }
     
-    // SavedConItem class defined inside the FTPConnectViewModel
     public class SavedConItem
     {
         public string Name { get; set; }
@@ -90,13 +89,13 @@ public class FTPConnectViewModel : ReactiveObject
         var config = new RealmConfiguration(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CSIA", "config", "devices.realm"))
         {
             IsReadOnly = false,
-            SchemaVersion = 2, // Update this version whenever the schema changes
+            SchemaVersion = 2, // update version when schema changes
             MigrationCallback = (migration, oldSchemaVersion) =>
             {
                 Console.WriteLine($"Migrating Realm from version {oldSchemaVersion}...");
                 if (oldSchemaVersion < 2)
                 {
-                    // Migration logic for version 2
+                    // migration logic for version 2
                 }
                 Console.WriteLine("Migration completed.");
             }
@@ -104,7 +103,7 @@ public class FTPConnectViewModel : ReactiveObject
 
         try
         {
-            _realm = Realm.GetInstance(config);
+            _realm = Realm.GetInstance(config); //connect to Realm db
             Console.WriteLine("Realm initialized successfully.");
         }
         catch (RealmFileAccessErrorException ex)
@@ -142,16 +141,38 @@ public class FTPConnectViewModel : ReactiveObject
             Console.WriteLine(ex.Message);
         }
     }
+    
+    public void LoadSelectedDevice(string name)
+    {
+        _realm.Write(() =>
+        {
+            //find device with primary key
+            var selectedDevice = _realm.Find<Device>(name);
+
+            if (selectedDevice != null)
+            {
+                //get info from item
+                SavedIp = selectedDevice.IP;
+                SavedPort = selectedDevice.Port;
+                SavedUser = selectedDevice.Username;
+                SavedPass = selectedDevice.Password;
+            }
+            else
+            {
+                Console.WriteLine($"Device {name} not found.");
+            }
+        });
+    }
 
     public async Task SaveDevice(Window _owner, string name, string ip, int port, string username, string password)
     {
         var result = await popUpDialog.ShowSaveDevMessage(_owner, name);
         if (result.ToString() == "Yes")
         {
-            //Check if already exists in database
+            //check if already exists in database
             try
             {
-                // Add a new device to the database
+                //add new device to database
                 _realm.Write(() =>
                 {
                     _realm.Add(new Device
@@ -171,12 +192,12 @@ public class FTPConnectViewModel : ReactiveObject
                 {
                     _realm.Write(() =>
                     {
-                        // Find the device by primary key (Name)
+                        //find the device with primary key
                         var deviceToRemove = _realm.Find<Device>(name);
 
                         if (deviceToRemove != null)
                         {
-                            // Remove the device from the Realm database
+                            //remove device from Realm database
                             _realm.Remove(deviceToRemove);
                         }
                         else
@@ -199,31 +220,8 @@ public class FTPConnectViewModel : ReactiveObject
             }
             LoadSaved();
         }
-        // Update the Devices collection
+        //update Devices collection
     }
-
-    public void LoadSelectedDevice(string name)
-    {
-        _realm.Write(() =>
-        {
-            // Find the device by primary key (Name)
-            var selectedDevice = _realm.Find<Device>(name);
-
-            if (selectedDevice != null)
-            {
-                // Get info from selected item in DB.
-                SavedIp = selectedDevice.IP;
-                SavedPort = selectedDevice.Port;
-                SavedUser = selectedDevice.Username;
-                SavedPass = selectedDevice.Password;
-            }
-            else
-            {
-                Console.WriteLine($"Device {name} not found.");
-            }
-        });
-    }
-    
 }
 public partial class Device : RealmObject
 {

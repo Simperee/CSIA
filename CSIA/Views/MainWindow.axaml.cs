@@ -273,15 +273,15 @@ namespace CSIA.Views
         {
             if (DataContext is MainWindowViewModel viewModel && RemoteListBox.SelectedItems is AvaloniaList<object> selectedItems)
             {
-                var itemsToDownload = selectedItems.ToList();
+                var itemsToDownload = selectedItems.ToList(); //conversion 1
                 
-                foreach (var selectedItem in itemsToDownload)
+                foreach (var selectedItem in itemsToDownload) //conversion 2
                 {
-                    if (selectedItem is MainWindowViewModel.RemoteFileSystemItem remoteItem)
+                    if (selectedItem is MainWindowViewModel.RemoteFileSystemItem remoteItem) //conversion 3
                     {
                         try
                         { 
-                            FTPClass.Instance.DownloadFile(remoteItem.FullPath, CurrentLocalPath.Text);
+                            FTPClass.Instance.DownloadFile(remoteItem.FullPath, CurrentLocalPath.Text); //download selected files
                         }
                         catch (Exception ex)
                         {
@@ -290,7 +290,7 @@ namespace CSIA.Views
                     }
                 }
 
-                // Update the DataContext only once after all deletions
+                //update DataContext after all deletions
                 DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
             }
             else
@@ -388,11 +388,11 @@ namespace CSIA.Views
         {
             if (DataContext is MainWindowViewModel viewModel && LocalListBox.SelectedItems is AvaloniaList<object> selectedItems)
             {
-                var itemsToUpload = selectedItems.ToList();
+                var itemsToUpload = selectedItems.ToList(); //conversion 1
                 
-                foreach (var selectedItem in itemsToUpload)
+                foreach (var selectedItem in itemsToUpload) //conversion 2
                 {
-                    if (selectedItem is MainWindowViewModel.LocalFileSystemItem localItem)
+                    if (selectedItem is MainWindowViewModel.LocalFileSystemItem localItem) //conversion 3
                     {
                         try
                         {
@@ -401,7 +401,7 @@ namespace CSIA.Views
                                 FTPClass.Instance.UploadFile(
                                     Path.GetFullPath(localItem.FullPath),
                                     FTPClass.Instance.RemotePath
-                                );
+                                ); //uploading all the files one by one
                             });
                         }
                         catch (Exception ex)
@@ -411,7 +411,7 @@ namespace CSIA.Views
                     }
                 }
 
-                // Update the DataContext only once after all deletions
+                //update DataContext after all deletions
                 DataContext = new MainWindowViewModel(this, CurrentLocalPath.Text, FTPClass.Instance.RemotePath);
             }
             else
@@ -527,13 +527,13 @@ namespace CSIA.Views
         
         protected override async void OnClosing(WindowClosingEventArgs e)
         {
-            // Check if FTP server is running
+            //check FTP server is running
             if (FTPWindow.ftpRunning)
             {
                 e.Cancel = true;
                 try
                 {
-                    // Await the result of the async function
+                    //await result of async function
                     var result = await popUpDialog.ServerRunningFunction(this, FTPWindow);
                     if (result=="Closed")
                     {
@@ -548,8 +548,7 @@ namespace CSIA.Views
             }
             else
             {
-                // If FTP server is not running, just proceed with the window close
-                Environment.Exit(0);
+                Environment.Exit(0); //close window if FTP server is not running
             }
         }
     }

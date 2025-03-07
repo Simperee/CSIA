@@ -153,11 +153,11 @@ public class FTPClass
         try
         {
             TransferOptions transferOptions = new TransferOptions();
-            transferOptions.PreserveTimestamp = true;
+            transferOptions.PreserveTimestamp = true; //keep original file timestamps
             transferOptions.TransferMode = TransferMode.Binary;
 
             TransferOperationResult transferResult;
-            transferResult = FTPSession.PutFiles(filePath, remotePath + "/", false, transferOptions);
+            transferResult = FTPSession.PutFiles(filePath, remotePath + "/", false, transferOptions); //actually send the file
 
 
             transferResult.Check();
@@ -177,12 +177,12 @@ public class FTPClass
         try
         {
             TransferOptions transferOptions = new TransferOptions();
-            transferOptions.PreserveTimestamp = true;
+            transferOptions.PreserveTimestamp = true; //keep original file timestamps
             transferOptions.TransferMode = TransferMode.Binary;
             transferOptions.ResumeSupport.State = TransferResumeSupportState.Off;
 
             TransferOperationResult transferResult;
-            transferResult = FTPSession.GetFiles(remoteFilePath, localPath+@"\", false, transferOptions);
+            transferResult = FTPSession.GetFiles(remoteFilePath, localPath+@"\", false, transferOptions); //actually get the file
 
             transferResult.Check();
             foreach (TransferEventArgs transfer in transferResult.Transfers)
@@ -199,8 +199,9 @@ public class FTPClass
     //---------------//
     // QoL Functions //
     //---------------//
+    //...
     
-    static string NormalizePath(string path)
+    private static string NormalizePath(string path)
     {
         var parts = new List<string>(path.Split('/'));
         var stack = new Stack<string>();

@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using Avalonia.Media;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -9,7 +11,6 @@ using FubarDev.FtpServer.FileSystem.DotNet;
 using FubarDev.FtpServer.AccountManagement;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using CSIA.Backend;
 using FubarDev.FtpServer.ConnectionChecks;
 
@@ -99,7 +100,7 @@ namespace CSIA.Views
                                 new CustomMembershipProvider(username, password));
                         });
 
-                        services.Configure<DotNetFileSystemOptions>(opt => { opt.RootPath = @"C:\"; });
+                        services.Configure<DotNetFileSystemOptions>(opt => { opt.RootPath = Path.GetPathRoot(Environment.SystemDirectory);; });
 
                         int portNumber;
 
@@ -254,9 +255,8 @@ namespace CSIA.Views
             return Task.FromResult(new MemberValidationResult(MemberValidationStatus.InvalidLogin));
         }
     }
-
-    // User class implementing IFtpUser
-    public class FtpUser : IFtpUser
+    
+    class FtpUser : IFtpUser //user class
     {
         public string Name { get; }
 
@@ -267,8 +267,7 @@ namespace CSIA.Views
 
         public bool IsInGroup(string groupName)
         {
-            // Return false if group management is not needed
-            return false;
+            return false; //return false if group management not needed
         }
     }
 }

@@ -41,13 +41,13 @@ public class MainWindowViewModel : ReactiveObject
             }
             else
             {
-                RemoteName = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath);
+                RemoteName = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath); //cool regex thats really sick
             }
 
-            // Determine the appropriate icon for the file or folder
+            //determine appropriate icon for file or folder
             if (isDirectory)
             {
-                RemoteIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
+                RemoteIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png"))); //folder icon
             }
             else
             {
@@ -62,9 +62,9 @@ public class MainWindowViewModel : ReactiveObject
                     ".mp3" => new Uri("avares://CSIA/Assets/Icons/mp3_icon.png"),
                     ".mp4" => new Uri("avares://CSIA/Assets/Icons/mp4_icon.png"),
                     _ => new Uri("avares://CSIA/Assets/Icons/file_icon.png")
-                };
+                }; //define image to use for item type
 
-                RemoteIcon = new Bitmap(AssetLoader.Open(iconUri));
+                RemoteIcon = new Bitmap(AssetLoader.Open(iconUri)); //apply image defined above
             }
         }
     }
@@ -97,16 +97,16 @@ public class MainWindowViewModel : ReactiveObject
                 LocalName = Path.GetFileName(fullPath) == string.Empty ? fullPath : Path.GetFileName(fullPath);
             }
 
-            // Determine the appropriate icon for the file or folder
+            //determine appropriate icon for the file or folder
             if (isDirectory)
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(fullPath, @"^[A-Z]:\\$"))
+                if (System.Text.RegularExpressions.Regex.IsMatch(fullPath, @"^[A-Z]:\\$")) //cool regex thats really sick
                 {
-                    LocalIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/drive_icon.png")));
+                    LocalIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/drive_icon.png"))); //disk drive icon
                 }
                 else
                 {
-                    LocalIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png")));
+                    LocalIcon = new Bitmap(AssetLoader.Open(new Uri("avares://CSIA/Assets/Icons/folder_icon.png"))); //folder icon
                 }
             }
             else
@@ -122,9 +122,9 @@ public class MainWindowViewModel : ReactiveObject
                     ".mp3" => new Uri("avares://CSIA/Assets/Icons/mp3_icon.png"),
                     ".mp4" => new Uri("avares://CSIA/Assets/Icons/mp4_icon.png"),
                     _ => new Uri("avares://CSIA/Assets/Icons/file_icon.png")
-                };
+                }; //define image to use for item type
 
-                LocalIcon = new Bitmap(AssetLoader.Open(iconUri));
+                LocalIcon = new Bitmap(AssetLoader.Open(iconUri)); //apply image defined above
             }
         }
     }
@@ -190,17 +190,17 @@ public class MainWindowViewModel : ReactiveObject
         }
     }
 
-    // Method to load the list of drives
+    //load list of drives
     public void LoadDrives()
     {
         var driveItems = new ObservableCollection<LocalFileSystemItem>();
 
         try
         {
-            // Get all drives
+            //get all drives
             foreach (var drive in DriveInfo.GetDrives())
             {
-                if (drive.IsReady) // Check if the drive is ready to avoid exceptions
+                if (drive.IsReady) //check if drive is ready so no exceptions
                 {
                     driveItems.Add(new LocalFileSystemItem(drive.RootDirectory.FullName, true, false));
                 }
@@ -212,7 +212,7 @@ public class MainWindowViewModel : ReactiveObject
         }
 
         LocalItems = driveItems;
-        CurrentLocalPath = null; // No specific path since we're at the root of drives
+        CurrentLocalPath = null; //no specific path since root of drives
     }
 
     // Method to load items in a given directory
@@ -220,6 +220,7 @@ public class MainWindowViewModel : ReactiveObject
     {
         var newItems = new ObservableCollection<LocalFileSystemItem>();
         bool checkRights = false;
+        //check if can access directory
         try
         {
             Directory.GetDirectories(path);
@@ -228,36 +229,35 @@ public class MainWindowViewModel : ReactiveObject
         catch (Exception ex)
         {
             popUpDialog.ShowErrorMessage(_owner, ex.Message);
-            checkRights = false;
         }
 
         if (checkRights)
         {
-            // Check if the current path has a parent directory
+            //check if current path has parent directory
             if (!string.IsNullOrEmpty(path))
             {
                 var parentDirectory = Directory.GetParent(path);
                 if (parentDirectory != null)
                 {
-                    // Add a special "Go to Parent Folder" item at the top of the list
+                    //add a special "Go to Parent Folder" item at top of list
                     newItems.Add(new LocalFileSystemItem(parentDirectory.FullName, true, true));
                 }
                 else
                 {
-                    // Add a "Go to Drives" option to return to the root drives list
+                    //add a "Go to Drives" option to return to root drives list
                     newItems.Add(new LocalFileSystemItem("Drives", true, true));
                 }
             }
 
             try
             {
-                // Add directories
+                //add directories
                 foreach (var directory in Directory.GetDirectories(path))
                 {
                     newItems.Add(new LocalFileSystemItem(directory, true, false));
                 }
 
-                // Add files
+                //add files
                 foreach (var file in Directory.GetFiles(path))
                 {
                     newItems.Add(new LocalFileSystemItem(file, false, false));
